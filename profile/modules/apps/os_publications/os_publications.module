@@ -177,12 +177,26 @@ function os_publications_views_pre_render(ViewExecutable $view) {
 
     // Convert citation title into publication entity page's url.
     $results = $view->result;
+
     foreach ($results as $result) {
       $publication = $result->_entity;
       $text = Markup::create($publication->html_title->value);
       $link = $publication->toLink($text)->toString();
       $publication->html_title->value = $link;
     }
+  }
+}
+
+/**
+ * Citation alter.
+ */
+function os_publications_preprocess_views_view_field(&$variables) {
+  $view = $variables['view'];
+  $field = $variables['field'];
+  if ($view->storage->id() == 'publications' &&
+    $view->current_display != 'cp' &&
+    $field->field == 'rendered_entity') {
+    $variables['output'] = 'News output';
   }
 }
 
@@ -645,6 +659,7 @@ function os_publications_alter_post_bibcite_reference_delete_redirect(array &$fo
  * Implements hook_preprocess_HOOK().
  */
 function os_publications_preprocess_bibcite_citation(&$variables) {
+
   $citation_styler = \Drupal::service('bibcite.citation_styler');
   $site_wide_style = $citation_styler->getStyle()->id();
   $publications_config = \Drupal::configFactory()->get('os_publications.settings');
@@ -655,7 +670,6 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   // Get current route name.
   $route_name = \Drupal::routeMatch()->getRouteName();
-
   // If publication view page.
   if ($route_name === 'entity.bibcite_reference.canonical') {
     /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
@@ -663,15 +677,11 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
     $text = Markup::create($publication->html_title->value);
     $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
-  }
 
-  // Alteration for hca style to match D7.
-  if ($vsite_style == 'harvard_chicago_author_date') {
-
-    if ($publication->bundle() == 'journal_article') {
-      if (isset($variables['data']['editor'])) {
-        $given = $variables['data']['editor'][0]['given'];
-        $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
+    // Alteration for hca style to match D7.
+    if ($vsite_style == 'harvard_chicago_author_date') {
+      if ($publication->bundle() == 'journal_article' || $publication->bundle() == 'book_chapter') {
+        fix_authors($variables);
       }
     }
   }
@@ -679,7 +689,9 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   /** @var \Drupal\bibcite\CitationStylerInterface $styler */
   $styler = \Drupal::service('bibcite.citation_styler');
   $data = $variables['data'];
-  $markup_string = $styler->render($data);
+
+  // If more than one author or editor , remove extra commas.
+  $markup_string = str_replace(' ,', '', $styler->render($data));
 
   $variables['content'] = [
     '#markup' => $markup_string,
@@ -711,7 +723,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
       $export_button = \Drupal::service('renderer')->render($export_array);
       $variables['content']['#markup'] .= $export_button;
       $variables['content']['#allowed_tags'] = [
-        'a', 'button', 'ul', 'li', 'span', 'div',
+        'a', 'button', 'ul', 'li', 'span', 'div', 'em', 'sub', 'sup',
       ];
     }
   }
@@ -771,4 +783,25 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
   $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
+}
+
+/**
+ * Fix authors.
+ */
+function fix_authors(&$variables) {
+  // Fix author and editor name display order to First Name Last Name.
+  $author_types = ['author', 'editor'];
+  foreach ($author_types as $type) {
+    if (isset($variables['data'][$type])) {
+      foreach ($variables['data'][$type] as $key => $author) {
+        $name = $author['given'] . ' ' . $author['family'];
+        $variables['data'][$type][$key]['family'] = '';
+        $variables['data'][$type][$key]['given'] = $name;
+      }
+    }
+  }
+  if (isset($variables['data']['editor'])) {
+    $given = $variables['data']['editor'][0]['given'];
+    $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
+  }
 }

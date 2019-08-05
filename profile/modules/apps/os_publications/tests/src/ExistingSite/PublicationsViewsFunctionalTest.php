@@ -99,7 +99,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     // Construct data array as required by render method.
     $text = Markup::create($reference->html_title->value);
-    $link = '"' . $reference->toLink($text)->toString() . '"';
+    $link = $reference->toLink($text)->toString();
     $author = [
       'category' => "primary",
       'role' => "author",
@@ -424,6 +424,64 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
     $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
     $this->assertSession()->elementExists('css', '.last-updated');
+  }
+
+  /**
+   * Test hca output.
+   */
+  public function testHcaPublicationsOutput(): void {
+    $this->drupalLogin($this->groupAdmin);
+
+    $contributor1 = $this->createContributor([
+      'first_name' => 'Leonardo',
+      'middle_name' => 'Da',
+      'last_name' => 'Vinci',
+    ]);
+
+    $contributor2 = $this->createContributor([
+      'first_name' => 'Joanne',
+      'middle_name' => 'Kathleen',
+      'last_name' => 'Rowling',
+    ]);
+
+    $contributor3 = $this->createContributor([
+      'first_name' => 'Vincent',
+      'middle_name' => 'Middle',
+      'last_name' => 'Gogh',
+    ]);
+
+    $reference = $this->createReference([
+      'type' => 'journal_article',
+      'html_title' => 'Mona Lisa',
+      'bibcite_year' => '2018',
+      'bibcite_secondary_title' => 'JournalTitle',
+      'author' => [
+        [
+          'target_id' => $contributor1->id(),
+          'category' => 'primary',
+          'role' => 'author',
+        ],
+        [
+          'target_id' => $contributor2->id(),
+          'category' => 'primary',
+          'role' => 'author',
+        ],
+        [
+          'target_id' => $contributor3->id(),
+          'category' => 'primary',
+          'role' => 'editor',
+        ],
+      ],
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+
+    // Make changes.
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->drupalPostForm(NULL, [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
+    ], 'Save configuration');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
+    $this->assertSession()->pageTextContains('Leonardo Da Vinci and Joanne Kathleen Rowling. 2018. “Mona Lisa”. Edited By Vincent Middle Gogh. Journaltitle.');
   }
 
   /**
