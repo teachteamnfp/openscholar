@@ -4,6 +4,8 @@ status: true
 dependencies:
   module:
     - bibcite_entity
+    - group
+    - vsite
 id: publication_contributors
 label: 'Publication contributors'
 module: views
@@ -76,6 +78,79 @@ display:
           separator: ' '
           hide_empty: false
       fields:
+        id_1:
+          id: id_1
+          table: bibcite_reference
+          field: id
+          relationship: reverse__bibcite_reference__bibcite_contributor
+          group_type: count
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: views-field-display-count
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          set_precision: false
+          precision: 0
+          decimal: .
+          separator: ''
+          format_plural: 0
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: (
+          suffix: )
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          field_api_classes: false
+          entity_type: bibcite_reference
+          entity_field: id
+          plugin_id: field
         id:
           id: id
           table: bibcite_contributor
@@ -355,7 +430,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ first_name }} {{ middle_name }} {{ last_name }}'
+            text: '{{ first_name }} {{ middle_name }} {{ last_name }} {{ id_1 }}'
             make_link: true
             path: '/publications/author/{{ id }}'
             absolute: false
@@ -393,80 +468,44 @@ display:
           empty_zero: false
           hide_alter_empty: false
           plugin_id: custom
-        id_1:
-          id: id_1
-          table: bibcite_reference
-          field: id
-          relationship: reverse__bibcite_reference__bibcite_contributor
-          group_type: count
+      filters:
+        current_vsite_filter:
+          id: current_vsite_filter
+          table: group_content
+          field: current_vsite_filter
+          relationship: group_content
+          group_type: group
           admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: views-field-display-count
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          set_precision: false
-          precision: 0
-          decimal: .
-          separator: ''
-          format_plural: 0
-          format_plural_string: !!binary MQNAY291bnQ=
-          prefix: (
-          suffix: )
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          field_api_classes: false
-          entity_type: bibcite_reference
-          entity_field: id
-          plugin_id: field
-      filters: {  }
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: group_content
+          plugin_id: vsite_current_filter
       sorts: {  }
       header: {  }
       footer: {  }
@@ -482,6 +521,18 @@ display:
           required: false
           entity_type: bibcite_contributor
           plugin_id: entity_reverse
+        group_content:
+          id: group_content
+          table: bibcite_reference
+          field: group_content
+          relationship: reverse__bibcite_reference__bibcite_contributor
+          group_type: group
+          admin_label: 'Reference group content'
+          required: false
+          group_content_plugins:
+            'group_entity:bibcite_reference': 'group_entity:bibcite_reference'
+          entity_type: bibcite_reference
+          plugin_id: group_content_to_entity_reverse
       arguments: {  }
       display_extenders:
         metatag_display_extender: {  }
