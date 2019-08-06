@@ -58,14 +58,15 @@ class CpMenuTest extends OsExistingSiteJavascriptTestBase {
 
     $this->visit('/test-menu/cp/build/menu');
     $session = $this->assertSession();
-    $page = $this->getCurrentPage();
+    $page = $this->getSession()->getPage();
 
     $weight_field = $page->find('css', '.Calendar select.menu-weight');
     // Original weight.
     $weight_original = $weight_field->getValue();
     $link = $page->find('css', '.Calendar .tabledrag-handle');
     // Drag from odd row to even row.
-    $link->dragTo($page->find('css', '.Projects'));
+    $link->dragTo($page->find('css', '.Links'));
+    $this->getSession()->wait(500);
     // Check if changes display warning message.
     $session->waitForElementVisible('css', '.tabledrag-changed-warning');
     // Save the settings.
