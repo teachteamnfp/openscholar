@@ -113,6 +113,7 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
     // Split out the flat list by region while loading the real block.
     foreach ($flat as $b) {
       if ($block = Block::load($b['id'])) {
+        $block->setWeight($b['weight']);
         $output[$b['region']][] = $block;
       }
     }
