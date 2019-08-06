@@ -227,8 +227,12 @@
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
         "drupal/shorten": "2.x-dev",
+        "drupal/field_group": "^3.0",
         "drupal/key_value_field": "^1.0",
-        "drupal/bibcite": "1.x-dev"
+        "drupal/bibcite": "1.x-dev",
+        "drupal/term_reference_tree": "1.x-dev",
+        "drupal/chosen": "^2.7",
+        "harvesthq/chosen": "^1.8"
     },
     "require-dev": {
         "drupal/features": "^3.7",

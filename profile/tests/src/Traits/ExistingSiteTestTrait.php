@@ -35,7 +35,9 @@ trait ExistingSiteTestTrait {
    *   The created group entity.
    */
   protected function createGroup(array $values = []): GroupInterface {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage('group');
+    /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),

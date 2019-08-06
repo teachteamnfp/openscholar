@@ -113,8 +113,16 @@
         e.target.disabled = true;
       });
 
-      $('#block-place-actions-wrapper .btn-default', context).click(function (e) {
-        window.location.reload();
+      $('#block-place-actions-wrapper button[value="Reset"]', context).click(function (e) {
+        let payload = {
+          contexts: active_limited
+        };
+        let url = Drupal.url(drupalSettings.path.layout.resetLayout);
+        $.post(url, payload).done(function (data, status, xhr) {
+          window.location.reload();
+        }).fail(function (xhr, status, error) {
+          console.log('Reset failed with the error: '+error.error_message);
+        });
       });
 
       if (!bound) {

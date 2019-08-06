@@ -5,6 +5,9 @@ taxonomy.vocabulary.*:
       label: 'List of entity type and bundle concat string'
       sequence:
         type: string
+    widget_type:
+      type: string
+      label: 'Entity field taxonomy terms widget type'
 cp_taxonomy.settings:
   type: config_object
   label: 'CP taxonomy settings'

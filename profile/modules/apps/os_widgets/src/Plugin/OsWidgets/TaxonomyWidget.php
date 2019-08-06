@@ -203,8 +203,8 @@ class TaxonomyWidget extends OsWidgetsBase implements OsWidgetsInterface {
         break;
 
       case '--all--':
-        $data['vid']['#default_value'] = $vid;
-        $bundles = $this->taxonomyHelper->getSelectedBundles($data);
+        $settings = $this->taxonomyHelper->getVocabularySettings($vid);
+        $bundles = $settings['allowed_vocabulary_reference_types'];
         break;
     }
     return $bundles;

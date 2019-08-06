@@ -101,8 +101,10 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
         $limit_found = TRUE;
       }
       if ($limit_found) {
+        $keys = [];
         $context_blocks = $a->getBlockPlacements();
         foreach ($context_blocks as $b) {
+          $keys[] = $b['id'];
           $flat[$b['id']] = $b;
         }
       }
@@ -111,11 +113,14 @@ class OsWidgetsBlockRepository implements BlockRepositoryInterface {
     // Split out the flat list by region while loading the real block.
     foreach ($flat as $b) {
       if ($block = Block::load($b['id'])) {
-        $output[$b['region']][$b['weight']] = $block;
+        $output[$b['region']][] = $block;
       }
     }
 
-    @uasort($outputs, ['Block', 'sort']);
+    // Sort the blocks within region according to standard Drupal rules.
+    foreach ($output as &$blocks) {
+      @uasort($blocks, [Block::class, 'sort']);
+    }
 
     return $output;
   }

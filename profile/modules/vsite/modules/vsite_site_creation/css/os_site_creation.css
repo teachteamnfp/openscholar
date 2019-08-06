@@ -423,7 +423,7 @@ h3 {
   max-width: 90px;
 }
 
-.ui-dialog .ui-dialog-titlebar button.ui-dialog-titlebar-close {
+.ui-dialog.site-creation-form .ui-dialog-titlebar button.ui-dialog-titlebar-close {
   margin: -8px 15px 0;
 }
 
