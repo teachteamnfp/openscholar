@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class VsiteStorageDefinition implements EventSubscriberInterface {
   const VSITE_STORAGE = 0;
-  const PRESET_STORAGE = -10;
+  const PRESET_STORAGE = 10;
 
   /**
    * The storage element to add a vsite storage to.

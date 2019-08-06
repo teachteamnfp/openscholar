@@ -35,4 +35,15 @@ interface CpSettingsManagerInterface extends PluginManagerInterface, CachedDisco
    */
   public function getPluginsForGroup(string $group);
 
+  /**
+   * Returns the title for a given group of settings.
+   *
+   * @param string $group
+   *   Group name.
+   *
+   * @return string
+   *   The title of the group.
+   */
+  public function getTitleForGroup(string $group) : string;
+
 }

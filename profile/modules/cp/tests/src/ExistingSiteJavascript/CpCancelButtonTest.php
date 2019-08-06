@@ -34,6 +34,9 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $path_alias_manager->cacheClear();
     $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
 
+    $path_alias_manager->cacheClear();
+    $this->nodePath = $path_alias_manager->getAliasByPath('/node/' . $this->node->id());
+
     $group_admin = $this->createUser();
     $this->addGroupAdmin($group_admin, $this->group);
     $this->drupalLogin($group_admin);
@@ -49,6 +52,8 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
+    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
+    $path_alias_manager = $this->container->get('path.alias_manager');
     $this->assertSession()->statusCodeEquals(200);
     /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
     $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');

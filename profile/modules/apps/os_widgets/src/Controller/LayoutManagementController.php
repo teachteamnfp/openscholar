@@ -57,8 +57,8 @@ class LayoutManagementController extends ControllerBase {
     $contexts = array_reverse($contexts);
     $parent_blocks = [];
     foreach ($contexts as $a) {
-      $blocks = $a->getBlockPlacements();
-      $parent_blocks = array_merge($parent_blocks, $blocks);
+      $context_blocks = $a->getBlockPlacements();
+      $parent_blocks = array_merge($parent_blocks, $context_blocks);
     }
 
     @uasort($blocks, ['Block', 'sort']);
@@ -74,6 +74,33 @@ class LayoutManagementController extends ControllerBase {
     $response->setData([
       'blocks' => $data,
     ]);
+    return $response;
+  }
+
+  /**
+   * Resets the layout back to the default.
+   *
+   * In practice, this deletes the layout from the vsite storage.
+   *
+   * @return \Symfony\Component\HttpFoundation\JsonResponse
+   *   The return result.
+   */
+  public function resetLayout() {
+    $response = new JsonResponse();
+    try {
+      $context_ids = $this->requestStack->getCurrentRequest()->request->get('contexts');
+      /** @var \Drupal\os_widgets\LayoutContextInterface[] $contexts */
+      $contexts = $this->entityTypeManager()->getStorage('layout_context')->loadMultiple($context_ids);
+
+      uasort($contexts, ['ConfigEntityBase', 'sort']);
+      $target = array_shift($contexts);
+      $target->delete();
+    }
+    catch (\Exception $e) {
+      $response->setStatusCode(500);
+      $response->setData(['error_message' => $e->getMessage()]);
+    }
+
     return $response;
   }
 
