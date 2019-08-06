@@ -283,6 +283,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->visitViaVsite('cp/settings/publications', $this->group);
     $edit = [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
       'edit-biblio-order' => 'DESC',
       'edit-biblio-sort' => 'author',
     ];
