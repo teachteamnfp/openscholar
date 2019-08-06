@@ -14,7 +14,7 @@
     </div>
     {% elseif render_style == 'accordion' %}
         {% for key, item in items %}
-        <h3>Test {{ titles[key] }}</h3>
+        <h3>{{ titles[key] }}</h3>
         <div>{{ item }}</div>
         {% endfor %}
     {% elseif render_style == 'random' %}
