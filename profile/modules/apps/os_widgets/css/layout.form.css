@@ -55,6 +55,21 @@
   text-decoration: none;
 }
 
+#block-list .block {
+  position: relative;
+}
+
+/**
+ * Places the quick edit region over the title
+ */
+#block-list .block .contextual-region {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 #block-list .block-content,
 .block.ui-sortable-helper .block-content,
 #block-list nav ul.menu,
