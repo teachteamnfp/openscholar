@@ -480,7 +480,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     }
   }
   elseif (!$reference->id()) {
-    unset($form['revision'], $form['revision_information']);
+    unset($form['revision'], $form['revision_information'], $form['revision_log_message']);
   }
 
   $form['menu']['enabled'] = [

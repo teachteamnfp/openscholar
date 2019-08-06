@@ -279,17 +279,16 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference7, 'group_entity:bibcite_reference');
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
-    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
-    $os_publications_settings_mut
-      ->set('biblio_order', 'DESC')
-      ->set('biblio_sort', 'author')
-      ->save();
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $edit = [
+      'edit-biblio-order' => 'DESC',
+      'edit-biblio-sort' => 'author',
+    ];
+    $this->submitForm($edit, 'edit-submit');
 
     // Tests.
-    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('publications/author', $this->group);
 
     // Confirm that the grouping order is as per the setting.
