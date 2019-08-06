@@ -260,7 +260,7 @@ function vsite_library_info_alter(&$libraries, $extension) {
  * Forces the version for this file to be different from core.
  */
 function vsite_js_alter(&$js) {
-  $path = drupal_get_path('module', 'vsite').'/js/vsite.ajaxContext.js';
+  $path = drupal_get_path('module', 'vsite') . '/js/vsite.ajaxContext.js';
   if (isset($js[$path])) {
     $js[$path]['version'] = '1.0';
   }
