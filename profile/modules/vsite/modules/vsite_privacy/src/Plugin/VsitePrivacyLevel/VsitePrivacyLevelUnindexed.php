@@ -10,13 +10,13 @@ use Drupal\Core\Session\AccountInterface;
  * Vsite privacy level.
  *
  * @VsitePrivacyLevel(
- *   title = @Translation("Public on the Web."),
- *   id = "public",
- *   description = @Translation("Anyone on the Internet can view your site. Your site will show in search results. No sign-in required."),
- *   weight = -1000
+ *   title = @Translation("Anyone with the link."),
+ *   id = "unindexed",
+ *   description = @Translation("Anyone who has the URL to your site can view your site. Your site will not be indexed by search engines."),
+ *   weight = 2
  * )
  */
-class VsitePrivacyLevelPublic extends PluginBase implements VsitePrivacyLevelInterface {
+class VsitePrivacyLevelUnindexed extends PluginBase implements VsitePrivacyLevelInterface {
 
   /**
    * {@inheritdoc}

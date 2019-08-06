@@ -82,6 +82,12 @@ class VsitePrivacyForm extends CpSettingBase {
       '#options' => $this->vsitePrivacyLevelManager->getOptions(),
       '#default_value' => $default_privacy_level[0]['value'] ?? NULL,
     ];
+    $descriptions = $this->vsitePrivacyLevelManager->getDescriptions();
+    foreach ($descriptions as $key => $description) {
+      $form['privacy_levels'][$key] = [
+        '#description' => $description,
+      ];
+    }
 
     return $form;
   }

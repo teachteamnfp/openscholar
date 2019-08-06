@@ -10,9 +10,9 @@ use Drupal\Core\Session\AccountInterface;
  * Vsite privacy level.
  *
  * @VsitePrivacyLevel(
- *   title = @Translation("Private"),
+ *   title = @Translation("Site members only."),
  *   id = "private",
- *   description = @Translation("Only accessible by site members."),
+ *   description = @Translation("This setting can be useful during site creation. Your site will not be indexed by search engines."),
  *   weight = 1
  * )
  */
