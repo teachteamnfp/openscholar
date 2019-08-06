@@ -25,6 +25,7 @@ dependencies:
     - node.type.events
   module:
     - content_moderation
+    - cp_taxonomy
     - date_recur_modular
     - field_layout
     - layout_discovery
@@ -90,13 +91,10 @@ content:
     type: boolean_checkbox
     region: content
   field_taxonomy_terms:
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     weight: 14
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select
