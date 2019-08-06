@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0e3f1e73c3582c2ca207272492fbf0c9",
+    "content-hash": "3167f368f1f7b70cc73765c3ebd15217",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -14604,16 +14604,16 @@
         },
         {
             "name": "weitzman/drupal-test-traits",
-            "version": "dev-master",
+            "version": "dev-pass-chrome-driver-options",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.com/subhojit777/drupal-test-traits.git",
-                "reference": "75da834579f0a7679739e1b39f63b7217697d2a3"
+                "url": "https://github.com/openscholar/drupal-test-traits.git",
+                "reference": "e5842c1cb48edae61c0798f91cdca538c25e0dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/subhojit777%2Fdrupal-test-traits/repository/archive.zip?sha=75da834579f0a7679739e1b39f63b7217697d2a3",
-                "reference": "75da834579f0a7679739e1b39f63b7217697d2a3",
+                "url": "https://api.github.com/repos/openscholar/drupal-test-traits/zipball/e5842c1cb48edae61c0798f91cdca538c25e0dc5",
+                "reference": "e5842c1cb48edae61c0798f91cdca538c25e0dc5",
                 "shasum": ""
             },
             "require": {
@@ -14679,7 +14679,11 @@
                 }
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
-            "time": "2019-08-05T12:49:48+00:00"
+            "support": {
+                "source": "https://github.com/openscholar/drupal-test-traits/tree/pass-chrome-driver-options",
+                "issues": "https://github.com/openscholar/drupal-test-traits/issues"
+            },
+            "time": "2019-08-06T06:15:35+00:00"
         }
     ],
     "aliases": [],

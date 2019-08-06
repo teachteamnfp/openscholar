@@ -24,7 +24,7 @@
         },
         {
             "type": "vcs",
-            "url": "https://gitlab.com/subhojit777/drupal-test-traits"
+            "url": "https://github.com/openscholar/drupal-test-traits"
         },
         {
             "type": "package",
@@ -238,7 +238,7 @@
         "drupal/features": "^3.7",
         "webflo/drupal-core-require-dev": "8.6.16",
         "drupal/devel": "^1.2",
-        "weitzman/drupal-test-traits": "dev-master",
+        "weitzman/drupal-test-traits": "dev-pass-chrome-driver-options",
         "dmore/chrome-mink-driver": "^2.6"
     },
     "conflict": {
