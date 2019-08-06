@@ -162,7 +162,7 @@ class LayoutManagementController extends ControllerBase {
             $count = count($between);
             if ($count) {
               // Handle case where children are before any parent.
-              if ($min_weight === 'undefined') {
+              if ($min_weight === INF) {
                 $min_weight = $b['weight'] - $count - 1;
               }
               // Get the range we have to work with.

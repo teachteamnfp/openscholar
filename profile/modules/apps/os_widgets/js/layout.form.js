@@ -81,16 +81,17 @@
 
       // Submit the layout to the server.
       $('#block-place-actions-wrapper .btn-success', context).click(function (e) {
-        let items = [];
+        let items = {};
         $('.block-place-region').each(function (region) {
           let region_name = this.attributes['data-region'].value;
           $(this).find('> div, > nav').each(function (weight) {
             if (this.attributes['data-block-id']) {
-              items.push({
-                id: this.attributes['data-block-id'].value,
+              let id = this.attributes['data-block-id'].value;
+              items[id] = {
+                id: id,
                 region: region_name,
                 weight: weight
-              });
+              };
             }
           });
         });
