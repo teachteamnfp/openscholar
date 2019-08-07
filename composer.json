@@ -23,6 +23,10 @@
             "url": "https://github.com/openscholar/repec"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/drupal-test-traits"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -233,7 +237,7 @@
         "drupal/features": "^3.7",
         "webflo/drupal-core-require-dev": "8.6.16",
         "drupal/devel": "^1.2",
-        "weitzman/drupal-test-traits": "^1.0@beta",
+        "weitzman/drupal-test-traits": "dev-pass-chrome-driver-options",
         "dmore/chrome-mink-driver": "^2.6"
     },
     "conflict": {
