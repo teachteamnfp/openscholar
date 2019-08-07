@@ -330,6 +330,38 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
+    $pub_month_options = \Drupal::configFactory()->get('os_publications.settings')->get('pub_month_options');
+
+    $fields['publication_month'] = BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Publication Month'))
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'settings' => [
+          'display_label' => FALSE,
+        ],
+      ])
+      ->setSetting('allowed_values', $pub_month_options)
+      ->setRevisionable(TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setCardinality(1)
+      ->setTranslatable(FALSE);
+
+    $pub_day_options = \Drupal::configFactory()->get('os_publications.settings')->get('pub_day_options');
+
+    $fields['publication_day'] = BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Publication Day'))
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'settings' => [
+          'display_label' => FALSE,
+        ],
+      ])
+      ->setRevisionable(TRUE)
+      ->setSetting('allowed_values', $pub_day_options)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setCardinality(1)
+      ->setTranslatable(FALSE);
+
     return $fields;
   }
 }
