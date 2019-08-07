@@ -3,6 +3,7 @@
 namespace Drupal\os_widgets\Entity;
 
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
 /**
@@ -44,6 +45,21 @@ class OsBlockContent extends BlockContent {
    */
   public function setVsiteContextManager(VsiteContextManagerInterface $vsite_context_manager) {
     $this->vsiteContextManager = $vsite_context_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+    $definitions = parent::baseFieldDefinitions($entity_type);
+
+    $infoField = $definitions['info'];
+    $constraints = $infoField->getConstraints();
+    unset($constraints['UniqueField']);
+    $infoField->setConstraints($constraints);
+    $infoField->addConstraint('VsiteUniqueField', []);
+
+    return $definitions;
   }
 
 }
