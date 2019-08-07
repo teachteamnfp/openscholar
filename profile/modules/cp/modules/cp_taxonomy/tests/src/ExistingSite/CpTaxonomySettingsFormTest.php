@@ -1,18 +1,18 @@
 <?php
 
-namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
+namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
-use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
- * Class CpTaxonomySettingsTest.
+ * Class CpTaxonomySettingsFormTest.
  *
  * @group cp
- * @group functional-javascript
+ * @group functional
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
-class CpTaxonomySettingsTest extends OsExistingSiteJavascriptTestBase {
+class CpTaxonomySettingsFormTest extends OsExistingSiteTestBase {
 
   protected $group;
   protected $configTaxonomy;
