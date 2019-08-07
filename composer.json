@@ -365,7 +365,8 @@
                 "Update is.gd service api url": "https://www.drupal.org/files/issues/2019-07-03/update-isgd-api-3065567-2.patch"
             },
             "drupal/bibcite": {
-                "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch"
+                "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch",
+                "Editors and others roles treated as author": "https://www.drupal.org/files/issues/2019-08-01/other-roles-shown-as-authors-3006180-6.patch"
             }
         },
         "patches-ignore": {
