@@ -7,6 +7,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Url;
+use Drupal\os_publications\CitationHelper;
 
 /**
  * Class SampleCitations.
@@ -16,16 +17,40 @@ use Drupal\Core\Url;
 class SampleCitations extends PluginBase {
 
   /**
+   * Styler service.
+   *
+   * @var \Drupal\bibcite\CitationStylerInterface
+   */
+  protected $styler;
+
+  /**
+   * Config Factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Citation helper service.
+   *
+   * @var \Drupal\os_publications\CitationHelper
+   */
+  protected $citationHelper;
+
+  /**
    * SampleCitations constructor.
    *
    * @param \Drupal\bibcite\CitationStylerInterface $styler
    *   To use styler service.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory instance.
+   * @param \Drupal\os_publications\CitationHelper $citation_helper
+   *   Citation Helper service.
    */
-  public function __construct(CitationStylerInterface $styler, ConfigFactoryInterface $config_factory) {
+  public function __construct(CitationStylerInterface $styler, ConfigFactoryInterface $config_factory, CitationHelper $citation_helper) {
     $this->styler = $styler;
     $this->configFactory = $config_factory;
+    $this->citationHelper = $citation_helper;
   }
 
   /**
@@ -261,40 +286,41 @@ class SampleCitations extends PluginBase {
     // Display the citation.
     foreach ($node_array as $value) {
       $output = '';
+      $data = [];
       // Strip off the "example_type" array value if one exists.
       if (isset($value->example_type)) {
         $example_type = '<strong>' . $value->example_type . ' ' . $this->t('example:') . '</strong>';
         $output .= $example_type . '<br />';
       }
-      if ($style == 'harvard_chicago_author_date') {
-        if ($value->type == 'article-journal' || $value->type == 'chapter') {
-          $this->fixAuthors($value);
+
+      // Prepare data array required by render method.
+      $data['title'] = $value->title;
+      foreach ($value->author as $author) {
+        if ($author->role == 'author') {
+          $data['author'][] = json_decode(json_encode($author), TRUE);
+        }
+        elseif ($author->role == 'editor') {
+          $data['editor'][] = json_decode(json_encode($author), TRUE);
         }
       }
-      $output .= $this->styler->render($value);
+      $data['type'] = $value->type;
+      $data['issued'] = json_decode(json_encode($value->issued), TRUE);
+      $data['volume'] = $value->volume ?? NULL;
+      $data['edition'] = $value->edition ?? NULL;
+      $data['issue'] = $value->issue ?? NULL;
+      $data['container-tilte'] = $value->{'container-title'} ?? NULL;
+      $data['publisher-place'] = $value->{'publisher-place'} ?? NULL;
+
+      // If hca alter author/editor names.
+      if ($style == 'harvard_chicago_author_date') {
+        if ($value->type == 'article-journal' || $value->type == 'chapter') {
+          $this->citationHelper->alterAuthors($data);
+        }
+      }
+      $output .= str_replace(' ,', '', $this->styler->render($data));
       $styled_node .= '<div class="citation-example">' . $output . '</div>';
     }
     return $styled_node;
-  }
-
-  /**
-   * Fix authors for hca style in sample citations.
-   *
-   * @param object $value
-   *   Values to be altered.
-   */
-  private function fixAuthors(&$value): void {
-    // Fix author and editor name display order to First Name Last Name.
-    foreach ($value->author as $key => $author) {
-      $name = $author->given . ' ' . $author->family;
-      $author->family = '';
-      $author->given = $name;
-      if ($author->role == 'editor') {
-        $value->editor[] = $author;
-        $author->given = 'Edited By ' . $name;
-        unset($value->author[$key]);
-      }
-    }
   }
 
 }

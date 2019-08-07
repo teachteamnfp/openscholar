@@ -701,7 +701,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   // Alteration for hca style to match D7.
   if ($vsite_style == 'harvard_chicago_author_date') {
     if ($variables['data']['type'] == 'article-journal' || $variables['data']['type'] == 'chapter') {
-      fix_authors($variables);
+      \Drupal::service('os_publications.citation_helper')->alterAuthors($variables['data']);
     }
   }
 
@@ -802,25 +802,4 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
   $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
-}
-
-/**
- * Fix authors/editors for citations.
- */
-function fix_authors(&$variables) {
-  // Fix author and editor name display order to First Name Last Name.
-  $author_types = ['author', 'editor'];
-  foreach ($author_types as $type) {
-    if (isset($variables['data'][$type])) {
-      foreach ($variables['data'][$type] as $key => $author) {
-        $name = $author['given'] . ' ' . $author['family'];
-        $variables['data'][$type][$key]['family'] = '';
-        $variables['data'][$type][$key]['given'] = $name;
-      }
-    }
-  }
-  if (isset($variables['data']['editor'])) {
-    $given = $variables['data']['editor'][0]['given'];
-    $variables['data']['editor'][0]['given'] = 'Edited By ' . $given;
-  }
 }
