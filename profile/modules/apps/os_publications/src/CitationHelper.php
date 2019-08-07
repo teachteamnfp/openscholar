@@ -98,4 +98,26 @@ class CitationHelper implements CitationHelperInterface {
     return isset($exportButton['#items']) ? $exportButton : NULL;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function alterAuthors(&$value): void {
+
+    // Fix author and editor name display order to First Name Last Name.
+    $author_types = ['author', 'editor'];
+    foreach ($author_types as $type) {
+      if (isset($value[$type])) {
+        foreach ($value[$type] as $key => $author) {
+          $name = $author['given'] . ' ' . $author['family'];
+          $value[$type][$key]['family'] = '';
+          $value[$type][$key]['given'] = $name;
+        }
+      }
+    }
+    if (isset($value['editor'])) {
+      $given = $value['editor'][0]['given'];
+      $value['editor'][0]['given'] = 'Edited By ' . $given;
+    }
+  }
+
 }

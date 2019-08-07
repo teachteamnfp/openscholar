@@ -406,7 +406,7 @@ class MenuBuildForm extends FormBase {
     foreach ($menu_name as $name) {
       $label[] = isset($this->menus[$name]) ? $this->menus[$name] : NULL;
     }
-    ($label) ? $this->menuHelper->invalidateBlockCache($label, TRUE) : NULL;
+    ($label) ? $this->menuHelper->invalidateBlockCache($vsite, $label, TRUE) : NULL;
   }
 
   /**
