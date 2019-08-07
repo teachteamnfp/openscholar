@@ -1,0 +1,18 @@
+tr.section-heading {
+  background: $color-light-gray3;
+  border: solid $color-light-gray2;
+  td {
+    border: solid $color-light-gray2;
+  }
+}
+.cp-menu-build {
+  position: relative;
+  .new-menu {
+    margin-bottom: 1em;
+  }
+  .fa {
+    &::before {
+      margin-right: 2px;
+    }
+  }
+}
