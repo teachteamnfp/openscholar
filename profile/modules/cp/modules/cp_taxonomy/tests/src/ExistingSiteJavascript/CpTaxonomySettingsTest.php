@@ -8,7 +8,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * Class CpTaxonomySettingsTest.
  *
  * @group cp
- * @group functional
+ * @group functional-javascript
  *
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
@@ -31,7 +31,8 @@ class CpTaxonomySettingsTest extends OsExistingSiteJavascriptTestBase {
     parent::setUp();
     $configFactory = $this->container->get('config.factory');
     $this->configTaxonomy = $configFactory->getEditable('cp_taxonomy.settings');
-    $this->groupAdmin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
