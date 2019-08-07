@@ -126,7 +126,7 @@ class CpAppearanceMainController extends ControllerBase {
     ];
     $theme_group_titles = [
       'custom_theme' => $this->formatPlural(count($theme_groups['custom_theme']), 'Custom theme', 'Custom themes'),
-      'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Featured themes'),
+      'featured' => $this->formatPlural(count($theme_groups['featured']), 'Featured theme', 'Standard themes'),
       'basic' => $this->formatPlural(count($theme_groups['basic']), 'Basic theme', 'Basic themes'),
     ];
 

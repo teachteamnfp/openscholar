@@ -68,7 +68,7 @@
               'clearfix',
             ]
           %}
-          <div{{ theme.attributes.addClass(theme_classes) }}>
+          <div{{ theme.attributes.addClass(theme_classes) }} data-attr="{{theme.name|lower|replace(' ', '_')}}">
           <div class="theme-screenshot">
               {% if theme.screenshot %}
                 {{ theme.screenshot }}
@@ -81,7 +81,7 @@
                   ({{ theme.notes|safe_join(', ') }})
                 {%- endif -%}
               </h4>
-              <div class="theme-info__description help-block">{{ theme.description }}</div>
+              {# <div class="theme-info__description help-block">{{ theme.description }}</div> #}
               {# Display operation links if the theme is compatible. #}
               {% if theme.incompatible %}
                 <div class="incompatible">{{ theme.incompatible }}</div>
