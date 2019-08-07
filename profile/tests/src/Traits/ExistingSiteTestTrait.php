@@ -33,6 +33,8 @@ trait ExistingSiteTestTrait {
    *
    * @return \Drupal\group\Entity\GroupInterface
    *   The created group entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   protected function createGroup(array $values = []): GroupInterface {
     /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
@@ -51,6 +53,25 @@ trait ExistingSiteTestTrait {
     $this->markEntityForCleanup($group);
 
     return $group;
+  }
+
+  /**
+   * Creates a private group.
+   *
+   * @param array $values
+   *   (optional) The values used to create the entity.
+   *
+   * @return \Drupal\group\Entity\GroupInterface
+   *   The created group entity.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function createPrivateGroup(array $values = []): GroupInterface {
+    return $this->createGroup([
+      'field_privacy_level' => [
+        'value' => 'private',
+      ],
+    ] + $values);
   }
 
   /**
