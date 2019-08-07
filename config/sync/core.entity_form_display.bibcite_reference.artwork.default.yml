@@ -12,9 +12,8 @@ dependencies:
     - image.style.thumbnail
   module:
     - bibcite_entity
-    - cp_taxonomy
     - content_moderation
-    - field_group
+    - cp_taxonomy
     - field_layout
     - image
     - key_value_field
