@@ -11,7 +11,7 @@ use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTest
  * @group functional-javascript
  * @group vsite
  */
-class VsiteNodePathAlias extends OsExistingSiteJavascriptTestBase {
+class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * {@inheritdoc}

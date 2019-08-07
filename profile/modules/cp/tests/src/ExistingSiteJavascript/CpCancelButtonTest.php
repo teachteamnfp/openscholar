@@ -52,8 +52,6 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     // Visit node.
     $this->visit($this->nodePath);
     $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
-    /** @var \Drupal\Core\Path\AliasManagerInterface $path_alias_manager */
-    $path_alias_manager = $this->container->get('path.alias_manager');
     $this->assertSession()->statusCodeEquals(200);
     /** @var \Behat\Mink\Element\NodeElement|null $edit_contextual_link */
     $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
@@ -78,10 +76,10 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
 
     // Visit cp browse path.
-    $this->visit($this->vsiteAlias . '/cp/content');
+    $this->visitViaVsite('cp/content', $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $edit_link = $page->findLink('Edit node');
+    $edit_link = $page->find('css', '.edit-node a');
     $edit_link->press();
     // Go to edit path.
     $page = $this->getCurrentPage();
