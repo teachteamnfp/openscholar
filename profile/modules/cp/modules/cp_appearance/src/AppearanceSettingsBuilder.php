@@ -199,6 +199,8 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
             'btn-sm',
             'btn-default',
             'preview',
+            'far',
+            'fa-eye',
           ],
         ],
       ];
@@ -294,13 +296,12 @@ final class AppearanceSettingsBuilder implements AppearanceSettingsBuilderInterf
 
     foreach ($custom_themes as &$custom_theme) {
       $operations = [];
-
       $operations[] = Link::createFromRoute($this->t('Edit'), 'entity.cp_custom_theme.edit_form', [
         'cp_custom_theme' => $custom_theme->getName(),
-      ]);
+      ], ['attributes' => ['class' => 'edit-theme far fa-edit']]);
       $operations[] = Link::createFromRoute($this->t('Delete'), 'entity.cp_custom_theme.delete_form', [
         'cp_custom_theme' => $custom_theme->getName(),
-      ]);
+      ], ['attributes' => ['class' => 'delete-theme far fa-trash-alt']]);
 
       $custom_theme->more_operations = $operations;
     }

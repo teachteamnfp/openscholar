@@ -31,6 +31,7 @@
  * @see \template_preprocess_cp_appearance_themes_page
  */
 #}
+{{ attach_library('os_admin/theme-picker') }}
 <div{{ attributes.addClass('form-group') }}>
   {% for theme_group in theme_groups %}
     {%
@@ -59,7 +60,7 @@
       ]
       %}
       <div id="system-themes-list--{{ theme_group.state }}" class="{{ table_classes|join(' ')}}">
-        {% for theme in theme_group.themes %}
+        {% for theme_machine_name, theme in theme_group.themes %}
           {%
             set theme_classes = [
               theme.is_default ? 'theme-default',
@@ -68,7 +69,7 @@
               'clearfix',
             ]
           %}
-          <div{{ theme.attributes.addClass(theme_classes) }} data-attr="{{theme.name|lower|replace(' ', '_')}}">
+          <div{{ theme.attributes.addClass(theme_classes) }} data-attr="{{theme_machine_name}}">
           <div class="theme-screenshot">
               {% if theme.screenshot %}
                 {{ theme.screenshot }}

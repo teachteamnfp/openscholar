@@ -11,3 +11,11 @@ a,
   font-size: 3em;
   font-weight: 500;
 }
+/**** font awesoem ****/
+.fa, .far {
+  font-family: inherit;
+  &:before {
+    font-family: "Font Awesome 5 Free";
+    margin-right: 2px;
+  }
+}
