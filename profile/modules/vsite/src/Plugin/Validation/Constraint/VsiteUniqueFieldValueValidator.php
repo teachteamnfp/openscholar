@@ -2,13 +2,16 @@
 
 namespace Drupal\vsite\Plugin\Validation\Constraint;
 
-
 use Drupal\Core\Config\Entity\ConfigEntityType;
 use Drupal\group\Entity\GroupContentType;
-use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
+/**
+ * Validates that a field value is unique within a specific vsite.
+ *
+ * If the request is not in a vsite, it will check globally.
+ */
 class VsiteUniqueFieldValueValidator extends ConstraintValidator {
 
   /**
@@ -19,7 +22,7 @@ class VsiteUniqueFieldValueValidator extends ConstraintValidator {
       return;
     }
 
-    /** @var VsiteContextManagerInterface $vsiteContextManager */
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContextManager */
     $vsiteContextManager = \Drupal::service('vsite.context_manager');
 
     $field_name = $items->getFieldDefinition()->getName();
@@ -35,7 +38,7 @@ class VsiteUniqueFieldValueValidator extends ConstraintValidator {
     // How an entity is attached to a vsite differs based on whether its a config or content entity.
     if ($entity->getEntityType() instanceof ConfigEntityType) {
       if ($group) {
-        $query->condition('collection', 'vsite:'.$group->id());
+        $query->condition('collection', 'vsite:' . $group->id());
       }
       else {
         $query->condition('collection', '');
@@ -43,7 +46,7 @@ class VsiteUniqueFieldValueValidator extends ConstraintValidator {
     }
     else {
       // No join on EntityQuery, so instead we only include entities that are part of the active group.
-      /** @var GroupContentType[] $plugins */
+      /** @var \Drupal\group\Entity\GroupContentType[] $plugins */
       $plugins = GroupContentType::loadByEntityTypeId($entity_type_id);
       $plugin = reset($plugins);
       if ($group) {

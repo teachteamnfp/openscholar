@@ -5,6 +5,8 @@ namespace Drupal\vsite\Plugin\Validation\Constraint;
 use Symfony\Component\Validator\Constraint;
 
 /**
+ * A constraint plugin to register the vsite unique validator.
+ *
  * @Constraint(
  *   id = "VsiteUniqueField",
  *   label = @Translation("Unique to a given vsite")
