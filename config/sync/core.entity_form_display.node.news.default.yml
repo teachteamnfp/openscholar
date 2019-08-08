@@ -13,6 +13,7 @@ dependencies:
     - node.type.news
   module:
     - content_moderation
+    - cp_taxonomy
     - datetime
     - field_layout
     - image
@@ -74,13 +75,10 @@ content:
     type: link_default
     region: content
   field_taxonomy_terms:
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     weight: 14
     region: content
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   langcode:
     type: language_select

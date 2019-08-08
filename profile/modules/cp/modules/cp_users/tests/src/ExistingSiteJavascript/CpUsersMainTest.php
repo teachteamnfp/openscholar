@@ -106,9 +106,9 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/' . $this->modifier . '/cp/users');
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
     $page = $this->getCurrentPage();
-    $link = $page->findLink('+ Add a member');
+    $link = $page->findLink('Add a member');
     $this->assertContains('/' . $this->modifier . '/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->find('css', '#existing-member-fieldset summary.seven-details__summary')->click();
     $page->fillField('member-entity', substr($username, 0, 3));
@@ -159,7 +159,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/' . $this->modifier . '/cp/users');
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl());
     $page = $this->getCurrentPage();
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->find('css', '#new-user-fieldset summary.seven-details__summary')->click();
 
@@ -192,7 +192,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $settings->set('disable_user_creation', 1);
     $settings->save();
 
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $this->assertSession()->linkNotExists('Add New User', "Add New User is still on page.");
     $page->find('css', '#drupal-modal')->click();

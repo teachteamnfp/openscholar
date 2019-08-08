@@ -17,3 +17,7 @@ textarea.form-textarea {
   border: 1px solid $color-light-gray2;
   border-top-color: $color-light-gray2;
 }
+
+.cp-settings-form #edit-default-image {
+  max-width: 900px;
+}

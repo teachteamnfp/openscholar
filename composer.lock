@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "683295f9761a26f64a2674e78965e65e",
+    "content-hash": "9849cd322642ae9fc260f53773ef8b92",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -297,9 +297,9 @@
             "authors": [
                 {
                     "name": "Nils Werner",
-                    "role": "Developer",
                     "email": "nils.werner@audiolabs-erlangen.de",
-                    "homepage": "http://www.audiolabs-erlangen.de"
+                    "homepage": "http://www.audiolabs-erlangen.de",
+                    "role": "Developer"
                 }
             ],
             "description": "Bibtex parser for PHP 5.3",
@@ -2461,8 +2461,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.26",
-                    "datestamp": "1558552081",
+                    "version": "8.x-1.25",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -2599,7 +2599,7 @@
             "description": "Provides a better Queue API.",
             "homepage": "https://www.drupal.org/project/advancedqueue",
             "support": {
-                "source": "http://cgit.drupalcode.org/advancedqueue"
+                "source": "https://git.drupalcode.org/project/advancedqueue"
             }
         },
         {
@@ -2663,7 +2663,7 @@
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/bibcite.git",
-                "reference": "0e831cb73ffec989dc261f8a28db39d414c37b98"
+                "reference": "6dc81504199720cdc1aafad245bdcc8e66535088"
             },
             "require": {
                 "academicpuma/citeproc-php": "~1.0",
@@ -2684,8 +2684,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha10+21-dev",
-                    "datestamp": "1563852485",
+                    "version": "8.x-1.0-alpha10+25-dev",
+                    "datestamp": "1564740485",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -2727,7 +2727,7 @@
                 "source": "http://cgit.drupalcode.org/bibcite",
                 "issues": "https://www.drupal.org/project/issues/bibcite"
             },
-            "time": "2019-07-26T03:46:03+00:00"
+            "time": "2019-08-02T10:44:42+00:00"
         },
         {
             "name": "drupal/blazy",
@@ -2831,6 +2831,10 @@
                 "GPL-2.0+"
             ],
             "authors": [
+                {
+                    "name": "joelpittet",
+                    "homepage": "https://www.drupal.org/user/160302"
+                },
                 {
                     "name": "mlncn",
                     "homepage": "https://www.drupal.org/user/64383"
@@ -2971,6 +2975,160 @@
             }
         },
         {
+            "name": "drupal/chosen",
+            "version": "2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/chosen.git",
+                "reference": "8.x-2.7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/chosen-8.x-2.7.zip",
+                "reference": "8.x-2.7",
+                "shasum": "8d0fdcb20a9842019f11ad7ac811d55e3b83e9ba"
+            },
+            "require": {
+                "drupal/chosen_lib": "*",
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.7",
+                    "datestamp": "1554029581",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Cyclodex",
+                    "homepage": "https://www.drupal.org/user/1305230"
+                },
+                {
+                    "name": "Dave Reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "Hydra",
+                    "homepage": "https://www.drupal.org/user/647364"
+                },
+                {
+                    "name": "Pol",
+                    "homepage": "https://www.drupal.org/user/47194"
+                },
+                {
+                    "name": "aidanlis",
+                    "homepage": "https://www.drupal.org/user/502018"
+                },
+                {
+                    "name": "arshadcn",
+                    "homepage": "https://www.drupal.org/user/571032"
+                },
+                {
+                    "name": "kalman.hosszu",
+                    "homepage": "https://www.drupal.org/user/267481"
+                },
+                {
+                    "name": "nagy.balint",
+                    "homepage": "https://www.drupal.org/user/1763952"
+                },
+                {
+                    "name": "supercabbageuk",
+                    "homepage": "https://www.drupal.org/user/235438"
+                }
+            ],
+            "description": "Makes select elements more friendly using the Chosen jQuery plugin",
+            "homepage": "https://www.drupal.org/project/chosen",
+            "keywords": [
+                "Chosen",
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://drupal.org/project/chosen",
+                "issues": "https://drupal.org/project/issues/chosen"
+            }
+        },
+        {
+            "name": "drupal/chosen_lib",
+            "version": "2.7.0",
+            "require": {
+                "drupal/chosen": "self.version",
+                "drupal/core": "~8.0"
+            },
+            "type": "metapackage",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.x": "2.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-2.7",
+                    "datestamp": "1554029581",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Cyclodex",
+                    "homepage": "https://www.drupal.org/user/1305230"
+                },
+                {
+                    "name": "Dave Reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "Hydra",
+                    "homepage": "https://www.drupal.org/user/647364"
+                },
+                {
+                    "name": "Pol",
+                    "homepage": "https://www.drupal.org/user/47194"
+                },
+                {
+                    "name": "aidanlis",
+                    "homepage": "https://www.drupal.org/user/502018"
+                },
+                {
+                    "name": "arshadcn",
+                    "homepage": "https://www.drupal.org/user/571032"
+                },
+                {
+                    "name": "kalman.hosszu",
+                    "homepage": "https://www.drupal.org/user/267481"
+                },
+                {
+                    "name": "nagy.balint",
+                    "homepage": "https://www.drupal.org/user/1763952"
+                },
+                {
+                    "name": "supercabbageuk",
+                    "homepage": "https://www.drupal.org/user/235438"
+                }
+            ],
+            "description": "Add <a href=\"http://harvesthq.github.com/chosen/\">chosen</a> library definition.",
+            "homepage": "https://www.drupal.org/project/chosen",
+            "support": {
+                "source": "https://git.drupalcode.org/project/chosen"
+            }
+        },
+        {
             "name": "drupal/ckeditor_bidi",
             "version": "2.1.0",
             "source": {
@@ -3017,7 +3175,7 @@
             "description": "Adds RTL/LTR buttons to Drupal 8 CKEditor toolbar by integrating CKEditor BiDi (Text Direction) plugin.",
             "homepage": "https://www.drupal.org/project/ckeditor_bidi",
             "support": {
-                "source": "http://cgit.drupalcode.org/ckeditor_bidi",
+                "source": "https://git.drupalcode.org/project/ckeditor_bidi",
                 "issues": "https://www.drupal.org/project/issues/ckeditor_bidi"
             }
         },
@@ -3245,7 +3403,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
+                    "version": "8.x-1.0-alpha2",
                     "datestamp": "1550188080",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3301,7 +3459,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha5",
+                    "version": "8.x-1.0-alpha4",
                     "datestamp": "1551264784",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3352,7 +3510,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-rc1",
+                    "version": "8.x-2.0-alpha6",
                     "datestamp": "1550290687",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3415,7 +3573,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
+                    "version": "8.x-1.0-alpha6",
                     "datestamp": "1550294584",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3551,7 +3709,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta5",
+                    "version": "8.x-2.0-beta4",
                     "datestamp": "1550290984",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3647,7 +3805,7 @@
             "description": "Provides basic revert and update functionality for other modules",
             "homepage": "https://www.drupal.org/project/config_update",
             "support": {
-                "source": "http://cgit.drupalcode.org/config_update"
+                "source": "https://git.drupalcode.org/project/config_update"
             }
         },
         {
@@ -3993,6 +4151,10 @@
                     "homepage": "https://www.drupal.org/user/31731"
                 },
                 {
+                    "name": "nedjo",
+                    "homepage": "https://www.drupal.org/user/4481"
+                },
+                {
                     "name": "tekante",
                     "homepage": "https://www.drupal.org/user/640024"
                 },
@@ -4310,7 +4472,7 @@
             "description": "Provides storage for various types of messages.",
             "homepage": "https://www.drupal.org/project/courier",
             "support": {
-                "source": "http://cgit.drupalcode.org/courier"
+                "source": "https://git.drupalcode.org/project/courier"
             }
         },
         {
@@ -4365,7 +4527,7 @@
             "description": "Provides storage and API for image crops.",
             "homepage": "https://www.drupal.org/project/crop",
             "support": {
-                "source": "http://cgit.drupalcode.org/crop",
+                "source": "https://git.drupalcode.org/project/crop",
                 "issues": "https://www.drupal.org/project/issues/crop"
             }
         },
@@ -4392,12 +4554,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.2",
-                    "datestamp": "1550728386",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "version": "8.x-3.0",
+                    "datestamp": "1493401742"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4429,10 +4587,6 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
-                },
-                {
-                    "name": "joelpittet",
-                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -4660,7 +4814,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.8",
-                    "datestamp": "1524864180",
+                    "datestamp": "1557434281",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -4829,7 +4983,7 @@
             "description": "Adds a Entity Reference field type with revision support.",
             "homepage": "https://www.drupal.org/project/entity_reference_revisions",
             "support": {
-                "source": "http://cgit.drupalcode.org/entity_reference_revisions"
+                "source": "https://git.drupalcode.org/project/entity_reference_revisions"
             }
         },
         {
@@ -4932,7 +5086,7 @@
             "description": "Provides tools for working with fields, such as cloning to other entities and bundles.",
             "homepage": "https://www.drupal.org/project/field_tools",
             "support": {
-                "source": "http://cgit.drupalcode.org/field_tools"
+                "source": "https://git.drupalcode.org/project/field_tools"
             }
         },
         {
@@ -4952,8 +5106,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2+72-dev",
-                    "datestamp": "1526651284",
+                    "version": "8.x-1.0-alpha2+94-dev",
+                    "datestamp": "1528091885",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Dev releases are not covered by Drupal security advisories."
@@ -4983,6 +5137,10 @@
                 {
                     "name": "tim.plunkett",
                     "homepage": "https://www.drupal.org/user/241634"
+                },
+                {
+                    "name": "tstoeckler",
+                    "homepage": "https://www.drupal.org/user/107158"
                 }
             ],
             "description": "Integrates the Fullcalender Library from https://fullcalendar.io",
@@ -5406,6 +5564,10 @@
                     "homepage": "https://www.drupal.org/user/1682976"
                 },
                 {
+                    "name": "julia.leah.ford",
+                    "homepage": "https://www.drupal.org/user/3590443"
+                },
+                {
                     "name": "levelos",
                     "homepage": "https://www.drupal.org/user/54135"
                 },
@@ -5437,7 +5599,7 @@
             "description": "Mailchimp is an integration with the Mailchimp Mass email tool.",
             "homepage": "http://drupal.org/project/mailchimp",
             "support": {
-                "source": "http://cgit.drupalcode.org/mailchimp"
+                "source": "https://git.drupalcode.org/project/mailchimp"
             }
         },
         {
@@ -5488,7 +5650,7 @@
             "description": "Javascript-based LaTeX rendering solution for your Drupal website.",
             "homepage": "https://www.drupal.org/project/mathjax",
             "support": {
-                "source": "http://cgit.drupalcode.org/mathjax"
+                "source": "https://git.drupalcode.org/project/mathjax"
             }
         },
         {
@@ -5525,7 +5687,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.8",
+                    "version": "8.x-1.7",
                     "datestamp": "1550692511",
                     "security-coverage": {
                         "status": "covered",
@@ -5708,8 +5870,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1553618281",
+                    "version": "8.x-1.5",
+                    "datestamp": "1550692525",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5773,7 +5935,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
+                    "version": "8.x-1.3",
                     "datestamp": "1554239887",
                     "security-coverage": {
                         "status": "covered",
@@ -5891,7 +6053,7 @@
             "description": "Allows users to redirect from old URLs to new URLs.",
             "homepage": "https://www.drupal.org/project/redirect",
             "support": {
-                "source": "http://cgit.drupalcode.org/redirect"
+                "source": "https://git.drupalcode.org/project/redirect"
             }
         },
         {
@@ -6035,7 +6197,7 @@
             "description": "Provides a simple contact entity type.",
             "homepage": "https://www.drupal.org/project/rng_contact",
             "support": {
-                "source": "http://cgit.drupalcode.org/rng_contact"
+                "source": "https://git.drupalcode.org/project/rng_contact"
             }
         },
         {
@@ -6083,7 +6245,7 @@
             "description": "Control whether a user can register based on current time in relation to date fields attached to an event entity.",
             "homepage": "https://www.drupal.org/project/rng_date_scheduler",
             "support": {
-                "source": "http://cgit.drupalcode.org/rng_date_scheduler"
+                "source": "https://git.drupalcode.org/project/rng_date_scheduler"
             }
         },
         {
@@ -6173,7 +6335,7 @@
             "description": "Improved Views integration for RNG.",
             "homepage": "https://www.drupal.org/project/rng",
             "support": {
-                "source": "http://cgit.drupalcode.org/rng"
+                "source": "https://git.drupalcode.org/project/rng"
             }
         },
         {
@@ -6208,8 +6370,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.13",
-                    "datestamp": "1557244685",
+                    "version": "8.x-1.11",
+                    "datestamp": "1552334285",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6442,8 +6604,78 @@
             "description": "Generates a theme style guide for proofing common elements.",
             "homepage": "https://www.drupal.org/project/styleguide",
             "support": {
-                "source": "http://cgit.drupalcode.org/styleguide"
+                "source": "https://git.drupalcode.org/project/styleguide"
             }
+        },
+        {
+            "name": "drupal/term_reference_tree",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/term_reference_tree.git",
+                "reference": "1ef443cb976df9bad2fff607777a880e0833837d"
+            },
+            "require": {
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-alpha2+15-dev",
+                    "datestamp": "1561103285",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "BartK",
+                    "homepage": "https://www.drupal.org/user/401025"
+                },
+                {
+                    "name": "Dave Reid",
+                    "homepage": "https://www.drupal.org/user/53892"
+                },
+                {
+                    "name": "MoustafaEid",
+                    "homepage": "https://www.drupal.org/user/1126928"
+                },
+                {
+                    "name": "alex_optim",
+                    "homepage": "https://www.drupal.org/user/3317601"
+                },
+                {
+                    "name": "carpenter.490",
+                    "homepage": "https://www.drupal.org/user/804142"
+                },
+                {
+                    "name": "dgtlmoon",
+                    "homepage": "https://www.drupal.org/user/25027"
+                },
+                {
+                    "name": "sdrycroft",
+                    "homepage": "https://www.drupal.org/user/151544"
+                },
+                {
+                    "name": "sumitmadan",
+                    "homepage": "https://www.drupal.org/user/1538790"
+                }
+            ],
+            "description": "An expanding/collapsing tree widget for selecting terms in a taxonomy term reference field.",
+            "homepage": "https://www.drupal.org/project/term_reference_tree",
+            "support": {
+                "source": "https://git.drupalcode.org/project/term_reference_tree"
+            },
+            "time": "2019-06-30T20:53:38+00:00"
         },
         {
             "name": "drupal/token",
@@ -6509,7 +6741,7 @@
             "description": "Provides a user interface for the Token API and some missing core tokens.",
             "homepage": "https://www.drupal.org/project/token",
             "support": {
-                "source": "http://cgit.drupalcode.org/token"
+                "source": "https://git.drupalcode.org/project/token"
             }
         },
         {
@@ -6556,7 +6788,7 @@
             "description": "Add your favorite menu (Structure > Menu) in the Drupal Toolbar",
             "homepage": "https://www.drupal.org/project/toolbar_menu",
             "support": {
-                "source": "http://cgit.drupalcode.org/toolbar_menu"
+                "source": "https://git.drupalcode.org/project/toolbar_menu"
             }
         },
         {
@@ -6779,7 +7011,7 @@
             "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
-                "source": "http://cgit.drupalcode.org/video_embed_field"
+                "source": "https://git.drupalcode.org/project/video_embed_field"
             }
         },
         {
@@ -6826,7 +7058,7 @@
             "description": "Provides an accordion views display plugin.",
             "homepage": "https://www.drupal.org/project/views_accordion",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_accordion",
+                "source": "https://git.drupalcode.org/project/views_accordion",
                 "issues": "https://www.drupal.org/project/issues/views_accordion"
             }
         },
@@ -6874,7 +7106,7 @@
             "description": "Provides advanced route customisation for Views.",
             "homepage": "https://www.drupal.org/project/views_advanced_routing",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_advanced_routing"
+                "source": "https://git.drupalcode.org/project/views_advanced_routing"
             }
         },
         {
@@ -6941,18 +7173,18 @@
             ],
             "authors": [
                 {
-                    "name": "Remon",
-                    "homepage": "https://www.drupal.org/user/143827"
+                    "name": "Bobík",
+                    "homepage": "https://www.drupal.org/user/123612"
                 },
                 {
-                    "name": "Sam152",
-                    "homepage": "https://www.drupal.org/user/1485048"
+                    "name": "Remon",
+                    "homepage": "https://www.drupal.org/user/143827"
                 }
             ],
             "description": "A pager which allows an infinite scroll effect for views.",
             "homepage": "https://www.drupal.org/project/views_infinite_scroll",
             "support": {
-                "source": "http://cgit.drupalcode.org/views_infinite_scroll"
+                "source": "https://git.drupalcode.org/project/views_infinite_scroll"
             }
         },
         {
@@ -7600,6 +7832,55 @@
                 "url"
             ],
             "time": "2018-12-04T20:46:45+00:00"
+        },
+        {
+            "name": "harvesthq/chosen",
+            "version": "v1.8.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/harvesthq/chosen-package.git",
+                "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/harvesthq/chosen-package/zipball/ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "reference": "ad86732b668627c131e61ee8f0e6e9ed52e4db8d",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Koen Punt",
+                    "homepage": "https://github.com/koenpunt"
+                },
+                {
+                    "name": "Patrick Filler",
+                    "homepage": "https://github.com/pfiller"
+                },
+                {
+                    "name": "Christophe Coevoet",
+                    "homepage": "https://github.com/stof"
+                },
+                {
+                    "name": "Ken Earley",
+                    "homepage": "https://github.com/kenearley"
+                }
+            ],
+            "description": "Chosen is a JavaScript plugin that makes select boxes user-friendly. It is currently available in both jQuery and Prototype flavors.",
+            "homepage": "https://harvesthq.github.io/chosen/",
+            "keywords": [
+                "dropdown",
+                "form",
+                "input",
+                "multiselect",
+                "select",
+                "ui"
+            ],
+            "time": "2018-06-28T20:32:51+00:00"
         },
         {
             "name": "j7mbo/twitter-api-php",
@@ -14260,16 +14541,16 @@
         },
         {
             "name": "weitzman/drupal-test-traits",
-            "version": "1.2.1",
+            "version": "dev-pass-chrome-driver-options",
             "source": {
                 "type": "git",
-                "url": "https://gitlab.com/weitzman/drupal-test-traits.git",
-                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff"
+                "url": "https://github.com/openscholar/drupal-test-traits.git",
+                "reference": "e5842c1cb48edae61c0798f91cdca538c25e0dc5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://gitlab.com/api/v4/projects/weitzman%2Fdrupal-test-traits/repository/archive.zip?sha=6687d17233707e0fca5c95e171701b9bf82bf1ff",
-                "reference": "6687d17233707e0fca5c95e171701b9bf82bf1ff",
+                "url": "https://api.github.com/repos/openscholar/drupal-test-traits/zipball/e5842c1cb48edae61c0798f91cdca538c25e0dc5",
+                "reference": "e5842c1cb48edae61c0798f91cdca538c25e0dc5",
                 "shasum": ""
             },
             "require": {
@@ -14303,7 +14584,28 @@
                     "weitzman\\DrupalTestTraits\\": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "si": [
+                    "drush si -yv --db-url=mysql://circle:circle@db/circle --account-name=admin --account-pass=password standard"
+                ],
+                "cs": [
+                    "phpcs -n --report-full"
+                ],
+                "cbf": [
+                    "phpcbf --standard=PSR2 -n src tests"
+                ],
+                "lint": [
+                    "parallel-lint src tests"
+                ],
+                "unit": [
+                    "phpunit --debug --colors --bootstrap=src/bootstrap-fast.php --printer '\\Drupal\\Tests\\Listeners\\HtmlOutputPrinter' --log-junit web/sites/simpletest/browser_output/junit.xml tests"
+                ],
+                "test": [
+                    "@lint",
+                    "@cs",
+                    "@unit"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -14314,7 +14616,11 @@
                 }
             ],
             "description": "Traits for testing Drupal sites that have user content (versus unpopulated sites).",
-            "time": "2019-04-22T08:56:51+00:00"
+            "support": {
+                "source": "https://github.com/openscholar/drupal-test-traits/tree/pass-chrome-driver-options",
+                "issues": "https://github.com/openscholar/drupal-test-traits/issues"
+            },
+            "time": "2019-08-06T06:15:35+00:00"
         }
     ],
     "aliases": [],
@@ -14331,7 +14637,8 @@
         "doctrine/lexer": 20,
         "drupal/shorten": 20,
         "drupal/bibcite": 20,
-        "weitzman/drupal-test-traits": 10
+        "drupal/term_reference_tree": 20,
+        "weitzman/drupal-test-traits": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

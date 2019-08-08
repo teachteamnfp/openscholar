@@ -4,6 +4,7 @@ namespace Drupal\Tests\os_widgets\ExistingSiteJavascript;
 
 use Drupal\block\Entity\Block;
 use Drupal\block_content\Entity\BlockContent;
+use Drupal\Core\Config\FileStorage;
 use Drupal\os_widgets\Entity\LayoutContext;
 use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
 
@@ -74,9 +75,11 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $web_assert->statusCodeEquals(200);
 
     $page = $this->getCurrentPage();
+    $this->assertNotNull($page->find('css', '.view-empty'), 'Missing .view-empty element');
+
+    $this->assertNotNull($page->find('css', '#block-block-content-rss-feed-test'), 'Block is missing from the page');
     $check_html_value = $page->hasContent('RSS feed link!');
     $this->assertTrue($check_html_value, 'RSS link is not visible.');
-
     $this->clickLink('RSS feed link!');
     $result = $web_assert->waitForElementVisible('named', ['link', 'Feed URL copied to clipboard']);
     $this->assertNotNull($result, 'Changed link is not visible, link is not copied.');
@@ -159,6 +162,11 @@ class RssFeedBlockJavascriptTest extends ExistingSiteWebDriverTestBase {
     $theme_setting = $this->configFactory->getEditable('system.theme');
     $theme_setting->set('default', $this->defaultTheme);
     $theme_setting->save();
+
+    $config_path = drupal_get_path('profile', 'openscholar') . '/config/sync';
+    $source = new FileStorage($config_path);
+    $config_storage = \Drupal::service('config.storage');
+    $config_storage->write('os_widgets.layout_context.all_pages', $source->read('os_widgets.layout_context.all_pages'));
   }
 
 }

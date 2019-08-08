@@ -22,4 +22,14 @@ interface CitationHelperInterface {
    */
   public function getCitationDownloadButton($entity_id = NULL) : ?array;
 
+  /**
+   * Fix authors for hca style in sample citations to required format of First.
+   *
+   * Name followed by Last name which is reversed otherwise.
+   *
+   * @param array $value
+   *   Values to be altered.
+   */
+  public function alterAuthors(array &$value) : void;
+
 }

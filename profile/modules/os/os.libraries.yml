@@ -224,3 +224,8 @@ openscholarModule:
     js/openscholar.module.js: { }
   dependencies:
     - os/angular.angularjs
+
+osSelectAllOption:
+  version: 1.0
+  js:
+    js/os-select-all-option.module.js: { }

@@ -41,4 +41,18 @@ class CpTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->pageTextContains('Blog');
   }
 
+  /**
+   * Tests visibility of vsite content by anonymous.
+   */
+  public function testVisibilityCpContentAnonymous(): void {
+    $web_assert = $this->assertSession();
+    // Tests.
+    $this->visitViaVsite('cp/content', $this->group);
+    // Go to edit path.
+    $page = $this->getCurrentPage();
+    $login_link = $page->findLink('Admin Login');
+    $this->assertNotNull($login_link);
+    $web_assert->statusCodeEquals(403);
+  }
+
 }
