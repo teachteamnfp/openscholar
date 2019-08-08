@@ -13,3 +13,11 @@ cp.settings.appearance.group:
     _title_callback: '\Drupal\cp_settings\Form\CpSettingsForm::formTitle'
   requirements:
     _custom_access: '\Drupal\cp_settings\Access\CpSettingsAccessCheck::access'
+
+cp.settings.apps_settings.group:
+  path: '/cp/settings/apps-settings/{setting_group}'
+  defaults:
+    _form: '\Drupal\cp_settings\Form\CpSettingsForm'
+    _title_callback: '\Drupal\cp_settings\Form\CpSettingsForm::formTitle'
+  requirements:
+    _custom_access: '\Drupal\cp_settings\Access\CpSettingsAccessCheck::access'

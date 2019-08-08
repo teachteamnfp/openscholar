@@ -44,6 +44,9 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
       if ($d['group']['parent'] === 'cp.appearance') {
         $link_meta['route_name'] = 'cp.settings.appearance.group';
       }
+      elseif ($d['group']['parent'] === 'cp.settings.app') {
+        $link_meta['route_name'] = 'cp.settings.apps_settings.group';
+      }
 
       $links[$d['group']['id']] = array_merge($link_meta, $base_plugin_definition);
     }
