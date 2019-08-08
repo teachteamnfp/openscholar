@@ -81,12 +81,12 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testStartPreview(): void {
-    $this->visit('/cp-appearance/cp/appearance/preview/vibrant');
+    $this->visit('/cp-appearance/cp/appearance/themes/preview/vibrant');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Previewing: Vibrant');
 
-    $this->visit('/cp-appearance/cp/appearance/preview/hwpi_sterling');
+    $this->visit('/cp-appearance/cp/appearance/themes/preview/hwpi_sterling');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Previewing: Sterling');

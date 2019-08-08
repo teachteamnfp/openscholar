@@ -17,7 +17,7 @@ cp_appearance.cp_select_theme:
     _group_member: 'TRUE'
 
 cp_appearance.preview:
-  path: '/cp/appearance/preview/{theme}'
+  path: '/cp/appearance/themes/preview/{theme}'
   defaults:
     _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::previewTheme'
   requirements:

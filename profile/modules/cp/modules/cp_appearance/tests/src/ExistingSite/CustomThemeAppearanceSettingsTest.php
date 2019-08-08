@@ -38,10 +38,10 @@ class CustomThemeAppearanceSettingsTest extends TestBase {
     $this->assertSession()->responseContains('#system-themes-list--custom_theme');
     $this->assertSession()->pageTextContains('Cp Appearance Test 1 theme');
     $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/themes/set/os_ct_cp_appearance_test_1");
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/preview/os_ct_cp_appearance_test_1");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/themes/preview/os_ct_cp_appearance_test_1");
     $this->assertSession()->pageTextContains('Cp Appearance Test 2 theme');
     $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/themes/set/os_ct_cp_appearance_test_2");
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/preview/os_ct_cp_appearance_test_2");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/themes/preview/os_ct_cp_appearance_test_2");
   }
 
   /**
@@ -90,12 +90,12 @@ class CustomThemeAppearanceSettingsTest extends TestBase {
     $custom_theme_entity_1 = CustomTheme::load(self::TEST_CUSTOM_THEME_1_NAME);
     $custom_theme_entity_2 = CustomTheme::load(self::TEST_CUSTOM_THEME_2_NAME);
 
-    $this->visitViaVsite('cp/appearance/preview/' . self::TEST_CUSTOM_THEME_1_NAME, $this->group);
+    $this->visitViaVsite('cp/appearance/themes/preview/' . self::TEST_CUSTOM_THEME_1_NAME, $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains("Previewing: {$custom_theme_entity_1->label()}");
 
-    $this->visitViaVsite('cp/appearance/preview/' . self::TEST_CUSTOM_THEME_2_NAME, $this->group);
+    $this->visitViaVsite('cp/appearance/themes/preview/' . self::TEST_CUSTOM_THEME_2_NAME, $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains("Previewing: {$custom_theme_entity_2->label()}");

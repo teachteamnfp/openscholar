@@ -112,12 +112,12 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
     $theme_setting_mut->set('default', $default_theme)->save();
 
     $this->visit('/cp-appearance-flavor/cp/appearance/themes');
-    $this->assertSession()->elementNotExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/preview/$default_theme\"]");
+    $this->assertSession()->elementNotExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/themes/preview/$default_theme\"]");
 
     $this->getCurrentPage()->fillField("options_$default_theme", 'indigo');
     $this->waitForAjaxToFinish();
 
-    $this->assertSession()->elementExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/preview/indigo\"]");
+    $this->assertSession()->elementExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/themes/preview/indigo\"]");
   }
 
   /**
