@@ -5,6 +5,7 @@
  * OS widgets.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\os_widgets\Plugin\DisplayVariant\PlaceBlockPageVariant;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\ReplaceCommand;
@@ -156,8 +157,8 @@ function os_widgets_theme($existing, $type, $theme, $path) {
       'variables' => [
         'items' => [],
         'render_style' => '',
-      ]
-    ]
+      ],
+    ],
   ];
 }
 
@@ -180,7 +181,7 @@ function template_preprocess_os_widgets_taxonomy_display_type_slider(&$variables
  */
 function template_preprocess_field__block_content__field_widgets__widget_collection(&$vars) {
   $vars['render_style'] = $vars['element']['#render_style'];
-  $keys = \Drupal\Core\Render\Element::children($vars['element']);
+  $keys = Element::children($vars['element']);
   $vars['items'] = array_intersect_key($vars['element'], array_flip($keys));
   $vars['titles'] = [];
   $vars['id'] = $vars['element']['#object']->id();

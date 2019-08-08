@@ -2,13 +2,13 @@
 
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
-
 use Drupal\block_content\Entity\BlockContent;
 use Drupal\os_widgets\OsWidgetsBase;
 use Drupal\os_widgets\OsWidgetsInterface;
 
 /**
- * Class WidgetCollectionWidget
+ * Class WidgetCollectionWidget.
+ *
  * @package Drupal\os_widgets\Plugin\OsWidgets
  *
  * @OsWidget(
@@ -30,15 +30,15 @@ class WidgetCollectionWidget extends OsWidgetsBase implements OsWidgetsInterface
       case 'tabs':
         $build['#attached']['library'][] = 'os_widgets/tabbedWidget';
         break;
+
       case 'accordion':
         $build['#attached']['library'][] = 'os_widgets/accordionWidget';
         break;
+
       case 'random':
         $build['#attached']['library'][] = 'os_widgets/randomWidget';
         break;
     }
   }
-
-
 
 }
