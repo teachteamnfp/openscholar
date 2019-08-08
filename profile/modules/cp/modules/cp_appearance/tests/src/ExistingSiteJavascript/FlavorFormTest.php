@@ -54,7 +54,7 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testFlavorForDefaultTheme(): void {
-    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->visit('/cp-appearance-flavor/cp/appearance/themes');
     $this->assertSession()->statusCodeEquals(200);
     $default_theme = 'hwpi_classic';
 
@@ -79,7 +79,7 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    */
   public function testFlavorSelectionChange(): void {
-    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->visit('/cp-appearance-flavor/cp/appearance/themes');
 
     // Flavor preview should be shown when selected.
     $this->getCurrentPage()->fillField('options_vibrant', 'golden_accents');
@@ -111,7 +111,7 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
     $theme_setting_mut = $this->container->get('config.factory')->getEditable('system.theme');
     $theme_setting_mut->set('default', $default_theme)->save();
 
-    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->visit('/cp-appearance-flavor/cp/appearance/themes');
     $this->assertSession()->elementNotExists('css', "a[href=\"{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/preview/$default_theme\"]");
 
     $this->getCurrentPage()->fillField("options_$default_theme", 'indigo');
@@ -131,7 +131,7 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    */
   public function testFlavorSave(): void {
-    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->visit('/cp-appearance-flavor/cp/appearance/themes');
 
     $this->getCurrentPage()->fillField('options_vibrant', 'golden_accents');
     $this->waitForAjaxToFinish();
@@ -153,7 +153,7 @@ class FlavorFormTest extends CpAppearanceExistingSiteJavascriptTestBase {
    * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
    */
   public function testDefaultFlavor(): void {
-    $this->visit('/cp-appearance-flavor/cp/appearance');
+    $this->visit('/cp-appearance-flavor/cp/appearance/themes');
 
     $this->getCurrentPage()->fillField('options_vibrant', 'golden_accents');
     $this->waitForAjaxToFinish();

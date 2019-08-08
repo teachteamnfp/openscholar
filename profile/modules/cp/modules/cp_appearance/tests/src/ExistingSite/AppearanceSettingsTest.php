@@ -44,7 +44,7 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testSave(): void {
-    $this->visit('/cp-appearance/cp/appearance');
+    $this->visit('/cp-appearance/cp/appearance/themes');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Select Theme');

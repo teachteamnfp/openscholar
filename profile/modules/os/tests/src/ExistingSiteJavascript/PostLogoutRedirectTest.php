@@ -49,7 +49,7 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
 
     // Tests.
     $this->drupalLogin($account);
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
     $this->getSession()->getPage()->clickLink($account->getAccountName());
     $this->getSession()->getPage()->clickLink('Log out');
 

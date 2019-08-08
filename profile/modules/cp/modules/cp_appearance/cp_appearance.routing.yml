@@ -1,5 +1,5 @@
 cp.appearance.themes:
-  path: '/cp/appearance'
+  path: '/cp/appearance/themes'
   defaults:
     _controller: '\Drupal\cp_appearance\Controller\CpAppearanceMainController::main'
     _title: 'Manage Appearance'

@@ -45,7 +45,7 @@ class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascri
     $theme_handler = $this->container->get('theme_handler');
     $theme_handler->refreshInfo();
 
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->responseContains('#system-themes-list--custom_theme');

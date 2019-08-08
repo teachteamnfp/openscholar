@@ -37,7 +37,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->getSession()->getPage()->pressButton('Save');
     $this->getSession()->getPage()->pressButton('Confirm');
 
-    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
+    $this->assertContains("{$this->groupAlias}/cp/appearance/themes", $this->getSession()->getCurrentUrl());
 
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
     $vsite_context_manager = $this->container->get('vsite.context_manager');
@@ -123,7 +123,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->getSession()->getPage()->pressButton('Save and set as default theme');
     $this->getSession()->getPage()->pressButton('Confirm');
 
-    $this->assertContains("{$this->groupAlias}/cp/appearance", $this->getSession()->getCurrentUrl());
+    $this->assertContains("{$this->groupAlias}/cp/appearance/themes", $this->getSession()->getCurrentUrl());
 
     // Tests.
     /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
@@ -204,7 +204,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
 
     // Tests.
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
 
     $edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->groupAlias}/cp/appearance/custom-themes/{$custom_theme->id()}/edit']");
     $this->assertNotNull($edit_link);
@@ -220,7 +220,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->getSession()->getPage()->findField('scripts')->setValue('alert("Hello World"); test');
     $this->getSession()->getPage()->pressButton('Save');
 
-    $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
+    $this->assertContains('cp/appearance/themes', $this->getSession()->getCurrentUrl());
     $this->assertSession()->pageTextContains('Cyberpunk');
 
     $style_file = 'file://' . CustomTheme::ABSOLUTE_CUSTOM_THEMES_LOCATION . '/' . $custom_theme->id() . '/' . CustomTheme::CUSTOM_THEMES_STYLE_LOCATION;
@@ -323,7 +323,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/delete", $this->group);
     $this->getSession()->getPage()->pressButton('Confirm');
 
-    $this->assertContains('cp/appearance', $this->getSession()->getCurrentUrl());
+    $this->assertContains('cp/appearance/themes', $this->getSession()->getCurrentUrl());
 
     /** @var \Drupal\Core\Config\ImmutableConfig $theme_setting */
     $theme_setting = $config_factory->get('system.theme');
@@ -372,11 +372,11 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->getSession()->getPage()->pressButton('Confirm');
 
     // Tests.
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($custom_theme1_label);
 
-    $this->visitViaVsite('cp/appearance', $group2);
+    $this->visitViaVsite('cp/appearance/themes', $group2);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($custom_theme2_label);
 

@@ -32,7 +32,7 @@ class CustomThemeAppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testVisibility(): void {
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->responseContains('#system-themes-list--custom_theme');
@@ -53,7 +53,7 @@ class CustomThemeAppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSave(): void {
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
 
     $this->getCurrentPage()->selectFieldOption('theme', self::TEST_CUSTOM_THEME_1_NAME);
     $this->getCurrentPage()->pressButton('Save Theme');
