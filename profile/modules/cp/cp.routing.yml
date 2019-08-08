@@ -49,11 +49,11 @@ cp.settings.apps_settings:
     _group_permission: 'administer apps settings'
     _group_member: 'TRUE'
 
-cp.global.settings.collection:
-  path: '/cp/global/settings'
+cp.settings.global_settings:
+  path: '/cp/settings/global-settings'
   defaults:
     _controller: '\Drupal\cp\Controller\CpController::overview'
-    _title: 'Manage Cp Settings'
+    _title: 'Manage Global Settings'
   requirements:
     _group_permission: 'administer cp settings'
     _group_member: 'TRUE'

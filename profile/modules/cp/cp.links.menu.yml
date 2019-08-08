@@ -68,7 +68,7 @@ cp.settings.app:
   parent: cp.settings
 cp.settings.global:
   title: 'Global Settings'
-  route_name: cp.global.settings.collection
+  route_name: cp.settings.global_settings
   weight: 2
   menu_name: control-panel
   parent: cp.settings
