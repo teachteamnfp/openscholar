@@ -44,6 +44,24 @@ class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Test node creation with existing "empty" alias.
+   */
+  public function testNodeCreationExistingEmptyAlias() {
+    $web_assert = $this->assertSession();
+    /** @var \Drupal\Core\Path\AliasStorage $path_alias_storage */
+    $path_alias_storage = $this->container->get('path.alias_storage');
+    $path_alias_storage->save("/entity/99", '/[vsite:' . $this->group->id() . ']', "en");
+    $this->visitViaVsite('node/add/blog', $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    $title = $this->randomMachineName();
+    $page->fillField('title[0][value]', $title);
+    $page->findButton('Save')->press();
+    $web_assert->pageTextNotContains('error has been found');
+    $web_assert->pageTextContains($title);
+  }
+
+  /**
    * Test all path where should be visible the alias.
    *
    * @dataProvider collectionOfVisiblePath
