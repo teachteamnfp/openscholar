@@ -64,7 +64,7 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSetDefault(): void {
-    $this->visit('/cp-appearance/cp/appearance/set/hwpi_college');
+    $this->visit('/cp-appearance/cp/appearance/themes/set/hwpi_college');
 
     $this->assertSession()->statusCodeEquals(200);
 
