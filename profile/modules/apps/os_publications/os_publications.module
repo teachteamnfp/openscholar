@@ -177,23 +177,12 @@ function os_publications_views_pre_render(ViewExecutable $view) {
 
     // Convert citation title into publication entity page's url.
     $results = $view->result;
+
     foreach ($results as $result) {
       $publication = $result->_entity;
       $text = Markup::create($publication->html_title->value);
-      $link = '"' . $publication->toLink($text)->toString() . '"';
+      $link = $publication->toLink($text)->toString();
       $publication->html_title->value = $link;
-    }
-  }
-
-  foreach ($view->field as $field_name => $field) {
-    // Alter the citation style as per settings.
-    if ($field_name === 'citation') {
-      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $publication_settings = \Drupal::config('os_publications.settings');
-      /** @var string $publication_style */
-      $publication_style = $publication_settings->get('default_style');
-
-      $field->options['csl_style'] = $publication_style;
     }
   }
 }
@@ -491,7 +480,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     }
   }
   elseif (!$reference->id()) {
-    unset($form['revision'], $form['revision_information']);
+    unset($form['revision'], $form['revision_information'], $form['revision_log_message']);
   }
 
   $form['menu']['enabled'] = [
@@ -657,6 +646,7 @@ function os_publications_alter_post_bibcite_reference_delete_redirect(array &$fo
  * Implements hook_preprocess_HOOK().
  */
 function os_publications_preprocess_bibcite_citation(&$variables) {
+
   $citation_styler = \Drupal::service('bibcite.citation_styler');
   $site_wide_style = $citation_styler->getStyle()->id();
   $publications_config = \Drupal::configFactory()->get('os_publications.settings');
@@ -667,25 +657,35 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   // Get current route name.
   $route_name = \Drupal::routeMatch()->getRouteName();
-
   // If publication view page.
   if ($route_name === 'entity.bibcite_reference.canonical') {
+    /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
     $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
     $text = Markup::create($publication->html_title->value);
-    $link = '"' . $publication->toLink($text)->toString() . '"';
+    $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
-
-    /** @var \Drupal\bibcite\CitationStylerInterface $styler */
-    $styler = \Drupal::service('bibcite.citation_styler');
-    $data = $variables['data'];
-
-    $variables['content'] = [
-      '#markup' => $styler->render($data),
-      '#cache' => [
-        'tags' => ['publication_citation'],
-      ],
-    ];
   }
+
+  // Alteration for hca style to match D7.
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    if ($variables['data']['type'] == 'article-journal' || $variables['data']['type'] == 'chapter') {
+      \Drupal::service('os_publications.citation_helper')->alterAuthors($variables['data']);
+    }
+  }
+
+  /** @var \Drupal\bibcite\CitationStylerInterface $styler */
+  $styler = \Drupal::service('bibcite.citation_styler');
+  $data = $variables['data'];
+
+  // If more than one author or editor , remove extra commas.
+  $markup_string = str_replace(' ,', '', $styler->render($data));
+
+  $variables['content'] = [
+    '#markup' => $markup_string,
+    '#cache' => [
+      'tags' => ['publication_citation'],
+    ],
+  ];
 
   // Put site wide config back to default style.
   $citation_styler->setStyleById($site_wide_style);
@@ -710,7 +710,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
       $export_button = \Drupal::service('renderer')->render($export_array);
       $variables['content']['#markup'] .= $export_button;
       $variables['content']['#allowed_tags'] = [
-        'a', 'button', 'ul', 'li', 'span', 'div',
+        'a', 'button', 'ul', 'li', 'span', 'div', 'em', 'sub', 'sup',
       ];
     }
   }
