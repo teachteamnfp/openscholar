@@ -682,7 +682,7 @@ function os_publications_date_of_publication_alter($element) {
   // Since the published year type is 0 the key of the published radio is 0.
   // Nothing special to wonder about.
   $element[0]['#weight'] = 0;
-  $element[0]['#suffix'] = '<b>' . t('@sp1Or@sp2', ['@sp1' => ' ', '@sp2' => ' ']) . '<b>';
+  $element[0]['#suffix'] = '<b>' . t('@sp1Or@sp2', ['@sp1' => ' ', '@sp2' => ' ']) . '</b>';
   return $element;
 }
 
