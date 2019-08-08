@@ -62,7 +62,7 @@ cp.settings:
   menu_name: control-panel
 cp.settings.app:
   title: 'App Settings'
-  route_name: cp.apps.settings.collection
+  route_name: cp.settings.apps_settings
   weight: 1
   menu_name: control-panel
   parent: cp.settings

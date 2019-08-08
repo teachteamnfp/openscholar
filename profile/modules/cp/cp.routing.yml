@@ -40,8 +40,8 @@ cp.settings.collection:
     _group_permission: 'administer cp settings'
     _group_member: 'TRUE'
 
-cp.apps.settings.collection:
-  path: '/cp/apps/settings'
+cp.settings.apps_settings:
+  path: '/cp/settings/apps-settings'
   defaults:
     _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Manage Apps Settings'
