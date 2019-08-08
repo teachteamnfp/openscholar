@@ -97,3 +97,10 @@ pub_day_options:
   29: 29
   30: 30
   31: 31
+bibcite_years_text:
+  0: Published
+  10000: Forthcoming
+  10010: Submitted
+  10020: In Preparation
+  10030: In Press
+  10040: Working Paper

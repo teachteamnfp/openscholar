@@ -370,9 +370,10 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
  * Implements hook_form_BASE_FORM_ID_alter().
  */
 function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
-  $config_factory = \Drupal::service('config.factory');
+  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  $config_factory = \Drupal::service('config.factory')->get('os_publications.settings');
   /** @var array $auto_flags */
-  $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
+  $auto_flags = $config_factory->get('citation_distribute_autoflags');
   /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
   $reference = $form_state->getFormObject()->getEntity();
 
@@ -566,6 +567,123 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
       $form['actions'][$action]['#submit'][] = 'os_publications_bibcite_reference_form_submit';
     }
   }
+
+  // Year of publication alterations.
+  $form['bibcite_year_group'] = [
+    '#type' => 'fieldset',
+    '#title' => $form['bibcite_year']['widget']['#title'] . ' <span class="form-required" title="' . t('This field is required.') . '"></span>',
+    '#collapsible' => FALSE,
+    '#weight' => $form['bibcite_year']['#weight'],
+    '#group' => $form['bibcite_year']['#group'],
+  ];
+
+  $form['bibcite_year_group']['bibcite_year'] = $form['bibcite_year'];
+  $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#attributes']['placeholder'] = t('Year');
+  $form['bibcite_year_group']['bibcite_year']['#weight'] = 30;
+  $form['bibcite_year_group']['bibcite_year']['#group'] = 'bibcite_year_group';
+
+  $visibility_condition = ['visible' => [':input[name="bibcite_year_coded"]' => ['value' => 0]]];
+  $form['bibcite_year_group']['bibcite_year']['#states'] = $visibility_condition;
+
+  // Adding date and month fields for publication day for Harvard - Chicago
+  // Author citation.
+  $vsite_style = $config_factory->get('default_style');
+  $chicago_author_date_mode = FALSE;
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    $chicago_author_date_mode = TRUE;
+  }
+
+  if ($chicago_author_date_mode) {
+    $form['bibcite_year_group']['bibcite_year']['#title'] = t('Date of Publication');
+
+    $form['bibcite_year_group']['year_selection'] = [
+      '#type' => 'container',
+      '#weight' => 25,
+      '#prefix' => '<div class="year-selection-wrapper">',
+      '#suffix' => '</div>',
+      '#states' => $visibility_condition,
+    ];
+
+    $form['bibcite_year_group']['bibcite_year']['#group'] = 'year_selection';
+    $form['bibcite_year_group']['publication_month'] = $form['publication_month'];
+    $form['bibcite_year_group']['publication_day'] = $form['publication_day'];
+    $form['bibcite_year_group']['publication_month']['widget']['#options']['_none'] = t('Month');
+    $form['bibcite_year_group']['publication_day']['widget']['#options']['_none'] = t('Day');
+    $form['bibcite_year_group']['bibcite_year']['#weight'] = -3;
+    $form['bibcite_year_group']['publication_month']['#weight'] = -2;
+    $form['bibcite_year_group']['publication_day']['#weight'] = -1;
+    $form['bibcite_year_group']['publication_month']['#group'] = 'year_selection';
+    $form['bibcite_year_group']['publication_day']['#group'] = 'year_selection';
+
+    // Form element changes - wrap in a fieldset with the checkboxes element,
+    // and fix additional attributes accordingly.
+    unset(
+      $form['bibcite_year_group']['publication_month']['widget']['#title'],
+      $form['bibcite_year_group']['publication_day']['widget']['#title'],
+      $form['publication_month'],
+      $form['publication_day']
+    );
+  }
+  else {
+    // Form element changes - wrap in a fieldset with the checkboxes element,
+    // and fix additional attributes accordingly.
+    $form['bibcite_year_group']['bibcite_year']['#prefix'] = '<div class="year-wrapper">';
+    $form['bibcite_year_group']['bibcite_year']['#suffix'] = '</div>';
+
+    unset(
+      $form['publication_month'],
+      $form['publication_day']
+    );
+  }
+
+  unset(
+    $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#title'],
+    $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#description'],
+    $form['bibcite_year']
+  );
+  // Adding date and month validation message for Harvard - Chicago Author
+  // citation.
+  if ($chicago_author_date_mode) {
+    $params['@year'] = date('Y');
+    $form_validation_date_month = '<div id="biblio-month-group-validate">' . t('Permitted date formats: 2/10/@year, 2/@year, @year.', $params) . '</div>';
+  }
+  else {
+    $form_validation_date_month = '';
+  }
+
+  // Add validation message for validating the field via JS.
+  $form['bibcite_year_group']['#suffix'] = $form_validation_date_month . '<div id="bibcite-year-group-validate">' . t('Year must be in the form YYYY. Only numerical digits are allowed.') . '</div>';
+
+  // Year validation needs to happen before the standard validation.
+  array_unshift($form['#validate'], 'os_publications_validate_year_field');
+
+  // Adding submit handler to flip between the year and the date field.
+  $form['#submit'][] = 'os_publications_year_date_flip';
+
+  $years = $config_factory->get('bibcite_years_text');
+  $form['bibcite_year_group']['bibcite_year_coded'] = [
+    '#type' => 'radios',
+    '#options' => $years,
+    '#multiple' => FALSE,
+    '#weight' => 20,
+    '#default_value' => 0,
+    '#after_build' => ['os_publications_date_of_publication_alter'],
+  ];
+
+}
+
+/**
+ * After build callback.
+ *
+ * Change the element so we could place the published in the beginning of the
+ * row and separate it with an 'or' text.
+ */
+function os_publications_date_of_publication_alter($element) {
+  // Since the published year type is 0 the key of the published radio is 0.
+  // Nothing special to wonder about.
+  $element[0]['#weight'] = 0;
+  $element[0]['#suffix'] = '<b>' . t('@sp1Or@sp2', ['@sp1' => ' ', '@sp2' => ' ']) . '<b>';
+  return $element;
 }
 
 /**
