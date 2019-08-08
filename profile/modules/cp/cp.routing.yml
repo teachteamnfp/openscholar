@@ -22,7 +22,7 @@ cp.bibcite_reference.delete_multiple_form:
   requirements:
     _entity_delete_multiple_access: 'bibcite_reference'
 
-cp.appearance:
+cp.settings.appearance_settings:
   path: '/cp/appearance'
   defaults:
     _controller: '\Drupal\cp\Controller\CpController::overview'
