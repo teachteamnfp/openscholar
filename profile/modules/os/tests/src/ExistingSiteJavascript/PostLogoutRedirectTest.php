@@ -67,6 +67,7 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
    * @covers ::os_link_alter
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testCpSettingDestination(): void {
     $content = $this->createNode();
@@ -77,7 +78,6 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
     // Tests.
     $this->drupalLogin($account);
     $this->visitViaVsite('cp/content', $this->group);
-    $this->getSession()->getPage()->clickLink('Edit node');
     $this->getSession()->getPage()->clickLink($account->getAccountName());
     $this->getSession()->getPage()->clickLink('Log out');
 
