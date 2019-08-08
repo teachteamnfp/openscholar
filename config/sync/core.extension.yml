@@ -20,6 +20,8 @@ module:
   book: 0
   breakpoint: 0
   cancel_button: 0
+  chosen: 0
+  chosen_lib: 0
   ckeditor: 0
   ckeditor_bidi: 0
   colorbutton: 0
@@ -147,6 +149,7 @@ module:
   system: 0
   taxonomy: 0
   telephone: 0
+  term_reference_tree: 0
   text: 0
   token: 0
   toolbar: 0

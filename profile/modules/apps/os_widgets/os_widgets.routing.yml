@@ -7,6 +7,15 @@ os_widgets.save_layout:
   requirements:
     _group_permission: 'manage layout'
     _group_member: 'TRUE'
+os_widgets.reset_layout:
+  path: '/cp/layout/reset'
+  defaults:
+    _controller: '\Drupal\os_widgets\Controller\LayoutManagementController::resetLayout'
+    _title: 'Reset Layout'
+  method: [ POST ]
+  requirements:
+    _group_permission: 'manage layout'
+    _group_member: 'TRUE'
 os_widgets.create_widget:
   path: '/cp/layout/create/{block_type}'
   defaults:

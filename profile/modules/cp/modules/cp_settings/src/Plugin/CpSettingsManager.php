@@ -65,4 +65,20 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
     return $plugins;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getTitleForGroup(string $group): string {
+    $defs = $this->getDefinitions();
+    $defs = array_filter($defs, function ($a) use ($group) {
+      return ($a['group']['id'] == $group);
+    });
+
+    // reset() returned null for some reason. Workaround.
+    $keys = array_keys($defs);
+    $d = $defs[reset($keys)];
+
+    return $d['group']['title'];
+  }
+
 }

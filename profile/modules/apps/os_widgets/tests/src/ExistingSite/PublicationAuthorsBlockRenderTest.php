@@ -58,8 +58,8 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
 
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $renderer->renderRoot($render);
-    $this->assertContains('<a href="/publications/author/' . $contributor1->id() . '">Lorem1 Ipsum1 Dolor1</a>', $markup->__toString());
-    $this->assertContains('<a href="/publications/author/' . $contributor2->id() . '">Lorem2 Ipsum2 Dolor2</a>', $markup->__toString());
+    $this->assertContains('<a href="/publications/author/' . $contributor1->id() . '">Lorem1 Ipsum1 Dolor1 </a>', $markup->__toString());
+    $this->assertContains('<a href="/publications/author/' . $contributor2->id() . '">Lorem2 Ipsum2 Dolor2 </a>', $markup->__toString());
     $this->assertNotContains('views-field-display-count', $markup->__toString());
   }
 
@@ -114,8 +114,8 @@ class PublicationAuthorsBlockRenderTest extends OsWidgetsExistingSiteTestBase {
 
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $renderer->renderRoot($render);
-    $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor1->id() . '">Lorem1 Ipsum1 Dolor1</a></span></div><div class="views-field views-field-id-1"><span class="field-content views-field-display-count">(1)</span></div></div>', $markup->__toString());
-    $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor2->id() . '">Lorem2 Ipsum2 Dolor2</a></span></div><div class="views-field views-field-id-1"><span class="field-content views-field-display-count">(2)</span></div></div>', $markup->__toString());
+    $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor1->id() . '">Lorem1 Ipsum1 Dolor1 (1)</a></span></div></div>', $markup->__toString());
+    $this->assertContains('<div class="views-row"><div class="views-field views-field-nothing"><span class="field-content"><a href="/publications/author/' . $contributor2->id() . '">Lorem2 Ipsum2 Dolor2 (2)</a></span></div></div>', $markup->__toString());
   }
 
   /**

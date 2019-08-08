@@ -1,0 +1,3 @@
+services:
+  os.software.helper:
+    class: Drupal\os_software\OsSoftwareHelper

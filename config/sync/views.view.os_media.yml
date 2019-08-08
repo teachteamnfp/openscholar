@@ -389,6 +389,7 @@ display:
         filters: false
         filter_groups: false
         relationships: false
+        title: false
       row:
         type: fields
         options:
@@ -1104,7 +1105,7 @@ display:
           exposed: true
           expose:
             operator_id: name_op
-            label: Name
+            label: 'Filter by name'
             description: ''
             use_operator: false
             operator: name_op
@@ -1154,7 +1155,7 @@ display:
           exposed: true
           expose:
             operator_id: bundle_op
-            label: 'Media type'
+            label: 'Filter by media type'
             description: ''
             use_operator: false
             operator: bundle_op
@@ -1257,6 +1258,7 @@ display:
           required: false
           entity_type: media
           plugin_id: entity_reverse
+      title: Files
     cache_metadata:
       max-age: -1
       contexts:
