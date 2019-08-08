@@ -9,8 +9,10 @@ dependencies:
     - node.type.blog
   module:
     - content_moderation
+    - cp_taxonomy
     - field_layout
     - layout_discovery
+    - os_media
     - path
     - text
 third_party_settings:
@@ -41,21 +43,15 @@ content:
     third_party_settings: {  }
   field_attached_media:
     weight: 10
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: media_browser_widget
     region: content
   field_taxonomy_terms:
     weight: 11
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   langcode:
     type: language_select

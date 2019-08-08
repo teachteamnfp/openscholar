@@ -116,10 +116,18 @@ class CpUserMainController extends ControllerBase {
         '#type' => 'container',
         'add-member' => [
           '#type' => 'link',
-          '#title' => $this->t('+ Add a member'),
+          '#title' => $this->t('Add a member'),
           '#url' => Url::fromRoute('cp.users.add'),
           '#attributes' => [
-            'class' => ['os-green-button', 'cp-user-float-right', 'use-ajax'],
+            'class' => [
+              'os-green-button',
+              'cp-user-float-right',
+              'use-ajax',
+              'button',
+              'button--primary',
+              'button-action',
+              'action-links',
+            ],
             'data-dialog-type' => 'modal',
           ],
           '#attached' => [
@@ -158,6 +166,15 @@ class CpUserMainController extends ControllerBase {
    */
   public function addUserForm() {
     $group = $this->vsiteContextManager->getActiveVsite();
+    $dialogOptions = [
+      'dialogClass' => 'add-user-dialog',
+      'width' => 800,
+      'modal' => TRUE,
+      'position' => [
+        'my' => "center top",
+        'at' => "center top",
+      ],
+    ];
     if (!$group) {
       throw new AccessDeniedHttpException();
     }
@@ -166,7 +183,7 @@ class CpUserMainController extends ControllerBase {
 
     $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersAddForm');
 
-    $response->addCommand(new OpenModalDialogCommand('Add Member', $modal_form, ['width' => '800']));
+    $response->addCommand(new OpenModalDialogCommand('Add Member', $modal_form, $dialogOptions));
 
     return $response;
   }

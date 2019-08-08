@@ -105,10 +105,11 @@ class VsiteAliasStorage implements AliasStorageInterface {
     if (preg_match('|\[vsite:([\d]+)\]|', $path, $matches)) {
       $modifiers = $this->getModifiers();
       $id = $matches[1];
-
+      $modifiers = $this->getModifiers();
       foreach ($modifiers as $m) {
         if ($m->getValue() == $id) {
-          return str_replace($matches[0], $m->getModifierKey(), $path);
+          $output = str_replace($matches[0], $m->getModifierKey(), $path);
+          return $output;
         }
       }
     }

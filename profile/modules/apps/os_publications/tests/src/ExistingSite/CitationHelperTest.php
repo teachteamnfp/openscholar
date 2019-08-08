@@ -69,4 +69,40 @@ class CitationHelperTest extends TestBase {
     $this->assertSame($actual->getRouteName(), $expected);
   }
 
+  /**
+   * Tests author alteration service.
+   */
+  public function testAuthorAlter() : void {
+    $data['author'] = [
+      [
+        'family' => 'Doe',
+        'given' => 'John',
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+      [
+        'family' => 'Smith',
+        'given' => 'Richard',
+        'category' => 'primary',
+        'role' => 'author',
+      ],
+    ];
+    $data['editor'] = [
+      [
+        'family' => 'Editor',
+        'given' => 'Edwin',
+        'category' => 'primary',
+        'role' => 'editor',
+      ],
+    ];
+
+    $this->citationHelper->alterAuthors($data);
+    // Test name is changed for an author role.
+    $this->assertEquals('John Doe', $data['author'][0]['given']);
+    // Test family key is empty for an author role.
+    $this->assertEmpty($data['author'][1]['family']);
+    // Test editor information is added for editor role.
+    $this->assertContains('Edited By', $data['editor'][0]['given']);
+  }
+
 }

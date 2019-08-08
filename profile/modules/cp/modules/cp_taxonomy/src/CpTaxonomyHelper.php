@@ -6,6 +6,7 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
@@ -45,7 +46,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
    */
   public function searchAllowedVocabulariesByType(string $bundle_key): array {
     $vsite_vocabularies = Vocabulary::loadMultiple();
-    $filter_vocabularies = [];
+    $found_vocabularies = [];
     foreach ($vsite_vocabularies as $vid => $vocabulary) {
       $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
       $bundle_keys = $config_vocab->get('allowed_vocabulary_reference_types');
@@ -53,26 +54,24 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
         continue;
       }
       if (in_array($bundle_key, $bundle_keys)) {
-        $filter_vocabularies[$vid] = $vid;
+        $found_vocabularies[$vid] = $vid;
       }
     }
-    return $filter_vocabularies;
+    return $found_vocabularies;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSelectedBundles(array $form): array {
-    $saved_entity_types = [];
-    if (!empty($form['vid']['#default_value'])) {
-      $vid = $form['vid']['#default_value'];
-      $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
-      $config_allowed_vocabulary_reference = $config_vocab->get('allowed_vocabulary_reference_types');
-      if (!empty($config_allowed_vocabulary_reference)) {
-        $saved_entity_types = $config_allowed_vocabulary_reference;
-      }
+  public function getVocabularySettings(string $vid): array {
+    $settings = [];
+    $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
+    if (!empty($config_vocab)) {
+      $settings['allowed_vocabulary_reference_types'] = $config_vocab->get('allowed_vocabulary_reference_types');
+      $widget_type = $config_vocab->get('widget_type');
+      $settings['widget_type'] = is_null($widget_type) ? TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE : $widget_type;
     }
-    return $saved_entity_types;
+    return $settings;
   }
 
   /**
@@ -93,12 +92,14 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function saveAllowedBundlesToVocabulary(string $vid, array $allowed_entity_types): void {
-    $filtered_entity_types = array_values(array_filter($allowed_entity_types));
+  public function saveVocabularySettings(string $vid, array $settings): void {
     $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $vid);
-    $config_vocab
-      ->set('allowed_vocabulary_reference_types', $filtered_entity_types)
-      ->save(TRUE);
+    if (!is_null($settings['allowed_entity_types'])) {
+      $filtered_entity_types = array_values(array_filter($settings['allowed_entity_types']));
+      $config_vocab->set('allowed_vocabulary_reference_types', $filtered_entity_types);
+    }
+    $config_vocab->set('widget_type', $settings['widget_type']);
+    $config_vocab->save(TRUE);
   }
 
   /**
@@ -162,6 +163,25 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       return;
     }
     $build['#cache']['tags'][] = 'entity-with-taxonomy-terms:' . $group->id();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getWidgetType(string $entity_bundle): string {
+    $vocabularies = $this->searchAllowedVocabulariesByType($entity_bundle);
+    foreach ($vocabularies as $vid) {
+      $config_vocab = $this->configFactory->get('taxonomy.vocabulary.' . $vid);
+      if (empty($config_vocab)) {
+        continue;
+      }
+      $widget_type = $config_vocab->get('widget_type');
+      if (empty($widget_type)) {
+        continue;
+      }
+      return $widget_type;
+    }
+    return TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
   }
 
 }
