@@ -10,7 +10,6 @@ use Drupal\Core\Url;
 use Drupal\cp_users\CpRolesHelperInterface;
 use Drupal\group\Access\GroupPermissionHandlerInterface;
 use Drupal\group\Entity\GroupTypeInterface;
-use Drupal\group\Form\GroupPermissionsForm;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -22,7 +21,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @see \Drupal\group\Form\GroupPermissionsTypeSpecificForm
  */
-final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
+final class CpUsersPermissionsTypeSpecificForm extends CpUsersPermissionsForm {
 
   /**
    * The specific group role for this form.
@@ -37,13 +36,6 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * CpRoles helper service.
-   *
-   * @var \Drupal\cp_users\CpRolesHelperInterface
-   */
-  protected $cpRolesHelper;
 
   /**
    * Vsite context manager.
@@ -62,21 +54,20 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
   /**
    * Creates a new CpUsersPermissionsTypeSpecificForm object.
    *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
    * @param \Drupal\group\Access\GroupPermissionHandlerInterface $permission_handler
    *   The group permission handler.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler.
    * @param \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper
    *   CpRoles helper service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   Vsite context manager.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesHelperInterface $cp_roles_helper, VsiteContextManagerInterface $vsite_context_manager) {
-    parent::__construct($permission_handler, $module_handler);
+  public function __construct(GroupPermissionHandlerInterface $permission_handler, ModuleHandlerInterface $module_handler, CpRolesHelperInterface $cp_roles_helper, EntityTypeManagerInterface $entity_type_manager, VsiteContextManagerInterface $vsite_context_manager) {
+    parent::__construct($permission_handler, $module_handler, $cp_roles_helper);
     $this->entityTypeManager = $entity_type_manager;
-    $this->cpRolesHelper = $cp_roles_helper;
     $this->vsiteContextManager = $vsite_context_manager;
     $this->activeVsite = $vsite_context_manager->getActiveVsite();
   }
@@ -86,10 +77,10 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
       $container->get('group.permissions'),
       $container->get('module_handler'),
       $container->get('cp_users.cp_roles_helper'),
+      $container->get('entity_type.manager'),
       $container->get('vsite.context_manager')
     );
   }
@@ -169,6 +160,11 @@ final class CpUsersPermissionsTypeSpecificForm extends GroupPermissionsForm {
       foreach ($default_roles as $default_role) {
         $form['permissions'][$permission][$default_role]['#disabled'] = TRUE;
       }
+    }
+
+    // Do not show relationship permissions in the UI.
+    foreach ($this->cpRolesHelper->getRestrictedPermissions($this->groupType) as $permission) {
+      unset($form['permissions'][$permission]);
     }
 
     return $form;
