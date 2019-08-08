@@ -26,7 +26,7 @@ cp_appearance.preview:
 
 # CustomTheme routes.
 entity.cp_custom_theme.add_form:
-  path: '/cp/appearance/custom-themes/add'
+  path: '/cp/appearance/themes/custom-themes/add'
   defaults:
     _entity_form: 'cp_custom_theme.add'
     _title: 'Add Custom Theme'
@@ -35,7 +35,7 @@ entity.cp_custom_theme.add_form:
     _group_member: 'TRUE'
 
 entity.cp_custom_theme.edit_form:
-  path: '/cp/appearance/custom-themes/{cp_custom_theme}/edit'
+  path: '/cp/appearance/themes/custom-themes/{cp_custom_theme}/edit'
   defaults:
     _entity_form: 'cp_custom_theme.edit'
     _title: 'Edit Custom Theme'
@@ -44,7 +44,7 @@ entity.cp_custom_theme.edit_form:
     _group_member: 'TRUE'
 
 entity.cp_custom_theme.delete_form:
-  path: '/cp/appearance/custom-themes/{cp_custom_theme}/delete'
+  path: '/cp/appearance/themes/custom-themes/{cp_custom_theme}/delete'
   defaults:
     _entity_form: 'cp_custom_theme.delete'
     _title: 'Delete Custom Theme'
@@ -53,7 +53,7 @@ entity.cp_custom_theme.delete_form:
     _group_member: 'TRUE'
 
 cp_custom_theme.install_form:
-  path: '/cp/appearance/custom-themes/{custom_theme}/install/{make_default}'
+  path: '/cp/appearance/themes/custom-themes/{custom_theme}/install/{make_default}'
   defaults:
     _form: '\Drupal\cp_appearance\Entity\Form\InstallForm'
     _title: 'Confirm Installation'

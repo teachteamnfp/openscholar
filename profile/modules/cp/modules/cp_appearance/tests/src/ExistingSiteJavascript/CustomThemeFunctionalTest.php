@@ -28,7 +28,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->drupalLogin($group_admin);
 
     // Tests.
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk');
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -114,7 +114,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->addGroupAdmin($group_admin, $this->group);
     $this->drupalLogin($group_admin);
 
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cyberpunk 2077');
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -161,7 +161,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->drupalLogin($group_admin);
 
     // Tests.
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', 'Cp Appearance Test 1');
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -189,7 +189,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->drupalLogin($group_admin);
     $custom_theme_label = strtolower($this->randomMachineName());
 
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -206,7 +206,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     // Tests.
     $this->visitViaVsite('cp/appearance/themes', $this->group);
 
-    $edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->groupAlias}/cp/appearance/custom-themes/{$custom_theme->id()}/edit']");
+    $edit_link = $this->getSession()->getPage()->find('css', "[href='{$this->groupAlias}/cp/appearance/themes/custom-themes/{$custom_theme->id()}/edit']");
     $this->assertNotNull($edit_link);
     $edit_link->click();
 
@@ -256,7 +256,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->drupalLogin($group_admin);
     $custom_theme_label = strtolower($this->randomMachineName());
 
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -271,7 +271,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
 
     // Tests.
-    $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/edit", $this->group);
+    $this->visitViaVsite("cp/appearance/themes/custom-themes/{$custom_theme->id()}/edit", $this->group);
     $this->getSession()->getPage()->pressButton('Save and set as default');
 
     /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
@@ -305,7 +305,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $this->drupalLogin($group_admin);
     $custom_theme_label = strtolower($this->randomMachineName());
 
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -320,7 +320,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
     $custom_theme = CustomTheme::load(CustomTheme::CUSTOM_THEME_ID_PREFIX . $custom_theme_label);
 
     // Tests.
-    $this->visitViaVsite("cp/appearance/custom-themes/{$custom_theme->id()}/delete", $this->group);
+    $this->visitViaVsite("cp/appearance/themes/custom-themes/{$custom_theme->id()}/delete", $this->group);
     $this->getSession()->getPage()->pressButton('Confirm');
 
     $this->assertContains('cp/appearance/themes', $this->getSession()->getCurrentUrl());
@@ -351,7 +351,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
 
     // Create custom theme in vsite1.
     $custom_theme1_label = strtolower($this->randomMachineName());
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme1_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -362,7 +362,7 @@ class CustomThemeFunctionalTest extends CpAppearanceExistingSiteJavascriptTestBa
 
     // Create custom theme in vsite2.
     $custom_theme2_label = strtolower($this->randomMachineName());
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $group2);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $group2);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme2_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
