@@ -189,6 +189,9 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
  * Put back vsite purl to alias value to handle right validate.
  */
 function vsite_node_alias_purl_element_validate(array &$element, FormStateInterface $form_state) {
+  if (empty($element['alias']['#value'])) {
+    return;
+  }
   /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
   $vsiteContext = \Drupal::service('vsite.context_manager');
   $element['alias']['#value'] = '/' . $vsiteContext->getActivePurl() . $element['alias']['#value'];
