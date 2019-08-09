@@ -136,4 +136,10 @@ ul ul,
 ul ul ul ul {
   list-style-type: circle;
 }
-
+.clear {
+  &:before, &:after {
+    content: '';
+    display: table;
+    width: 100%;
+  }
+}

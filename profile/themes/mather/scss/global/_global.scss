@@ -1,0 +1,25 @@
+.path-front {
+  .content-inner {
+    font-size: 16px;
+  }
+  .region-content-bottom {
+    background-color: $color_gallery_approx;
+  }
+  .region-content-first {
+    background-color: $color_gallery_approx;
+  }
+}
+.path-node-type-person {
+  .field--name-field-professional-titles {
+    font-style: italic;
+  }
+}
+h1.page-title {
+  font-size: 2em;
+}
+.region-content-top, .region-content-second {
+  background-color: $white;
+}
+h2.block-title {
+  @extend %font-family;
+}

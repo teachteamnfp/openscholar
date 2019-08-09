@@ -1,0 +1,32 @@
+.path-front {
+  .content-inner {
+    .block {
+      border-top: none;
+    }
+  }
+}
+.comment-wrapper {
+  border-top: none;
+}
+aside {
+  .region {
+    .block {
+      border-top: none;
+    }
+  }
+}
+.path-person {
+  .block-inner {
+    border-top: none;
+  }
+}
+.main-container {
+  h2.block-title {
+    background: $gallery;
+    font-size: 14px;
+    text-transform: none;
+    padding: 3px 7px;
+    margin-bottom: 10px;
+    line-height: 23px;
+  }
+}

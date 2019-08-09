@@ -5,7 +5,7 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
- * Class CheckingFieldsTest.
+ * Class CpTaxonomyHelperTest.
  *
  * @group cp
  * @group kernel
@@ -37,7 +37,7 @@ class CpTaxonomyHelperTest extends TestBase {
   public function testSavingAllowedBundlesToVocabulary() {
     $vid = $this->randomMachineName();
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
-    $form_state_array = [
+    $settings['allowed_entity_types'] = [
       'media:*' => 'media:*',
       'node:events' => 0,
       'node:faq' => 0,
@@ -45,12 +45,12 @@ class CpTaxonomyHelperTest extends TestBase {
       'node:taxonomy_test_1' => 0,
       'node:taxonomy_test_2' => 'node:taxonomy_test_2',
     ];
-    $this->helper->saveAllowedBundlesToVocabulary($vid, $form_state_array);
-    $form['vid']['#default_value'] = $vid;
-    $options_default = $this->helper->getSelectedBundles($form);
-    $this->assertCount(2, $options_default);
-    $this->assertSame('media:*', $options_default[0]);
-    $this->assertSame('node:taxonomy_test_2', $options_default[1]);
+    $settings['widget_type'] = '';
+    $this->helper->saveVocabularySettings($vid, $settings);
+    $settings = $this->helper->getVocabularySettings($vid);
+    $this->assertCount(2, $settings['allowed_vocabulary_reference_types']);
+    $this->assertSame('media:*', $settings['allowed_vocabulary_reference_types'][0]);
+    $this->assertSame('node:taxonomy_test_2', $settings['allowed_vocabulary_reference_types'][1]);
   }
 
   /**
@@ -64,6 +64,28 @@ class CpTaxonomyHelperTest extends TestBase {
     $this->assertSame('Media', $selectable_bundles['media:*']->__toString());
     $this->assertSame('Taxonomy Test 1', $selectable_bundles['node:taxonomy_test_1']);
     $this->assertSame('Taxonomy Test 2', $selectable_bundles['node:taxonomy_test_2']);
+  }
+
+  /**
+   * Test get widget type default value.
+   */
+  public function testGetWidgetTypeDefaultValue() {
+    $vid = 'test_vocab';
+    $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
+    // Test default widget type.
+    $widget_type = $this->helper->getWidgetType('node:taxonomy_test_1');
+    $this->assertSame('entity_reference_autocomplete', $widget_type);
+  }
+
+  /**
+   * Test get widget type value.
+   */
+  public function testGetWidgetTypeSetValue() {
+    $vid = 'test_vocab';
+    $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1'], 'options_select');
+    // Test default widget type.
+    $widget_type = $this->helper->getWidgetType('node:taxonomy_test_1');
+    $this->assertSame('options_select', $widget_type);
   }
 
   /**

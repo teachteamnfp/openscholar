@@ -1,0 +1,23 @@
+.field--name-body {
+  table,
+  th,
+  td,
+  tr {
+    border-color: $color-light-gray6;
+    color: inherit;
+  }
+  th,
+  td {
+    color: $color-gray1;
+    padding: 0.6em;
+    vertical-align: top;
+    border: 1px solid $color-gray2;
+  }
+  table {
+    width: 100%;
+  }
+  th {
+    border-bottom: 3px solid $color-gray2;
+    font-weight: bold;
+  }
+}

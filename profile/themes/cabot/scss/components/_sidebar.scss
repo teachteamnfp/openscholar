@@ -1,0 +1,12 @@
+aside {
+  .nav {
+    a {
+      @extend %font-family;
+    }
+  }
+  .region {
+    > .block {
+      border-top: 2px dotted $color_pizza_approx;
+    }
+  }
+}

@@ -1,0 +1,28 @@
+//@extend-elements
+%extend_1 {
+  color: $white;
+  font-family: $font_0, $font_1, $font_2;
+  font-size: 18px;
+  background: $color_mexican_red_approx;
+}
+%extend_2 {
+  background-color: $color_mystic_approx;
+  color: $black;
+  font-weight: normal;
+  line-height: 28px;
+  padding: 7px 15px;
+  border-bottom: none;
+}
+%extend_3 {
+  background: none repeat scroll 0 0 $white;
+  border: 1px solid $color_mystic_approx;
+  border-radius: 15px;
+  width: 60px;
+}
+body {
+  font-family: $font_0, $font_1, $font_2 !important;
+  line-height: 25px;
+  &.path-front .main-container:after {
+    background: none;
+  }
+}

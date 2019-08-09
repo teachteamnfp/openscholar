@@ -10,6 +10,7 @@ use Drupal\file\Entity\File;
 use Drupal\file\FileInterface;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\media\MediaInterface;
+use Drupal\menu_link_content\Entity\MenuLinkContent;
 use Drupal\user\UserInterface;
 
 /**
@@ -34,7 +35,9 @@ trait ExistingSiteTestTrait {
    *   The created group entity.
    */
   protected function createGroup(array $values = []): GroupInterface {
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $storage */
     $storage = $this->container->get('entity_type.manager')->getStorage('group');
+    /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $storage->create($values + [
       'type' => 'personal',
       'label' => $this->randomMachineName(),
@@ -227,6 +230,29 @@ trait ExistingSiteTestTrait {
     }
 
     $group->addContent($entity, $plugin_id, $values);
+  }
+
+  /**
+   * Creates a menu link for a vsite.
+   *
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   Publication in context.
+   * @param \Drupal\group\Entity\GroupInterface $group
+   *   Vsite in context.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  protected function createMenuLinkContent(ReferenceInterface $reference, GroupInterface $group): void {
+    $menuLink = MenuLinkContent::create([
+      'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
+      'langcode' => $reference->language()->getId(),
+      'enabled' => TRUE,
+      'title' => 'Test Title Menu',
+      'description' => 'This is a test',
+      'menu_name' => 'menu-primary-' . $group->id(),
+    ]);
+    $menuLink->save();
+    $this->markEntityForCleanup($menuLink);
   }
 
 }

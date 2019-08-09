@@ -1,0 +1,15 @@
+.search-block-form {
+  .form-submit {
+    background: $color_mexican_red_approx;
+    border-color: $color_mexican_red_approx;
+  }
+  .form-search label {
+    color: $white;
+  }
+  .form-text {
+    background: $color_alto_approx;
+  }
+  .container-inline .form-item .form-text {
+    background: $color_alto_approx;
+  }
+}

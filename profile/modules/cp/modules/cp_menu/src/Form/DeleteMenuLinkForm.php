@@ -152,7 +152,7 @@ class DeleteMenuLinkForm extends ConfirmFormBase {
     $this->menuLinkManager->removeDefinition($pluginId);
 
     // Call the block cache clear method as changes are made.
-    $this->menuHelper->invalidateBlockCache($menu_id);
+    $this->menuHelper->invalidateBlockCache($vsite, $menu_id);
 
     $form_state->setRedirect('cp.build.menu');
   }

@@ -1,0 +1,22 @@
+footer {
+  background: $color_goldenrod_approx;
+  a {
+    @extend %extend_2;
+  }
+  ul.nav {
+    a {
+      @extend %font-family;
+    }
+    li {
+      a {
+        text-transform: none;
+        &.menu-heading {
+          text-transform: uppercase;
+        }
+      }
+      ul li a {
+        @extend %font-family;
+      }
+    }
+  }
+}

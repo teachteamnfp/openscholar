@@ -58,8 +58,7 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
     $this->assertArrayHasKey('title', $form['display_type']['#options']);
     // Check default_image container.
     $this->assertNotEmpty($form['default_image']['disable_default_image']);
-    $this->assertNotEmpty($form['default_image']['default_image_fid']);
-    $this->assertEquals('public://' . $this->group->id() . '/files', $form['default_image']['default_image_fid']['#upload_location']);
+    $this->assertNotEmpty($form['default_image']['default_image_mid']['media-browser-field']);
 
   }
 
@@ -68,13 +67,19 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
    */
   public function testFormRenderWithFile() {
     $file = $this->createFile('image');
+    $media = $this->createMedia([
+      'bundle' => 'image',
+      'field_media_image' => [
+        $file->id(),
+      ],
+    ]);
     $profiles_config = $this->config->getEditable('os_profiles.settings');
-    $profiles_config->set('default_image_fid', $file->id());
+    $profiles_config->set('default_image_mid', $media->id());
     $profiles_config->save();
     $form = [];
     $this->profileSettings->getForm($form, $this->config);
     $this->assertArrayHasKey('default_image', $form);
-    $this->assertEquals($file->id(), $form['default_image']['default_image_fid']['#default_value'][0]);
+    $this->assertEquals($media->id(), $form['default_image']['default_image_mid']['media-browser-field']['#attached']['drupalSettings']['mediaBrowserField']['edit-default-image-mid']['selectedFiles'][0]);
     $this->assertNotEmpty($form['default_image']['image_crop']);
     $this->assertEquals('image_crop', $form['default_image']['image_crop']['#type']);
     $this->assertEquals($file->id(), $form['default_image']['image_crop']['#file']->id());
@@ -85,12 +90,20 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
    */
   public function testFormSubmitFile() {
     $file = $this->createFile('image');
+    $media = $this->createMedia([
+      'bundle' => 'image',
+      'field_media_image' => [
+        $file->id(),
+      ],
+    ]);
     $form_state = (new FormState())
       ->setValues([
         'display_type' => 'sidebar_teaser',
         'disable_default_image' => TRUE,
-        'default_image_fid' => [
-          $file->id(),
+        'default_image_mid' => [
+          [
+            'target_id' => $media->id(),
+          ],
         ],
       ]);
     $form = [];
@@ -101,7 +114,7 @@ class ProfilesSettingsFormBuildTest extends OsExistingSiteTestBase {
     $settings_form->submitForm($form, $form_state);
     $profiles_config = $this->config->get('os_profiles.settings');
     $this->assertEquals(count($form_state->getErrors()), 0);
-    $this->assertEquals($file->id(), $profiles_config->get('default_image_fid'));
+    $this->assertEquals($media->id(), $profiles_config->get('default_image_mid'));
     $this->assertEquals('sidebar_teaser', $profiles_config->get('display_type'));
     $this->assertTrue($profiles_config->get('disable_default_image'));
   }

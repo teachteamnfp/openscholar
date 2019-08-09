@@ -1,0 +1,15 @@
+.header-container {
+  background-color: $white;
+  border-top: 7px solid $color_fern_green_approx;
+  color: $color_log_cabin_approx;
+  a {
+    color: $color_log_cabin_approx;
+  }
+  ul.nav {
+    li {
+      a {
+        font-family: $font_0;
+      }
+    }
+  }
+}

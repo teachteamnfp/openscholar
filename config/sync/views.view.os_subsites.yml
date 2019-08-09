@@ -29,9 +29,8 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
-        options:
-          group_permission: 'vsite access group_node overview'
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
@@ -437,7 +436,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
@@ -457,7 +455,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url

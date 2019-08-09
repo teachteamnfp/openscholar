@@ -1,0 +1,25 @@
+.comment-wrapper {
+  border-top: 2px dotted $color_pizza_approx;
+  border-top: none;
+}
+/** accessibility fixes **/
+.navbar-collapse {
+  h2.sr-only {
+    color: $white;
+  }
+}
+.form-submit {
+  .sr-only {
+    color: $white;
+  }
+}
+.path-front .content-inner .block {
+  border-top: 2px dotted $color_pizza_approx;
+  &.block-boxes-os_slideshow_box {
+    border-top: none;
+  }
+}
+.path-person .block-inner {
+  border-top: 2px dotted $color_pizza_approx;
+  border-top: none;
+}

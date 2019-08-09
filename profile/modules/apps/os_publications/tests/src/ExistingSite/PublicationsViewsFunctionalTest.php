@@ -99,7 +99,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     // Construct data array as required by render method.
     $text = Markup::create($reference->html_title->value);
-    $link = '"' . $reference->toLink($text)->toString() . '"';
+    $link = $reference->toLink($text)->toString();
     $author = [
       'category' => "primary",
       'role' => "author",
@@ -279,17 +279,17 @@ class PublicationsViewsFunctionalTest extends TestBase {
     ]);
     $this->group->addContent($reference7, 'group_entity:bibcite_reference');
 
-    /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
-    $config_factory = $this->container->get('config.factory');
-    /** @var \Drupal\Core\Config\Config $os_publications_settings_mut */
-    $os_publications_settings_mut = $config_factory->getEditable('os_publications.settings');
-    $os_publications_settings_mut
-      ->set('biblio_order', 'DESC')
-      ->set('biblio_sort', 'author')
-      ->save();
+    $this->drupalLogin($this->groupAdmin);
+
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $edit = [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
+      'edit-biblio-order' => 'DESC',
+      'edit-biblio-sort' => 'author',
+    ];
+    $this->submitForm($edit, 'edit-submit');
 
     // Tests.
-    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('publications/author', $this->group);
 
     // Confirm that the grouping order is as per the setting.
@@ -308,10 +308,10 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->assertContains('Mona Lisa', $rows[0]->getText());
     $this->assertContains('Ghare Baire', $rows[1]->getText());
     $this->assertContains('Shesher Kobita', $rows[2]->getText());
-    $this->assertContains('Harry Potter and the Chamber of Secrets', $rows[3]->getText());
-    $this->assertContains('Harry Potter and the Deathly Hallows', $rows[4]->getText());
+    $this->assertContains('Harry Potter And The Chamber Of Secrets', $rows[3]->getText());
+    $this->assertContains('Harry Potter And The Deathly Hallows', $rows[4]->getText());
     $this->assertContains('Sorrow', $rows[5]->getText());
-    $this->assertContains('Wheatfield with Crows', $rows[6]->getText());
+    $this->assertContains('Wheatfield With Crows', $rows[6]->getText());
   }
 
   /**
@@ -393,6 +393,95 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->assertNotEquals($pos_artwork, array_search('Artwork', $headings, TRUE));
     $this->assertNotEquals($pos_journal, array_search('Journal', $headings, TRUE));
+  }
+
+  /**
+   * Tests link creation from publication edit page.
+   */
+  public function testPublicationMenuLinkAdd(): void {
+
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'Journal Link',
+      'menu[enabled]' => TRUE,
+      'menu[title]' => 'Menu Link title',
+    ];
+    $this->submitForm($edit, 'Save');
+
+    $this->assertSession()->linkExists('Menu Link title');
+  }
+
+  /**
+   * Tests last updated on appears on citation full view.
+   */
+  public function testLastUpdatedOn(): void {
+    $this->drupalLogin($this->groupAdmin);
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
+    $this->assertSession()->elementExists('css', '.last-updated');
+  }
+
+  /**
+   * Test hca publication output.
+   */
+  public function testHcaPublicationsOutput(): void {
+    $this->drupalLogin($this->groupAdmin);
+
+    $contributor1 = $this->createContributor([
+      'first_name' => 'Leonardo',
+      'middle_name' => 'Da',
+      'last_name' => 'Vinci',
+    ]);
+
+    $contributor2 = $this->createContributor([
+      'first_name' => 'Joanne',
+      'middle_name' => 'Kathleen',
+      'last_name' => 'Rowling',
+    ]);
+
+    $contributor3 = $this->createContributor([
+      'first_name' => 'Vincent',
+      'middle_name' => 'Middle',
+      'last_name' => 'Gogh',
+    ]);
+
+    $reference = $this->createReference([
+      'type' => 'journal_article',
+      'html_title' => 'Mona Lisa',
+      'bibcite_year' => '2018',
+      'bibcite_secondary_title' => 'JournalTitle',
+      'author' => [
+        [
+          'target_id' => $contributor1->id(),
+          'category' => 'primary',
+          'role' => 'author',
+        ],
+        [
+          'target_id' => $contributor2->id(),
+          'category' => 'primary',
+          'role' => 'author',
+        ],
+        [
+          'target_id' => $contributor3->id(),
+          'category' => 'primary',
+          'role' => 'editor',
+        ],
+      ],
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+
+    // Make changes.
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->drupalPostForm(NULL, [
+      'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
+    ], 'Save configuration');
+    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
+    $this->assertSession()->pageTextContains('Leonardo Da Vinci and Joanne Kathleen Rowling. 2018. “Mona Lisa”. Edited By Vincent Middle Gogh. Journaltitle.');
   }
 
   /**

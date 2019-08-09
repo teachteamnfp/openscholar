@@ -1,0 +1,54 @@
+body {
+  font-family: $font_0, $font_1;
+  &.front .main-container {
+    background: $white;
+  }
+}
+.not-front {
+  .field--name-body {
+    font-family: $font_0, $font_1;
+  }
+  .main-container section .content-inner {
+    @extend %extend_1;
+  }
+}
+.main-container {
+  margin-top: 40px;
+}
+.content-inner {
+  p {
+    font-family: $font_0, $font_1;
+  }
+  li {
+    font-family: $font_0, $font_1;
+  }
+}
+.main-container {
+  background: $white;
+  &:before {
+    background: none;
+    position: unset;
+  }
+}
+.path-front {
+  .content-inner {
+    .block-title {
+      background: $white;
+      color: $color_pizza_approx;
+    }
+    .block {
+      @extend %extend_1;
+    }
+  }
+  &.no-sidebars .region-content-top .block-boxes-os_slideshow_box:after {
+    background: $wild_sand;
+  }
+}
+h1.page-header {
+  color: $color_pizza_approx;
+}
+.path-node {
+  .content-inner {
+    @extend %extend_1;
+  }
+}

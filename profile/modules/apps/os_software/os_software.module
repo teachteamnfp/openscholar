@@ -18,3 +18,41 @@ function os_software_form_alter(&$form, FormStateInterface $form_state, $form_id
     ];
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_software_form_node_software_release_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  _os_software_hide_node_title_form($form);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_software_form_node_software_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  _os_software_hide_node_title_form($form);
+}
+
+/**
+ * Hide title in form.
+ */
+function _os_software_hide_node_title_form(&$form) {
+  $form['title']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Generates the node title for Software Releases.
+ */
+function os_software_node_presave($node) {
+  if ($node->bundle() != 'software_release') {
+    return;
+  }
+
+  // Sets the node title like "[project-node:title] [release-node:version]".
+  /** @var \Drupal\os_software\OsSoftwareHelper $helper */
+  $helper = Drupal::service('os.software.helper');
+  $title = $helper->prepareReleaseTitle($node);
+  $node->set('title', $title);
+}

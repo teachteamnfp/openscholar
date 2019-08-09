@@ -1,0 +1,7 @@
+footer {
+  background: $color_gray_nurse_approx;
+  border-top: 1px solid $color_mountain_mist_approx;
+  ul.nav a {
+    @extend %font-family;
+  }
+}

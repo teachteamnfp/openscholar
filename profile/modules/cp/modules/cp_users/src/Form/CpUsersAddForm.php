@@ -5,6 +5,7 @@ namespace Drupal\cp_users\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -79,6 +80,13 @@ class CpUsersAddForm extends FormBase {
         $roleData[$rid] = $role->label();
       }
     }
+
+    $form['#prefix'] = '<div id="cp-user-add-form">';
+    $form['#suffix'] = '</div>';
+    $form['status_messages'] = [
+      '#type' => 'status_messages',
+      '#weight' => -10,
+    ];
 
     $form['existing-member'] = [
       '#type' => 'details',
@@ -175,6 +183,32 @@ class CpUsersAddForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    parent::validateForm($form, $form_state);
+    $form_state_values = $form_state->getValues();
+
+    if (!empty($form_state_values['email'])) {
+      $account = (bool) user_load_by_mail($form_state_values['email']);
+      if ($account) {
+        $form_state->setError($form['new-user']['email'], $this->t('User with this email already exists. Please choose a different email.'));
+        return FALSE;
+      }
+    }
+
+    if (!empty($form_state_values['username'])) {
+      $account = user_load_by_name($form_state_values['username']);
+      if ($account) {
+        $form_state->setError($form['new-user']['username'], $this->t('User with this username already exists. Please choose a different username.'));
+        return FALSE;
+      }
+    }
+
+    return TRUE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     static $response = NULL;
     // For some reason this function gets run twice? Not sure exactly why.
@@ -183,53 +217,60 @@ class CpUsersAddForm extends FormBase {
       return $response;
     }
     $response = new AjaxResponse();
-    $group = $this->vsiteContextManager->getActiveVsite();
-    if (!$group) {
-      $response->setStatusCode(403, 'Forbidden');
+
+    if ($form_state->getErrors()) {
+      $response->addCommand(new ReplaceCommand('#cp-user-add-form', $form));
     }
     else {
-      $response->addCommand(new CloseModalDialogCommand());
-      $response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
-      /** @var string $entity */
-      if ($entity = $form_state->getValue('member-entity')) {
-        /** @var \Drupal\user\UserInterface $account */
-        $account = $this->entityTypeManager->getStorage('user')->load($entity);
-        $email_key = CP_USERS_ADD_TO_GROUP;
+      $group = $this->vsiteContextManager->getActiveVsite();
+      if (!$group) {
+        $response->setStatusCode(403, 'Forbidden');
       }
       else {
-        $account = User::create([
-          'field_first_name' => $form_state->getValue('first_name'),
-          'field_last_name' => $form_state->getValue('last_name'),
-          'name' => $form_state->getValue('username'),
-          'mail' => $form_state->getValue('email'),
-          'status' => TRUE,
-        ]);
-        $account->save();
-        $email_key = CP_USERS_NEW_USER;
+        $response->addCommand(new CloseModalDialogCommand());
+        $response->addCommand(new RedirectCommand(Url::fromRoute('cp.users')->toString()));
+
+        /** @var string $entity */
+        if ($entity = $form_state->getValue('member-entity')) {
+          /** @var \Drupal\user\UserInterface $account */
+          $account = $this->entityTypeManager->getStorage('user')->load($entity);
+          $email_key = CP_USERS_ADD_TO_GROUP;
+        }
+        else {
+          $account = User::create([
+            'field_first_name' => $form_state->getValue('first_name'),
+            'field_last_name' => $form_state->getValue('last_name'),
+            'name' => $form_state->getValue('username'),
+            'mail' => $form_state->getValue('email'),
+            'status' => TRUE,
+          ]);
+          $account->save();
+          $email_key = CP_USERS_NEW_USER;
+        }
+
+        /** @var string $role */
+        $role = $form_state->getValue('role');
+        if (!$role) {
+          $role = $group->getGroupType()->getMemberRoleId();
+        }
+
+        $values = [
+          'group_roles' => [
+            $role,
+          ],
+        ];
+        $group->addMember($account, $values);
+
+        $params = [
+          'user' => $account,
+          'role' => $role,
+          'creator' => \Drupal::currentUser(),
+          'group' => $group,
+        ];
+        /** @var \Drupal\Core\Mail\MailManagerInterface $mailManager */
+        $mailManager = \Drupal::service('plugin.manager.mail');
+        $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
       }
-
-      /** @var string $role */
-      $role = $form_state->getValue('role');
-      if (!$role) {
-        $role = $group->getGroupType()->getMemberRoleId();
-      }
-
-      $values = [
-        'group_roles' => [
-          $role,
-        ],
-      ];
-      $group->addMember($account, $values);
-
-      $params = [
-        'user' => $account,
-        'role' => $role,
-        'creator' => \Drupal::currentUser(),
-        'group' => $group,
-      ];
-      /** @var \Drupal\Core\Mail\MailManagerInterface $mailManager */
-      $mailManager = \Drupal::service('plugin.manager.mail');
-      $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
     }
     return $response;
   }

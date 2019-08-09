@@ -1,0 +1,30 @@
+footer {
+  background: $color_rangoon_green_approx;
+  color: $white;
+  a {
+    color: $white;
+  }
+  strong {
+    color: $white;
+  }
+  ul.nav {
+    a {
+      @extend %font;
+    }
+    li {
+      a {
+        text-transform: none;
+
+        &.menu-heading {
+          text-transform: uppercase;
+        }
+      }
+      ul li a {
+        @extend %font;
+      }
+    }
+  }
+}
+#branding_footer {
+  background: $color_tundora_approx;
+}

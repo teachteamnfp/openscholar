@@ -1,0 +1,36 @@
+body {
+  background: $color_alabaster_approx;
+  @extend %font-family;
+}
+a {
+  color: $color_chathams_blue_approx;
+  &:visited {
+    color: $color_chathams_blue_approx;
+  }
+  &:hover {
+    color: $color_regent_gray_approx;
+  }
+  &.rslides_nav {
+    background: $color_regent_gray_approx;
+  }
+}
+.page-header {
+  @extend %font-family;
+}
+.node--title {
+  @extend %font-family;
+}
+.more-link {
+  @extend %font-family;
+}
+.content-inner {
+  h2 {
+    @extend %font-family;
+  }
+  h3 {
+    @extend %font-family;
+  }
+  h4 {
+    @extend %font-family;
+  }
+}

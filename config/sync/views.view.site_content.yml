@@ -28,7 +28,7 @@ display:
       access:
         type: group_permission
         options:
-          group_permission: 'vsite access group_node overview'
+          group_permission: 'manage vsite content'
       cache:
         type: tag
         options: {  }
@@ -53,7 +53,7 @@ display:
       pager:
         type: full
         options:
-          items_per_page: 50
+          items_per_page: 24
           offset: 0
           id: 0
           total_pages: null
@@ -620,7 +620,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: 'Edit node'
+          text: Edit
+          output_url_as_text: false
+          absolute: false
           entity_type: node
           plugin_id: entity_link_edit
         delete_node:
@@ -671,7 +673,9 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: 'Delete node'
+          text: Delete
+          output_url_as_text: false
+          absolute: false
           entity_type: node
           plugin_id: entity_link_delete
         dropbutton:
@@ -748,7 +752,7 @@ display:
           exposed: true
           expose:
             operator_id: title_op
-            label: Title
+            label: 'Filter by title'
             description: ''
             use_operator: false
             operator: title_op
@@ -789,7 +793,7 @@ display:
           exposed: true
           expose:
             operator_id: type_op
-            label: Type
+            label: 'Filter by type'
             description: ''
             use_operator: false
             operator: type_op
@@ -904,7 +908,8 @@ display:
     display_title: Page
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: cp/content
       menu:
         type: tab

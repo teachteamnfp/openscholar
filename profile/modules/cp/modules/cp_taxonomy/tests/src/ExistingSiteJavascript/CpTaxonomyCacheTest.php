@@ -9,7 +9,7 @@ use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 /**
  * Tests cache invalidation listing and entity page.
  *
- * @group functional
+ * @group functional-javascript
  * @group cp
  */
 class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
@@ -17,7 +17,6 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
   use CpTaxonomyTestTrait;
 
   protected $term;
-  protected $config;
 
   /**
    * {@inheritdoc}
@@ -35,7 +34,6 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->createGroupVocabulary($this->group, 'vocab_group_1', $allowed_types);
     $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', 'Term1');
     $this->vsiteContextManager->activateVsite($this->group);
-    $this->config = $this->configFactory->getEditable('cp_taxonomy.settings');
   }
 
   /**
@@ -112,41 +110,6 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $this->visitViaVsite("bibcite/reference/" . $publication->id(), $this->group);
     $web_assert->statusCodeEquals(200);
     $web_assert->pageTextNotContains($this->term->label());
-  }
-
-  /**
-   * Set config, show terms on entity pages.
-   */
-  private function showTermsOnPage() {
-    $this->config->set('display_term_under_content', TRUE);
-    $this->config->save(TRUE);
-  }
-
-  /**
-   * Set config, hide terms on entity pages.
-   */
-  private function hideTermsOnPage() {
-    $this->config->set('display_term_under_content', FALSE);
-    $this->config->save(TRUE);
-  }
-
-  /**
-   * Set config, show terms on entity listing.
-   *
-   * @param array $types
-   *   Allowed types.
-   */
-  private function showTermsOnListing(array $types = []) {
-    $this->config->set('display_term_under_content_teaser_types', $types);
-    $this->config->save(TRUE);
-  }
-
-  /**
-   * Set config, hide terms on entity listing.
-   */
-  private function hideTermsOnListing() {
-    $this->config->set('display_term_under_content_teaser_types', ['node:not_exists_bundle']);
-    $this->config->save(TRUE);
   }
 
   /**

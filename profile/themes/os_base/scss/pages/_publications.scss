@@ -12,7 +12,7 @@
   }
   .views-row {
     margin: 10px 0 20px 0;
-    overflow: hidden;
+    @extend .clear;
   }
   .field--name-field-publication-image {
     float: left;

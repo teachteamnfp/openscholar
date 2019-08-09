@@ -1,0 +1,41 @@
+//@extend-elements
+%extend_1 {
+  width: 55px;
+  height: 55px;
+  background: $color_submarine_approx;
+  border-radius: 140px;
+}
+%extend_2 {
+  font: bold 14px $font_3, $font_4;
+  text-transform: none;
+  color: $color_chathams_blue_approx;
+}
+body {
+  @extend %font-family;
+}
+.page-header {
+  @extend %font-family;
+}
+.node--title {
+  @extend %font-family;
+}
+.more-link {
+  @extend %font-family;
+}
+.content-inner {
+  h2 {
+    @extend %font-family;
+  }
+  h3 {
+    @extend %font-family;
+  }
+  h4 {
+    @extend %font-family;
+  }
+}
+.links a {
+  @extend %font-family;
+}
+h2.block-title {
+  @extend %font-family;
+}

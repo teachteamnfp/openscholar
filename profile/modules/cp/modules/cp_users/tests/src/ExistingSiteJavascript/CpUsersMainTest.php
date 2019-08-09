@@ -101,9 +101,9 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/' . $this->modifier . '/cp/users');
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "First url check, on " . $this->getSession()->getCurrentUrl());
     $page = $this->getCurrentPage();
-    $link = $page->findLink('+ Add a member');
+    $link = $page->findLink('Add a member');
     $this->assertContains('/' . $this->modifier . '/cp/users/add', $link->getAttribute('href'), "Add link is not in the vsite.");
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->find('css', '#existing-member-fieldset summary.seven-details__summary')->click();
     $page->fillField('member-entity', substr($username, 0, 3));
@@ -131,9 +131,18 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \Behat\Mink\Exception\DriverException
    */
   public function testNewUser(): void {
     $settings = $this->configFactory->getEditable('cp_users.settings');
+
+    $existing_mail = $this->randomMachineName() . '@mail.com';
+    $existing_username = $this->randomMachineName();
+    $existing_mail_account = $this->createUser();
+    $existing_mail_account->setEmail($existing_mail)->save();
+    $this->createUser([], $existing_username);
 
     $this->assertFalse($settings->get('disable_user_creation'), "User creation setting is wrong.");
 
@@ -142,9 +151,26 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->visit('/' . $this->modifier . '/cp/users');
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl());
     $page = $this->getCurrentPage();
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $page->find('css', '#new-user-fieldset summary.seven-details__summary')->click();
+
+    // Negative tests.
+    $page->fillField('Username', $existing_username);
+    $page->fillField('E-mail Address', $this->randomMachineName() . '@mail.com');
+    $page->selectFieldOption('role', 'personal-member');
+    $page->pressButton('Save');
+    $this->waitForAjaxToFinish();
+    $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-username.form-item--error'));
+
+    $page->fillField('Username', $this->randomMachineName());
+    $page->fillField('E-mail Address', $existing_mail);
+    $page->selectFieldOption('role', 'personal-member');
+    $page->pressButton('Save');
+    $this->waitForAjaxToFinish();
+    $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-email.form-item--error'));
+
+    // Positive tests.
     $page->fillField('First Name', 'test');
     $page->fillField('Last Name', 'user');
     $page->fillField('Username', 'test-user');
@@ -158,7 +184,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $settings->set('disable_user_creation', 1);
     $settings->save();
 
-    $page->clickLink('+ Add a member');
+    $page->clickLink('Add a member');
     $this->assertSession()->waitForElement('css', '#drupal-modal--content');
     $this->assertSession()->linkNotExists('Add New User', "Add New User is still on page.");
     $page->find('css', '#drupal-modal')->click();

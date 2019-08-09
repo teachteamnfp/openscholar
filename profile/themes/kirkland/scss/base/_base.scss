@@ -1,0 +1,57 @@
+body {
+  @extend %style1;
+  &.not-front {
+    font-size: 16px;
+    color: $color_log_cabin_approx;
+  }
+}
+.fc-header-toolbar .ui-button {
+  font-family: $font_0;
+}
+.node--title {
+  @extend %font-family1;
+}
+a {
+  color: $color_endeavour_approx;
+  &:visited {
+    color: $color_endeavour_approx;
+  }
+}
+.content-inner {
+  h2 {
+    @extend %font-family;
+    font-weight: 300;
+    &.block-title {
+      font-weight: 400;
+    }
+  }
+  h3, h4 {
+    @extend %font-family;
+    font-weight: 300;
+  }
+}
+.page-header {
+  @extend %font-family;
+}
+h2.block-title {
+  @extend %font-family;
+  color: $color_fuscous_gray_approx;
+}
+.pager.mini-pager {
+  font-size: .8em;
+}
+h1.page-title {
+  color: $color_fuscous_gray_approx;
+  font-size: 1.75em;
+  line-height: 1.2em;
+}
+h3 {
+  margin-bottom: 7px;
+  font-weight: 300;
+}
+.fc-header-toolbar h2 {
+  @extend %font-family1;
+}
+.breadcrumb {
+  @extend %font-family;
+}
