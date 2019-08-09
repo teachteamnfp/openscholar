@@ -351,6 +351,28 @@ function _vsite_process_preset_task(GroupInterface $group, GroupPresetInterface 
 }
 
 /**
+ * Get redirect/destination mapping by entity type.
+ */
+function _vsite_get_redirect_mapping() {
+  $mapping = [
+    'node' => [
+      'blog' => 'blog',
+      'events' => 'calendar',
+      'class' => 'classes',
+      'link' => 'links',
+      'news' => 'news',
+      'person' => 'people',
+      'presentation' => 'presentations',
+      'software_project' => 'software',
+    ],
+    'bibcite_reference' => [
+      '*' => 'publications',
+    ],
+  ];
+  return $mapping;
+}
+
+/**
  * Implements hook_ENTITY_TYPE_view_alter().
  */
 function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewDisplayInterface $display) {
@@ -363,6 +385,7 @@ function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewD
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
+      'mapping' => _vsite_get_redirect_mapping(),
     ];
   }
 }
@@ -380,6 +403,7 @@ function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $e
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
+      'mapping' => _vsite_get_redirect_mapping(),
     ];
   }
 }
