@@ -212,3 +212,14 @@ function os_preprocess_checkboxes(&$variables) {
   $variables['attributes']['class'][] = 'show-select-all-option';
   $variables['#attached']['library'][] = 'os/osSelectAllOption';
 }
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter().
+ */
+function os_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // TODO: Implement the permission checks.
+  $form['path']['#access'] = TRUE;
+  $form['uid']['#access'] = TRUE;
+  $form['sticky']['#access'] = TRUE;
+  $form['created']['#access'] = TRUE;
+}
