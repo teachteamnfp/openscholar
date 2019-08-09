@@ -46,6 +46,9 @@ trait ExistingSiteTestTrait {
       'path' => [
         'alias' => "/{$this->randomMachineName()}",
       ],
+      'field_privacy_level' => [
+        'value' => 'public',
+      ],
     ]);
     $group->enforceIsNew();
     $group->save();
