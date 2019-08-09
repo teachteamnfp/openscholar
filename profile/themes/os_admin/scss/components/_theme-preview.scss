@@ -99,3 +99,10 @@
     float: right;
   }
 }
+
+/**** hide theme select list****/
+.cp-appearance-theme-form {
+  .form-type-select {
+    display: none;
+  }
+}
