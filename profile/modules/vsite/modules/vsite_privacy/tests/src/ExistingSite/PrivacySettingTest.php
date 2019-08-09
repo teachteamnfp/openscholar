@@ -61,7 +61,7 @@ class PrivacySettingTest extends OsExistingSiteTestBase {
   public function testSettingOutsideVsiteAsAdmin(): void {
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visit('/cp/settings/privacy');
+    $this->visit('/cp/settings/global-settings/privacy_policy');
     $this->assertSession()->statusCodeEquals(403);
   }
 
@@ -73,7 +73,7 @@ class PrivacySettingTest extends OsExistingSiteTestBase {
   public function testSettingAsAdmin(): void {
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visit('/something-else/cp/settings/privacy');
+    $this->visit('/something-else/cp/settings/global-settings/privacy_policy');
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -87,7 +87,7 @@ class PrivacySettingTest extends OsExistingSiteTestBase {
     $this->group->addMember($group_member);
     $this->drupalLogin($group_member);
 
-    $this->visit('/something-else/cp/settings/privacy');
+    $this->visit('/something-else/cp/settings/global-settings/privacy_policy');
     $this->assertSession()->statusCodeEquals(403);
   }
 
@@ -100,7 +100,7 @@ class PrivacySettingTest extends OsExistingSiteTestBase {
     $outsider = $this->createUser();
     $this->drupalLogin($outsider);
 
-    $this->visit('/something-else/cp/settings/privacy');
+    $this->visit('/something-else/cp/settings/global-settings/privacy_policy');
     $this->assertSession()->statusCodeEquals(403);
   }
 

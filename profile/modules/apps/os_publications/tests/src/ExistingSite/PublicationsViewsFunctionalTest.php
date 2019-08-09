@@ -117,7 +117,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $render = $this->citationStyler->render($data);
     $expected = preg_replace('/\s*/m', '', $render);
 
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->submitForm(['os_publications_preferred_bibliographic_format' => 'apa'], 'edit-submit');
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
@@ -281,7 +281,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
 
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $edit = [
       'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
       'edit-biblio-order' => 'DESC',
@@ -372,7 +372,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $pos_journal = array_search('Journal', $headings, TRUE);
 
     // Make changes.
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
       'biblio_sort' => 'type',
@@ -476,7 +476,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
 
     // Make changes.
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_preferred_bibliographic_format' => 'harvard_chicago_author_date',
     ], 'Save configuration');
