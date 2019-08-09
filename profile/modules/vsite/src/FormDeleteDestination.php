@@ -60,6 +60,9 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
     $form['actions']['delete']['#url']->setOption('query', $newOptionQuery);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getRedirectMapping(): array {
     $mapping = [
       'node' => [
