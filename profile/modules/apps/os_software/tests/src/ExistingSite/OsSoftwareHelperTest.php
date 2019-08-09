@@ -5,14 +5,14 @@ namespace Drupal\Tests\os_software\ExistingSite;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
- * Class CpTaxonomyHelperTest.
+ * Class OsSoftwareHelperTest.
  *
  * @group cp
  * @group kernel
  *
  * @package Drupal\Tests\os_software\ExistingSite
  */
-class CpTaxonomyHelperTest extends OsExistingSiteTestBase {
+class OsSoftwareHelperTest extends OsExistingSiteTestBase {
 
   /**
    * Os Software Helper.

@@ -5,25 +5,17 @@ namespace Drupal\Tests\os_software\ExistingSite;
 use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
- * Class OsSoftwareProjectReleaseBlocksTest.
+ * Class OsSoftwareProjectReleaseBlocksFunctionalTest.
  *
  * @group cp
- * @group kernel
+ * @group functional
  *
  * @package Drupal\Tests\os_software\ExistingSite
  */
-class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
+class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBase {
 
-  /**
-   * The entity type manager service.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
   protected $projectNode;
-  protected $renderer;
   protected $media;
-  protected $nodeViewBuilder;
 
   /**
    * {@inheritdoc}
@@ -38,16 +30,13 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
         'target_id' => 'executable',
       ],
     ], 'binary');
-    $this->renderer = $this->container->get('renderer');
-    $this->entityTypeManager = $this->container->get('entity_type.manager');
-    $this->nodeViewBuilder = $this->entityTypeManager
-      ->getViewBuilder('node');
   }
 
   /**
    * Test release block recommended on projects node.
    */
   public function testProjectNodeReleaseBlockRecommended() {
+    $web_assert = $this->assertSession();
     $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
@@ -59,18 +48,17 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
       ],
       'field_is_recommended_version' => TRUE,
     ]);
-    $render = $this->nodeViewBuilder->view($this->projectNode, 'full');
-    /** @var \Drupal\Core\Render\Markup $markup_array */
-    $markup = $this->renderer->renderRoot($render);
-    $this->assertContains('Recommended Releases', $markup->__toString());
-    $this->assertContains('v1.1.2', $markup->__toString());
-    $this->assertNotContains('Recent Releases', $markup->__toString());
+    $this->visitViaVsite('node/' . $this->projectNode->id(), $this->group);
+    $web_assert->pageTextContains('Recommended Releases');
+    $web_assert->pageTextContains('v1.1.2');
+    $web_assert->pageTextNotContains('Recent Releases');
   }
 
   /**
    * Test release block recent on projects node.
    */
   public function testProjectNodeReleaseBlockRecent() {
+    $web_assert = $this->assertSession();
     $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
@@ -82,12 +70,10 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
       ],
       'field_is_recommended_version' => FALSE,
     ]);
-    $render = $this->nodeViewBuilder->view($this->projectNode, 'full');
-    /** @var \Drupal\Core\Render\Markup $markup_array */
-    $markup = $this->renderer->renderRoot($render);
-    $this->assertContains('Recent Releases', $markup->__toString());
-    $this->assertContains('v1.1.1', $markup->__toString());
-    $this->assertNotContains('Recommended Releases', $markup->__toString());
+    $this->visitViaVsite('node/' . $this->projectNode->id(), $this->group);
+    $web_assert->pageTextContains('Recent Releases');
+    $web_assert->pageTextContains('v1.1.1');
+    $web_assert->pageTextNotContains('Recommended Releases');
   }
 
 }
