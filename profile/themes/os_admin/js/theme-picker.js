@@ -1,14 +1,14 @@
 (function ($, Drupal) {
   Drupal.behaviors.theme_picker = {
     attach: function (context, settings) {
-      jQuery('.theme-selector .theme-screenshot').click(function () {
-        jQuery('.theme-selector').removeClass('checked');
-        if (!$(this).parents('.theme-selector').hasClass('theme-default')) {
-          $(this).parents('.theme-selector').addClass('checked');
+      $('.theme-selector .theme-screenshot').click(function () {
+        var parent = $(this).parents('.theme-selector');
+        $('.theme-selector').removeClass('checked');
+        if (!parent.hasClass('theme-default')) {
+          parent.addClass('checked');
         }
-        var selectedTheme = jQuery(this).parents('.theme-selector').attr('data-attr');
-        console.log(selectedTheme);
-        jQuery("#edit-theme").val(selectedTheme).change();
+        var selectedTheme = $(this).parents('.theme-selector').attr('data-attr');
+        $("#edit-theme").val(selectedTheme).change();
       });
     }
   };
