@@ -80,19 +80,17 @@ function os_software_node_view_alter(array &$build, EntityInterface $entity, Ent
  */
 function _os_software_add_views_display_to_build(&$build, $display_id, $entity) {
   $view = Views::getView('os_software_releases');
-  if (is_object($view)) {
-    $args['nid'] = $entity->id();
-    $view->setArguments($args);
-    $view->setDisplay($display_id);
-    $view->preExecute();
-    $view->execute();
-    if (empty($view->result)) {
-      return;
-    }
-
-    $build['attached_' . $display_id]['title'] = [
-      '#markup' => '<h2 class="release-block-title">' . $view->getTitle() . '</h2>',
-    ];
-    $build['attached_' . $display_id]['body'] = $view->buildRenderable($display_id, $view->args);
+  $args['nid'] = $entity->id();
+  $view->setArguments($args);
+  $view->setDisplay($display_id);
+  $view->preExecute();
+  $view->execute();
+  if (empty($view->result)) {
+    return;
   }
+
+  $build['attached_' . $display_id]['title'] = [
+    '#markup' => '<h2 class="release-block-title">' . $view->getTitle() . '</h2>',
+  ];
+  $build['attached_' . $display_id]['body'] = $view->buildRenderable($display_id, $view->args);
 }
