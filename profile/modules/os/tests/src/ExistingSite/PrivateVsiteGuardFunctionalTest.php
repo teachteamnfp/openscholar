@@ -18,6 +18,7 @@ class PrivateVsiteGuardFunctionalTest extends OsExistingSiteTestBase {
    * @covers ::access
    *
    * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function test(): void {
     $public_group = $this->group;

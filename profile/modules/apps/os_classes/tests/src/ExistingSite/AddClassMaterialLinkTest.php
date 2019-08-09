@@ -107,7 +107,7 @@ class AddClassMaterialLinkTest extends OsExistingSiteTestBase {
     $this->drupalLogin($this->simpleUser);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/classes");
-    $this->assertSession()->statusCodeEquals(403);
+    $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->linkByHrefNotExists("{$this->group->get('path')->first()->getValue()['alias']}/node/{$this->class->id()}/add/paragraph/class_material");
   }
 
