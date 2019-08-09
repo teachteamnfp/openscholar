@@ -5,7 +5,7 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
- * Class CheckingFieldsTest.
+ * Class CpTaxonomyHelperTest.
  *
  * @group cp
  * @group kernel

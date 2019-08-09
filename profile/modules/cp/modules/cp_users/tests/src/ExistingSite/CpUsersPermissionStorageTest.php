@@ -50,14 +50,12 @@ class CpUsersPermissionStorageTest extends CpUsersExistingSiteTestBase {
     $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/permissions");
 
     $this->getSession()->getPage()->find('css', "[name=\"personal-{$this->group->id()}_cprolepem[create group_node:events entity]\"]")->check();
-    $this->getSession()->getPage()->find('css', "[name=\"personal-{$this->group->id()}_cprolepem[create group_node:events content]\"]")->check();
     $this->getSession()->getPage()->pressButton('Save permissions');
 
     $group_role = GroupRole::load($this->groupRole->id());
     /** @var array $permissions */
     $permissions = $group_role->getPermissions();
     $this->assertContains('create group_node:events entity', $permissions);
-    $this->assertContains('create group_node:events content', $permissions);
   }
 
 }
