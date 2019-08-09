@@ -76,12 +76,12 @@
                 </div>
               {% endif %}
             <div class="theme-info col-sm-9">
-              <h4 class="theme-info__header">
+              <h3 class="theme-info__header">
                 {{- theme.name }} {{ theme.version -}}
                 {% if theme.notes %}
                   ({{ theme.notes|safe_join(', ') }})
                 {%- endif -%}
-              </h4>
+              </h3>
               {# <div class="theme-info__description help-block">{{ theme.description }}</div> #}
               {# Display operation links if the theme is compatible. #}
               {% if theme.incompatible %}
