@@ -71,7 +71,7 @@ class CpTaxonomySettingsFormTest extends OsExistingSiteTestBase {
     $this->configTaxonomy->save(TRUE);
 
     $this->drupalLogin($this->groupAdmin);
-    $this->visitViaVsite('cp/settings/taxonomy', $this->group);
+    $this->visitViaVsite('cp/settings/global-settings/taxonomy', $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $page = $this->getCurrentPageContent();
     // Assert checkboxes are checked.
