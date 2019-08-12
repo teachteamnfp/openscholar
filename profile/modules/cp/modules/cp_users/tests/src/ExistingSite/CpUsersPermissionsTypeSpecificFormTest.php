@@ -49,26 +49,32 @@ class CpUsersPermissionsTypeSpecificFormTest extends CpUsersExistingSiteTestBase
 
     // Make sure that group content (relationship) permissions are not
     // displayed.
+    $this->assertNull($this->getSession()->getPage()->findField('personal-member[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-member[create group_node:blog entity]'));
 
+    $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-administrator[create group_node:blog entity]'));
 
+    $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-content_editor[create group_node:blog entity]'));
   }
 
   /**
@@ -111,26 +117,32 @@ class CpUsersPermissionsTypeSpecificFormTest extends CpUsersExistingSiteTestBase
 
     // Make sure that group content (relationship) permissions are not
     // displayed.
+    $this->assertNull($this->getSession()->getPage()->findField('personal-member[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-member[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-member[create group_node:blog entity]'));
 
+    $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-administrator[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-administrator[create group_node:blog entity]'));
 
+    $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[view group_node:blog entity]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[view group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[create group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[update own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[update any group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[delete own group_node:blog content]'));
     $this->assertNull($this->getSession()->getPage()->findField('personal-content_editor[delete any group_node:blog content]'));
+    $this->assertNotNull($this->getSession()->getPage()->findField('personal-content_editor[create group_node:blog entity]'));
   }
 
 }
