@@ -66,11 +66,10 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
     }
     $newOptionQuery = $delete_link_options['query'];
     $redirectPath = self::REDIRECT_MAPPING[$entity->getEntityTypeId()][$bundle];
-    $new_destination = '/';
+    $new_destination = '/' . $redirectPath;
     if ($this->vsiteContextManager->getActiveVsite()) {
-      $new_destination = '/' . $this->vsiteContextManager->getActivePurl();
+      $new_destination = '/' . $this->vsiteContextManager->getActivePurl() . $new_destination;
     }
-    $new_destination .= '/' . $redirectPath;
     $newOptionQuery['destination'] = $new_destination;
     $form['actions']['delete']['#url']->setOption('query', $newOptionQuery);
   }
