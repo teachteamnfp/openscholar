@@ -181,10 +181,13 @@ function os_publications_views_pre_render(ViewExecutable $view) {
  */
 function os_publications_preprocess_views_view_unformatted(&$variables) {
   // Change grouping headers to corresponding mapped years text.
-  $pub_config = \Drupal::configFactory()->get('os_publications.settings')->get('publications_years_text');
-  if (in_array($variables['title']->__toString(), array_keys($pub_config))) {
-    $year_number = $variables['title']->__toString();
-    $variables['title'] = $pub_config[$year_number];
+  if ($variables['view']->id() == 'publications' && $variables['view']->current_display == 'page_4') {
+    $pub_config = \Drupal::configFactory()->get('os_publications.settings')->get('publications_years_text');
+    $title = is_object($variables['title']) ? $variables['title']->__toString() : $variables['title'];
+    if (in_array($title, array_keys($pub_config))) {
+      $year_number = $variables['title']->__toString();
+      $variables['title'] = $pub_config[$year_number];
+    }
   }
 }
 
