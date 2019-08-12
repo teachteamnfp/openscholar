@@ -6,6 +6,9 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\views\Views;
 
 /**
  * Implements hook_form_alter().
@@ -17,4 +20,77 @@ function os_software_form_alter(&$form, FormStateInterface $form_state, $form_id
       '#weight' => 1,
     ];
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_software_form_node_software_release_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  _os_software_hide_node_title_form($form);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_software_form_node_software_release_edit_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  _os_software_hide_node_title_form($form);
+}
+
+/**
+ * Hide title in form.
+ */
+function _os_software_hide_node_title_form(&$form) {
+  $form['title']['#access'] = FALSE;
+}
+
+/**
+ * Implements hook_node_presave().
+ *
+ * Generates the node title for Software Releases.
+ */
+function os_software_node_presave($node) {
+  if ($node->bundle() != 'software_release') {
+    return;
+  }
+
+  // Sets the node title like "[project-node:title] [release-node:version]".
+  /** @var \Drupal\os_software\OsSoftwareHelper $helper */
+  $helper = Drupal::service('os.software.helper');
+  $title = $helper->prepareReleaseTitle($node);
+  $node->set('title', $title);
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view_alter().
+ */
+function os_software_node_view_alter(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display) {
+  if ($entity->bundle() != 'software_project') {
+    return;
+  }
+  if ($build['#view_mode'] != 'full') {
+    return;
+  }
+  foreach (['recommended_block', 'recent_block'] as $display_id) {
+    _os_software_add_views_display_to_build($build, $display_id, $entity);
+  }
+}
+
+/**
+ * Add os_software_releases views block to build array.
+ */
+function _os_software_add_views_display_to_build(&$build, $display_id, $entity) {
+  $view = Views::getView('os_software_releases');
+  $args['nid'] = $entity->id();
+  $view->setArguments($args);
+  $view->setDisplay($display_id);
+  $view->preExecute();
+  $view->execute();
+  if (empty($view->result)) {
+    return;
+  }
+
+  $build['attached_' . $display_id]['title'] = [
+    '#markup' => '<h2 class="release-block-title">' . $view->getTitle() . '</h2>',
+  ];
+  $build['attached_' . $display_id]['body'] = $view->buildRenderable($display_id, $view->args);
 }

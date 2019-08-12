@@ -4,6 +4,7 @@ namespace Drupal\cp_users;
 
 use Drupal\group\Entity\GroupInterface;
 use Drupal\group\Entity\GroupRoleInterface;
+use Drupal\group\Entity\GroupTypeInterface;
 
 /**
  * Provides an interface for editable cp_roles.
@@ -42,5 +43,21 @@ interface CpRolesHelperInterface {
    *   TRUE if it is a default one, otherwise FALSE.
    */
   public function isDefaultGroupRole(GroupRoleInterface $group_role): bool;
+
+  /**
+   * Returns the restricted permissions for a group type.
+   *
+   * The permissions are supposed to be restricted only in vsite permissions
+   * interface, not in the default permissions interface.
+   *
+   * @param \Drupal\group\Entity\GroupTypeInterface $group_type
+   *   The group type.
+   *
+   * @return array
+   *   The restricted permissions.
+   *
+   * @see \Drupal\cp_users\Form\CpUsersPermissionsTypeSpecificForm::buildForm()
+   */
+  public function getRestrictedPermissions(GroupTypeInterface $group_type): array;
 
 }

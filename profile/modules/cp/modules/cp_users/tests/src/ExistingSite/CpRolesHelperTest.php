@@ -3,6 +3,7 @@
 namespace Drupal\Tests\cp_users\ExistingSite;
 
 use Drupal\group\Entity\GroupRole;
+use Drupal\group\Entity\GroupType;
 
 /**
  * CpUsersHelperTest.
@@ -54,6 +55,33 @@ class CpRolesHelperTest extends CpUsersExistingSiteTestBase {
 
     $custom_role = $this->createGroupRole();
     $this->assertFalse($cp_roles_helper->isDefaultGroupRole($custom_role));
+  }
+
+  /**
+   * @covers ::getRestrictedPermissions
+   */
+  public function testGetRestrictedPermissions(): void {
+    /** @var \Drupal\cp_users\CpRolesHelperInterface $cp_roles_helper */
+    $cp_roles_helper = $this->container->get('cp_users.cp_roles_helper');
+    $group_type = GroupType::load('personal');
+
+    $restricted_permissions = $cp_roles_helper->getRestrictedPermissions($group_type);
+
+    // It is not possible to check for all group content plugins, therefore,
+    // only group_node:blog is checked here.
+    $this->assertContains('view group_node:blog content', $restricted_permissions);
+    $this->assertContains('create group_node:blog content', $restricted_permissions);
+    $this->assertContains('update own group_node:blog content', $restricted_permissions);
+    $this->assertContains('update any group_node:blog content', $restricted_permissions);
+    $this->assertContains('delete own group_node:blog content', $restricted_permissions);
+    $this->assertContains('delete any group_node:blog content', $restricted_permissions);
+
+    $this->assertNotContains('view group_node:blog entity', $restricted_permissions);
+    $this->assertNotContains('create group_node:blog entity', $restricted_permissions);
+    $this->assertNotContains('update own group_node:blog entity', $restricted_permissions);
+    $this->assertNotContains('update any group_node:blog entity', $restricted_permissions);
+    $this->assertNotContains('delete own group_node:blog entity', $restricted_permissions);
+    $this->assertNotContains('delete any group_node:blog entity', $restricted_permissions);
   }
 
 }
