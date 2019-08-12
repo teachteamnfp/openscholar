@@ -29,8 +29,7 @@ class FormDeleteDestinationTest extends VsiteExistingSiteTestBase {
     ]);
     $this->group->addContent($node, 'group_node:blog');
     $this->visitViaVsite('node/' . $node->id() . '/edit?destination=/hello', $this->group);
-    $page = $this->getCurrentPageContent();
-    $this->assertContains($this->groupAlias . '/node/' . $node->id() . '/delete?destination=' . $this->groupAlias . '/blog', $page);
+    $this->assertSession()->linkByHrefExists($this->groupAlias . '/node/' . $node->id() . '/delete?destination=' . $this->groupAlias . '/blog');
   }
 
   /**
@@ -42,8 +41,7 @@ class FormDeleteDestinationTest extends VsiteExistingSiteTestBase {
     ]);
     $this->group->addContent($node, 'group_node:blog');
     $this->visitViaVsite('node/' . $node->id() . '/edit', $this->group);
-    $page = $this->getCurrentPageContent();
-    $this->assertContains($this->groupAlias . '/node/' . $node->id() . '/delete?destination=' . $this->groupAlias . '/blog', $page);
+    $this->assertSession()->linkByHrefExists($this->groupAlias . '/node/' . $node->id() . '/delete?destination=' . $this->groupAlias . '/blog');
   }
 
   /**
@@ -53,8 +51,7 @@ class FormDeleteDestinationTest extends VsiteExistingSiteTestBase {
     $publication = $this->createReference();
     $this->group->addContent($publication, 'group_entity:bibcite_reference');
     $this->visitViaVsite('bibcite/reference/' . $publication->id() . '/edit?destination=/hello', $this->group);
-    $page = $this->getCurrentPageContent();
-    $this->assertContains($this->groupAlias . '/bibcite/reference/' . $publication->id() . '/delete?destination=' . $this->groupAlias . '/publications', $page);
+    $this->assertSession()->linkByHrefExists($this->groupAlias . '/bibcite/reference/' . $publication->id() . '/delete?destination=' . $this->groupAlias . '/publications');
   }
 
   /**
@@ -64,8 +61,7 @@ class FormDeleteDestinationTest extends VsiteExistingSiteTestBase {
     $publication = $this->createReference();
     $this->group->addContent($publication, 'group_entity:bibcite_reference');
     $this->visitViaVsite('bibcite/reference/' . $publication->id() . '/edit', $this->group);
-    $page = $this->getCurrentPageContent();
-    $this->assertContains($this->groupAlias . '/bibcite/reference/' . $publication->id() . '/delete?destination=' . $this->groupAlias . '/publications', $page);
+    $this->assertSession()->linkByHrefExists($this->groupAlias . '/bibcite/reference/' . $publication->id() . '/delete?destination=' . $this->groupAlias . '/publications');
   }
 
 }
