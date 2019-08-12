@@ -185,7 +185,7 @@ function os_publications_preprocess_views_view_unformatted(&$variables) {
     $pub_config = \Drupal::configFactory()->get('os_publications.settings')->get('publications_years_text');
     $title = is_object($variables['title']) ? $variables['title']->__toString() : $variables['title'];
     if (in_array($title, array_keys($pub_config))) {
-      $year_number = $variables['title']->__toString();
+      $year_number = $title;
       $variables['title'] = $pub_config[$year_number];
     }
   }
