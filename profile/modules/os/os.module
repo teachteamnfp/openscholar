@@ -214,12 +214,30 @@ function os_preprocess_checkboxes(&$variables) {
 }
 
 /**
- * Implements hook_form_BASE_FORM_ID_alter().
+ * Implements hook_form_BASE_FORM_ID_alter() for node forms.
+ *
+ * Gives more control to vsite admins.
  */
 function os_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // TODO: Implement the permission checks.
-  $form['path']['#access'] = TRUE;
-  $form['uid']['#access'] = TRUE;
-  $form['sticky']['#access'] = TRUE;
-  $form['created']['#access'] = TRUE;
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\Group|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  if (!$active_vsite) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Session\AccountInterface $current_user */
+  $current_user = \Drupal::currentUser();
+  /** @var bool $has_administer_content_access */
+  $has_administer_content_access = $active_vsite->hasPermission('administer nodes', $current_user);
+  /** @var bool $has_create_alias_access */
+  $has_create_alias_access = $active_vsite->hasPermission('create url aliases', $current_user);
+
+  $form['path']['#access'] = $has_create_alias_access;
+  $form['path']['widget'][0]['#access'] = $has_create_alias_access;
+  $form['uid']['#access'] = $has_administer_content_access;
+  $form['sticky']['#access'] = $has_administer_content_access;
+  $form['created']['#access'] = $has_administer_content_access;
 }

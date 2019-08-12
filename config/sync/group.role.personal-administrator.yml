@@ -211,4 +211,6 @@ permissions:
   196: 'administer group'
   197: manage_menu
   198: 'download citations'
-  205: 'manage vsite content'
+  199: 'manage vsite content'
+  398: 'administer nodes'
+  399: 'create url aliases'
