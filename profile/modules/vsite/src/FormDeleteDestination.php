@@ -52,7 +52,7 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
     }
     $delete_link_options = $form['actions']['delete']['#url']->getOptions();
     if (empty($delete_link_options['query']['destination'])) {
-      // Init destination
+      // Init destination.
       $delete_link_options['query']['destination'] = '';
     }
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
@@ -74,4 +74,5 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
     $newOptionQuery['destination'] = $new_destination;
     $form['actions']['delete']['#url']->setOption('query', $newOptionQuery);
   }
+
 }

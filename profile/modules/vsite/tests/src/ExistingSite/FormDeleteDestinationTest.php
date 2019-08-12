@@ -10,6 +10,9 @@ namespace Drupal\Tests\vsite\ExistingSite;
  */
 class FormDeleteDestinationTest extends VsiteExistingSiteTestBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function setUp() {
     parent::setUp();
     $group_admin = $this->createUser();
