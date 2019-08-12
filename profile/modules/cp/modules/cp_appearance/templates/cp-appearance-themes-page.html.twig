@@ -46,9 +46,9 @@
     %}
     <div{{ theme_group.attributes.addClass(theme_group_classes) }}>
       <div class="panel-heading">
-        <a class="panel-title" href="#system-themes-list--{{ theme_group.state }}" aria-controls="#system-themes-list--{{ theme_group.state }}" aria-expanded="false" aria-pressed="false" data-toggle="collapse" role="button">
+        <h2>
           {{ theme_group.title }} ({{ theme_group.themes|length }})
-        </a>
+        </h2>
       </div>
       {%
         set table_classes = [
