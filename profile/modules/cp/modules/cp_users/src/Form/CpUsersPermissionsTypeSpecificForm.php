@@ -162,11 +162,6 @@ final class CpUsersPermissionsTypeSpecificForm extends CpUsersPermissionsForm {
       }
     }
 
-    // Do not show relationship permissions in the UI.
-    foreach ($this->cpRolesHelper->getRestrictedPermissions($this->groupType) as $permission) {
-      unset($form['permissions'][$permission]);
-    }
-
     return $form;
   }
 
