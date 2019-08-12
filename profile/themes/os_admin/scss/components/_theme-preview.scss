@@ -53,6 +53,9 @@
         &:first-child {
           display: none;
         }
+        &:last-child {
+          display: block;
+        }
         a {
           color: $color-white;
         }

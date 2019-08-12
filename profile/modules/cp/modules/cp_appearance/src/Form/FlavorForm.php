@@ -182,7 +182,7 @@ class FlavorForm extends FormBase {
       $response->addCommand(new RemoveCommand("#$theme_selector_identifier .theme-info .operations"));
 
       if ($selection !== $this->defaultTheme) {
-        $response->addCommand(new AfterCommand("#$theme_selector_identifier .theme-info__description", [
+        $response->addCommand(new AfterCommand("#$theme_selector_identifier .theme-info__header", [
           '#theme' => 'links',
           '#attributes' => [
             'class' => [
