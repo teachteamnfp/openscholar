@@ -27,16 +27,16 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
   ];
 
   /**
-   * The vsite.context_manager service.
+   * The Vsite Context Manager service.
    *
-   * @var VsiteContextManagerInterface
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
    */
   protected $vsiteContextManager;
 
   /**
    * Constructs a FormDeleteDestination object.
    *
-   * @param VsiteContextManagerInterface $vsite_context_manager
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
    *   The vsite.context_manager service.
    */
   public function __construct(VsiteContextManagerInterface $vsite_context_manager) {
