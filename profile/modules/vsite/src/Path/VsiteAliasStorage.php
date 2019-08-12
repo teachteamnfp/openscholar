@@ -121,6 +121,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function save($source, $alias, $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid = NULL) {
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
+      $alias = '/[vsite:' . $group->id() . ']' . $alias;
+    }
     if (!preg_match('|^\/group\/[\d]*$|', $source)) {
       $alias = $this->pathToToken($alias);
     }
@@ -161,7 +165,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   public function preloadPathAlias($preloaded, $langcode) {
     $output = $this->storage->preloadPathAlias($preloaded, $langcode);
 
-    foreach ($output as $source => &$alias) {
+    foreach ($output as &$alias) {
       $alias = $this->tokenToPath($alias);
     }
 
@@ -201,6 +205,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function aliasExists($alias, $langcode, $source = NULL) {
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    if ($group = $this->vsiteContextManager->getActiveVsite()) {
+      $alias = '/[vsite:' . $group->id() . ']' . $alias;
+    }
     $alias = $this->pathToToken($alias);
     return $this->storage->aliasExists($alias, $langcode, $source);
   }
