@@ -371,7 +371,7 @@ function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewD
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
-      'mapping' => Drupal::service('vsite.form_delete_destination')->getRedirectMapping(),
+      'mapping' => Drupal::service('vsite.form_delete_destination')::REDIRECT_MAPPING,
     ];
   }
 }
@@ -389,7 +389,7 @@ function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $e
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
-      'mapping' => Drupal::service('vsite.form_delete_destination')->getRedirectMapping(),
+      'mapping' => Drupal::service('vsite.form_delete_destination')::REDIRECT_MAPPING,
     ];
   }
 }

@@ -10,6 +10,22 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
  */
 class FormDeleteDestination implements FormDeleteDestinationInterface {
 
+  const REDIRECT_MAPPING = [
+    'node' => [
+      'blog' => 'blog',
+      'events' => 'calendar',
+      'class' => 'classes',
+      'link' => 'links',
+      'news' => 'news',
+      'person' => 'people',
+      'presentation' => 'presentations',
+      'software_project' => 'software',
+    ],
+    'bibcite_reference' => [
+      '*' => 'publications',
+    ],
+  ];
+
   /**
    * The vsite.context_manager service.
    *
@@ -39,18 +55,17 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
       // Init destination
       $delete_link_options['query']['destination'] = '';
     }
-    $mapping = $this->getRedirectMapping();
     /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
     $entity = $form_state->getFormObject()->getEntity();
     $bundle = $entity->bundle();
     if ($entity->getEntityTypeId() == 'bibcite_reference') {
       $bundle = '*';
     }
-    if (empty($mapping[$entity->getEntityTypeId()][$bundle])) {
+    if (empty(self::REDIRECT_MAPPING[$entity->getEntityTypeId()][$bundle])) {
       return;
     }
     $newOptionQuery = $delete_link_options['query'];
-    $redirectPath = $mapping[$entity->getEntityTypeId()][$bundle];
+    $redirectPath = self::REDIRECT_MAPPING[$entity->getEntityTypeId()][$bundle];
     $new_destination = '/';
     if ($this->vsiteContextManager->getActiveVsite()) {
       $new_destination = '/' . $this->vsiteContextManager->getActivePurl();
@@ -58,27 +73,5 @@ class FormDeleteDestination implements FormDeleteDestinationInterface {
     $new_destination .= '/' . $redirectPath;
     $newOptionQuery['destination'] = $new_destination;
     $form['actions']['delete']['#url']->setOption('query', $newOptionQuery);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getRedirectMapping(): array {
-    $mapping = [
-      'node' => [
-        'blog' => 'blog',
-        'events' => 'calendar',
-        'class' => 'classes',
-        'link' => 'links',
-        'news' => 'news',
-        'person' => 'people',
-        'presentation' => 'presentations',
-        'software_project' => 'software',
-      ],
-      'bibcite_reference' => [
-        '*' => 'publications',
-      ],
-    ];
-    return $mapping;
   }
 }

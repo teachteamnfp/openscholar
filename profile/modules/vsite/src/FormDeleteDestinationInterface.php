@@ -10,14 +10,6 @@ use Drupal\Core\Form\FormStateInterface;
 interface FormDeleteDestinationInterface {
 
   /**
-   * Get redirect/destination mapping by entity type.
-   *
-   * @return array
-   *   Mapping array.
-   */
-  public function getRedirectMapping() : array;
-
-  /**
    * Set form delete button destination.
    *
    * @param array $form
