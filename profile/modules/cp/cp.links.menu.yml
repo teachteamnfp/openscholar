@@ -52,25 +52,25 @@ cp.menu:
   menu_name: control-panel
 cp.appearance:
   title: 'Appearance'
-  url: 'internal:##'
+  route_name: cp.settings.appearance_settings
   menu_name: control-panel
   weight: 2
 cp.settings:
   title: 'Settings'
-  url: 'internal:##'
+  route_name: cp.settings.collection
   weight: 4
   menu_name: control-panel
 cp.settings.app:
   title: 'App Settings'
-  url: 'internal:##'
+  route_name: cp.settings.apps_settings
   weight: 1
-  menu_name: app-settings
+  menu_name: control-panel
   parent: cp.settings
 cp.settings.global:
   title: 'Global Settings'
-  url: 'internal:##'
+  route_name: cp.settings.global_settings
   weight: 2
-  menu_name: global-settings
+  menu_name: control-panel
   parent: cp.settings
 # These are temporary placeholders, and should be removed when they
 # are properly implemented.
