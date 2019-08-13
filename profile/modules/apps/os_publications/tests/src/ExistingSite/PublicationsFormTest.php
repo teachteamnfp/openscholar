@@ -80,6 +80,17 @@ class PublicationsFormTest extends TestBase {
     $this->submitForm($edit, 'edit-submit');
     $this->assertSession()->elementExists('css', '.form-item--error-message');
     $this->assertSession()->pageTextContains('Date must be valid');
+
+    // Test a positive case/successful form submission.
+    $edit = [
+      'bibcite_secondary_title[0][value]' => 'TestJournalTitle',
+      'bibcite_year[0][value]' => '2019',
+      'publication_month' => '4',
+      'publication_day' => '15',
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->pageTextContains('4/15/2019');
   }
 
   /**
