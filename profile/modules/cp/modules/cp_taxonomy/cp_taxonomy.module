@@ -28,16 +28,20 @@ function cp_taxonomy_entity_operation_alter(array &$operations, EntityInterface 
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if ($vsiteContextManager->getActiveVsite()) {
     if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
-      $operations = array_intersect_key($operations, [
-        'edit' => '',
-        'list' => '',
-        'add' => '',
-      ]);
-      /** @var \Drupal\Core\Url $url */
-      $url = $operations['list']['url'];
-      $operations['list']['url'] = Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
-      $operations['edit']['url'] = Url::fromRoute('cp.taxonomy.edit', $url->getRouteParameters());
-      $operations['add']['url'] = Url::fromRoute('cp.taxonomy.term.add', $url->getRouteParameters());
+      $keys = [
+        'edit' => 'cp.taxonomy.edit',
+        'list' => 'cp.taxonomy.list',
+        'add' => 'cp.taxonomy.term.add',
+      ];
+      $operations = array_intersect_key($operations, $keys);
+      foreach ($keys as $key => $route_name) {
+        if (empty($operations[$key]['url'])) {
+          continue;
+        }
+        /** @var \Drupal\Core\Url $url */
+        $url = $operations[$key]['url'];
+        $operations[$key]['url'] = Url::fromRoute($route_name, $url->getRouteParameters());
+      }
     }
   }
 }
