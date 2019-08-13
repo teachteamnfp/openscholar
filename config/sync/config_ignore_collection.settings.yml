@@ -1,0 +1,4 @@
+ignored_config_collections:
+  - 'vsite:*'
+_core:
+  default_config_hash: tmDpZ63nwAmiCA6SkcPPVwx4RlIcfguBRTdHZFIhAEg

@@ -231,7 +231,8 @@
         "drupal/bibcite": "1.x-dev",
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
-        "harvesthq/chosen": "^1.8"
+        "harvesthq/chosen": "^1.8",
+        "drupal/config_ignore_collection": "^1.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",
