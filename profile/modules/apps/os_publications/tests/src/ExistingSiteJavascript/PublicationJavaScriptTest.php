@@ -38,7 +38,7 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
    */
   public function testPreviewToggle(): void {
     $this->drupalLogin($this->groupAdmin);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
 
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
@@ -55,9 +55,9 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     $web_assert->pageTextContains($value);
 
     // Test APA hover.
-    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-apa');
+    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-ieee');
     $format->mouseOver();
-    $result = $web_assert->waitForElementVisible('css', '#apa');
+    $result = $web_assert->waitForElementVisible('css', '#ieee');
     $this->assertNotNull($result);
     $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.

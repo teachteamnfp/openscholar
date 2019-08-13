@@ -119,7 +119,7 @@ class CitationExportLinksTest extends TestBase {
     $this->assertSession()->elementExists('css', '.citation-download');
 
     // Make changes.
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_export_format[bibtex]' => FALSE,
       'os_publications_export_format[endnote8]' => FALSE,
@@ -143,7 +143,7 @@ class CitationExportLinksTest extends TestBase {
     $this->assertSession()->elementExists('css', '.citation-download');
 
     // Make changes.
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_export_format[bibtex]' => FALSE,
       'os_publications_export_format[endnote8]' => FALSE,

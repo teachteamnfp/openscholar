@@ -30,7 +30,7 @@ class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascri
     $this->drupalLogin($group_admin);
     $custom_theme_label = strtolower($this->randomMachineName());
 
-    $this->visitViaVsite('cp/appearance/custom-themes/add', $this->group);
+    $this->visitViaVsite('cp/appearance/themes/custom-themes/add', $this->group);
     $this->getSession()->getPage()->fillField('Custom Theme Name', $custom_theme_label);
     $this->assertSession()->waitForElementVisible('css', '.machine-name-value');
     $this->getSession()->getPage()->selectFieldOption('Parent Theme', 'clean');
@@ -45,10 +45,10 @@ class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascri
     $theme_handler = $this->container->get('theme_handler');
     $theme_handler->refreshInfo();
 
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('#system-themes-list--custom_theme');
+    $this->assertSession()->pageTextContains('custom theme');
     $this->assertSession()->pageTextContains($custom_theme_label);
 
     // Cleanup.

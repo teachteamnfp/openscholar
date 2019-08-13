@@ -31,6 +31,7 @@
  * @see \template_preprocess_cp_appearance_themes_page
  */
 #}
+{{ attach_library('os_admin/theme-picker') }}
 <div{{ attributes.addClass('form-group') }}>
   {% for theme_group in theme_groups %}
     {%
@@ -45,9 +46,9 @@
     %}
     <div{{ theme_group.attributes.addClass(theme_group_classes) }}>
       <div class="panel-heading">
-        <a class="panel-title" href="#system-themes-list--{{ theme_group.state }}" aria-controls="#system-themes-list--{{ theme_group.state }}" aria-expanded="false" aria-pressed="false" data-toggle="collapse" role="button">
+        <h2>
           {{ theme_group.title }} ({{ theme_group.themes|length }})
-        </a>
+        </h2>
       </div>
       {%
         set table_classes = [
@@ -59,7 +60,7 @@
       ]
       %}
       <div id="system-themes-list--{{ theme_group.state }}" class="{{ table_classes|join(' ')}}">
-        {% for theme in theme_group.themes %}
+        {% for theme_machine_name, theme in theme_group.themes %}
           {%
             set theme_classes = [
               theme.is_default ? 'theme-default',
@@ -68,20 +69,19 @@
               'clearfix',
             ]
           %}
-          <div{{ theme.attributes.addClass(theme_classes) }}>
+          <div{{ theme.attributes.addClass(theme_classes) }} data-attr="{{theme_machine_name}}">
           <div class="theme-screenshot">
               {% if theme.screenshot %}
                 {{ theme.screenshot }}
                 </div>
               {% endif %}
             <div class="theme-info col-sm-9">
-              <h4 class="theme-info__header">
+              <h3 class="theme-info__header">
                 {{- theme.name }} {{ theme.version -}}
                 {% if theme.notes %}
                   ({{ theme.notes|safe_join(', ') }})
                 {%- endif -%}
-              </h4>
-              <div class="theme-info__description help-block">{{ theme.description }}</div>
+              </h3>
               {# Display operation links if the theme is compatible. #}
               {% if theme.incompatible %}
                 <div class="incompatible">{{ theme.incompatible }}</div>

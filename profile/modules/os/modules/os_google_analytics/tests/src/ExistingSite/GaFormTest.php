@@ -48,7 +48,7 @@ class GaFormTest extends OsExistingSiteTestBase {
   public function testGaSettingsPath() {
 
     $this->drupalLogin($this->groupAdmin);
-    $this->drupalGet('test-alias/cp/settings/analytics');
+    $this->drupalGet('test-alias/cp/settings/global-settings/analytics');
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -60,7 +60,7 @@ class GaFormTest extends OsExistingSiteTestBase {
   public function testGaSettingsForm() {
 
     $this->drupalLogin($this->groupAdmin);
-    $this->drupalGet('test-alias/cp/settings/analytics');
+    $this->drupalGet('test-alias/cp/settings/global-settings/analytics');
     // Dummy web property.
     $edit = [
       'edit-web-property-id' => 'UA-111111111-1',
@@ -78,7 +78,7 @@ class GaFormTest extends OsExistingSiteTestBase {
 
     $this->drupalLogin($this->groupAdmin);
     // Test only vsite.
-    $this->drupalGet('test-alias/cp/settings/analytics');
+    $this->drupalGet('test-alias/cp/settings/global-settings/analytics');
     // Dummy vsite web property.
     $edit = [
       'edit-web-property-id' => 'UA-111111111-1',
