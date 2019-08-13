@@ -666,7 +666,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   array_unshift($form['actions']['submit']['#submit'], 'os_publications_year_date_flip');
 
   /** @var array $years */
-  $years = $config_factory->get('publications_years_text');
+  $years = $config_factory->get('publications_years_text') ?? [];
   $default_year = 0;
   if (in_array($reference->bibcite_year->value, array_keys($years))) {
     $default_year = $reference->bibcite_year->value;
@@ -906,9 +906,11 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
   $publication = $variables['data']['entity'];
-  $text = Markup::create($publication->html_title->value);
-  $link = $publication->toLink($text)->toString();
-  $variables['data']['title'] = $link;
+  if ($publication->id()) {
+    $text = Markup::create($publication->html_title->value);
+    $link = $publication->toLink($text)->toString();
+    $variables['data']['title'] = $link;
+  }
 
   // Map the numbers back to text.
   $years = $publications_config->get('publications_years_text');
