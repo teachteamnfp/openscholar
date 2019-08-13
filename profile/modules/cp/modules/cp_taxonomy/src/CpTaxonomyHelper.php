@@ -168,8 +168,9 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function getWidgetType(string $entity_bundle): string {
+  public function getWidgetTypes(string $entity_bundle): array {
     $vocabularies = $this->searchAllowedVocabulariesByType($entity_bundle);
+    $widgets = [];
     foreach ($vocabularies as $vid) {
       $config_vocab = $this->configFactory->get('taxonomy.vocabulary.' . $vid);
       if (empty($config_vocab)) {
@@ -179,9 +180,16 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       if (empty($widget_type)) {
         continue;
       }
-      return $widget_type;
+      $widgets[$vid] = [
+        'widget_type' => $widget_type,
+        'label' => $config_vocab->get('name'),
+      ];
     }
-    return TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
+    // Check vid?
+    if (empty($widgets) && !empty($vid)) {
+      $widgets[$vid] = TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
+    }
+    return $widgets;
   }
 
 }
