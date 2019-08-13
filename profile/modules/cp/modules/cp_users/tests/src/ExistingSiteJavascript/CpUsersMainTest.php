@@ -3,7 +3,9 @@
 namespace Drupal\Tests\cp_users\ExistingSiteJavascript;
 
 use Drupal\Core\Test\AssertMailTrait;
+use Drupal\group\Entity\Group;
 use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
+use Drupal\user\Entity\User;
 
 /**
  * Class CpUsersMainTests.
@@ -89,6 +91,9 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Tests for adding and removing users.
    *
+   * @covers \Drupal\cp_users\Controller\CpUserMainController::main
+   * @covers \Drupal\cp_users\Form\CpUsersAddForm
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
@@ -128,6 +133,9 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
 
   /**
    * Tests for adding a user new to the site.
+   *
+   * @covers \Drupal\cp_users\Controller\CpUserMainController::main
+   * @covers \Drupal\cp_users\Form\CpUsersAddForm
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -202,38 +210,81 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
   /**
    * Checks user access to change vsite ownership.
    *
+   * @covers \Drupal\cp_users\Controller\CpUserMainController::main
+   * @covers \Drupal\cp_users\Form\CpUsersOwnershipForm
+   *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Behat\Mink\Exception\UnsupportedDriverActionException
+   * @throws \Behat\Mink\Exception\DriverException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function testChangeOwnership(): void {
     // Setup.
     $member = $this->createUser();
+    $vsite_owner = $this->createUser();
     $this->group->addMember($member);
+    $this->addGroupAdmin($vsite_owner, $this->group);
+    $this->group->setOwner($vsite_owner)->save();
 
     // Negative tests.
     $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('cp/users', $this->group);
 
-    /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
-    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$member->id()}\"]");
-    $this->assertNull($change_owner_link);
+    // Make sure non-vsite-owner is not able to change ownership.
+    /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link_for_for_vsite_owner */
+    $change_owner_link_for_vsite_owner = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$vsite_owner->id()}\"]");
+    $this->assertNull($change_owner_link_for_vsite_owner);
     $this->visitViaVsite('cp/users/owner', $this->group);
     $this->assertSession()->statusCodeEquals(403);
 
+    // Make sure non-vsite-owner can change roles.
+    $this->visitViaVsite('cp/users', $this->group);
+    /** @var \Behat\Mink\Element\NodeElement|null $change_role_link_for_member */
+    $change_role_link_for_member = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/change-role/{$member->id()}\"]");
+    $this->assertNotNull($change_role_link_for_member);
+    $this->visitViaVsite("cp/users/change-role/{$member->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+
     $this->drupalLogout();
 
-    // Config changes for positive tests.
-    $this->group->setOwner($this->groupAdmin)->save();
-
     // Positive tests.
-    $this->drupalLogin($this->groupAdmin);
+    $this->drupalLogin($vsite_owner);
     $this->visitViaVsite('cp/users', $this->group);
 
+    // Make sure vsite owner is able to change roles.
+    /** @var \Behat\Mink\Element\NodeElement|null $change_role_link_for_member */
+    $change_role_link_for_member = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/change-role/{$member->id()}\"]");
+    $this->assertNotNull($change_role_link_for_member);
+
+    // Make sure vsite owner is able to change ownership.
     /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
-    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$member->id()}\"]");
+    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$vsite_owner->id()}\"]");
     $this->assertNotNull($change_owner_link);
-    $this->visitViaVsite('cp/users/owner', $this->group);
+    $change_owner_link->click();
+    $this->waitForAjaxToFinish();
     $this->assertSession()->statusCodeEquals(200);
+    $this->submitForm([
+      'new_owner' => $member->id(),
+    ], 'Save');
+    $this->waitForAjaxToFinish();
+
+    // Make sure that after ownership is passed, previous owner is no longer
+    // able to view change ownership option.
+    $this->visitViaVsite('cp/users', $this->group);
+    /** @var \Behat\Mink\Element\NodeElement|null $change_owner_link */
+    $change_owner_link = $this->getSession()->getPage()->find('css', "a[href=\"/{$this->modifier}/cp/users/owner?user={$vsite_owner->id()}\"]");
+    $this->assertNull($change_owner_link);
+
+    // Assert that expected changes have been made.
+    $fresh_group_entity = Group::load($this->group->id());
+    $this->assertEquals($member->id(), $fresh_group_entity->getOwnerId());
+    $new_owner_entity = User::load($member->id());
+    /** @var \Drupal\group\GroupMembership $group_membership */
+    $group_membership = $fresh_group_entity->getMember($new_owner_entity);
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+    $group_content = $group_membership->getGroupContent();
+    $this->assertEquals('personal-administrator', $group_content->get('group_roles')->first()->getValue()['target_id']);
   }
 
 }
