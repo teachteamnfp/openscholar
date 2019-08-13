@@ -69,7 +69,7 @@ class AppAccess implements AccessInterface {
       }
     }
     if ($access_level == AppAccessLevels::DISABLED) {
-      $result = AccessResult::forbidden(t('This App has been disabled.'));
+      $result = AccessResult::forbidden('This App has been disabled.');
     }
     $result->addCacheTags(['app:access_changed']);
     $result->addCacheContexts(['vsite']);
