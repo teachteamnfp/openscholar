@@ -41,7 +41,7 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
     $defs = $this->getDefinitions();
     $app = '';
     foreach ($defs as $d) {
-      if (isset($d['bundle']) && $d['bundle'] == $bundle) {
+      if (isset($d['bundle']) && \in_array($bundle, $d['bundle'], TRUE)) {
         $app = $d['id'];
       }
     }
