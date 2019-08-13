@@ -99,4 +99,15 @@ trait OsPublicationsTestTrait {
     return preg_replace('/\s*/m', '', $stripped);
   }
 
+  /**
+   * Changes vsite style.
+   *
+   * @param string $style
+   *   The style to be set.
+   */
+  protected function changeStyle(string $style): void {
+    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->submitForm(['os_publications_preferred_bibliographic_format' => $style], 'edit-submit');
+  }
+
 }
