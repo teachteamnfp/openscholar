@@ -701,7 +701,7 @@ function os_publications_date_of_publication_alter($element) {
  * Adding submit handler to flip between the year and the date field.
  */
 function os_publications_year_date_flip($form, FormStateInterface $form_state) {
-  /** @var \Drupal\Core\Config\ConfigFactoryInterface $config_factory */
+  /** @var \Drupal\Core\Config\ImmutableConfig $config_factory */
   $config_factory = \Drupal::service('config.factory')->get('os_publications.settings');
 
   // Swap the values.
@@ -719,7 +719,7 @@ function os_publications_year_date_flip($form, FormStateInterface $form_state) {
  */
 function os_publications_validate_year_field($form, FormStateInterface $form_state) {
 
-  /** @var \Drupal\Core\Config\ConfigFactoryInterface $pub_config */
+  /** @var \Drupal\Core\Config\ImmutableConfig $pub_config */
   $pub_config = \Drupal::service('config.factory')->get('os_publications.settings');
   $style = $pub_config->get('default_style');
 
