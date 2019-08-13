@@ -48,7 +48,7 @@ class CustomThemeAppearanceSettingsTest extends CpAppearanceExistingSiteJavascri
     $this->visitViaVsite('cp/appearance', $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('#system-themes-list--custom_theme');
+    $this->assertSession()->pageTextContains('custom theme');
     $this->assertSession()->pageTextContains($custom_theme_label);
 
     // Cleanup.
