@@ -8,3 +8,8 @@ services:
     class: \Drupal\os\Routing\OsRouteSubscriber
     tags:
       - { name: event_subscriber }
+  os.private_vsite_guard:
+    class: \Drupal\os\PrivateVsiteGuard
+    arguments: ['@vsite.context_manager']
+    tags:
+      - { name: access_check, applies_to: _os_private_vsite_guard }

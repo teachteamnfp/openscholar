@@ -12,7 +12,17 @@ audience: anonymous
 group_type: personal
 permissions_ui: true
 permissions:
-  - 'view group_node:person entity'
-  - 'view group_entity:bibcite_reference entity'
-  - 'view group_entity:bibcite_reference content'
-  - 'download citations'
+  0: 'view group_node:person entity'
+  1: 'view group_entity:bibcite_reference entity'
+  2: 'view group_entity:bibcite_reference content'
+  3: 'download citations'
+  6: 'view group_node:blog entity'
+  7: 'view group_node:class entity'
+  8: 'view group_node:events entity'
+  9: 'view group_node:faq entity'
+  10: 'view group_node:link entity'
+  11: 'view group_node:news entity'
+  12: 'view group_node:page entity'
+  14: 'view group_node:presentation entity'
+  15: 'view group_node:software_project entity'
+  16: 'view group_node:software_release entity'

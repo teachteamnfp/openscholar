@@ -69,6 +69,7 @@ class CpRolesHelperTest extends CpUsersExistingSiteTestBase {
 
     // It is not possible to check for all group content plugins, therefore,
     // only group_node:blog is checked here.
+    $this->assertContains('view group_node:blog entity', $restricted_permissions);
     $this->assertContains('view group_node:blog content', $restricted_permissions);
     $this->assertContains('create group_node:blog content', $restricted_permissions);
     $this->assertContains('update own group_node:blog content', $restricted_permissions);
@@ -76,7 +77,6 @@ class CpRolesHelperTest extends CpUsersExistingSiteTestBase {
     $this->assertContains('delete own group_node:blog content', $restricted_permissions);
     $this->assertContains('delete any group_node:blog content', $restricted_permissions);
 
-    $this->assertNotContains('view group_node:blog entity', $restricted_permissions);
     $this->assertNotContains('create group_node:blog entity', $restricted_permissions);
     $this->assertNotContains('update own group_node:blog entity', $restricted_permissions);
     $this->assertNotContains('update any group_node:blog entity', $restricted_permissions);
