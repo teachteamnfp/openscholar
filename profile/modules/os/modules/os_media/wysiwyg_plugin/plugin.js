@@ -22,7 +22,8 @@
                   let media = e[i];
                   editor.insertHtml('<img src="' + media.thumbnail +'" data-mid="' + media.mid + '">');
                 }
-              }
+              },
+              types: ['image', 'audio', 'html', 'video']
             })
           }
         },
