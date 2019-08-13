@@ -155,10 +155,16 @@ final class CpUsersPermissionsTypeSpecificForm extends CpUsersPermissionsForm {
     // Prevent permission edit for default roles.
     /** @var string[] $default_roles */
     $default_roles = $this->cpRolesHelper->getDefaultGroupRoles($this->activeVsite);
-    $permissions = array_keys($this->groupPermissionHandler->getPermissions(TRUE));
-    foreach ($permissions as $permission) {
-      foreach ($default_roles as $default_role) {
-        $form['permissions'][$permission][$default_role]['#disabled'] = TRUE;
+    /** @var string[] $restricted_permissions */
+    $restricted_permissions = $this->cpRolesHelper->getRestrictedPermissions($this->getGroupType());
+
+    foreach ($this->getPermissions() as $provider => $sections) {
+      foreach ($sections as $permissions) {
+        foreach (array_diff(array_keys($permissions), $restricted_permissions) as $permission) {
+          foreach ($default_roles as $default_role) {
+            $form["provider_$provider"]['permissions'][$permission][$default_role]['#disabled'] = TRUE;
+          }
+        }
       }
     }
 

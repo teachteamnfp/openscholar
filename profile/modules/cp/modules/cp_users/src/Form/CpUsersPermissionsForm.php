@@ -68,6 +68,9 @@ abstract class CpUsersPermissionsForm extends GroupPermissionsForm {
       ];
     }
 
+    // This overrides the default permissions form, and improves the UX.
+    // Instead, of building the form elements from scratch, it re-uses the form
+    // elements from parent.
     foreach ($this->getPermissions() as $provider => $sections) {
       $form["provider_$provider"] = [
         '#type' => 'fieldset',
@@ -83,91 +86,38 @@ abstract class CpUsersPermissionsForm extends GroupPermissionsForm {
         '#attributes' => ['class' => ['permissions', 'js-permissions']],
       ];
 
-      foreach ($role_info as $info) {
-        $form["provider_$provider"]['permissions']['#header'][] = [
-          'data' => $info['label'],
-          'class' => ['checkbox'],
-        ];
-      }
+      $form["provider_$provider"]['permissions']['#header'] = $form['permissions']['#header'];
 
       foreach ($sections as $section => $permissions) {
         // Create a clean section ID.
         $section_id = $provider . '-' . preg_replace('/[^a-z0-9_]+/', '_', strtolower($section));
 
         // Start each section with a full width row containing the section name.
-        $form["provider_$provider"]['permissions'][$section_id] = [
-          [
-            '#wrapper_attributes' => [
-              'colspan' => count($group_roles) + 1,
-              'class' => ['section'],
-              'id' => 'section-' . $section_id,
-            ],
-            '#markup' => $section,
-          ],
-        ];
+        $form["provider_$provider"]['permissions'][$section_id] = $form['permissions'][$section_id];
 
         // Then list all of the permissions for that provider and section.
         foreach ($permissions as $perm => $perm_item) {
           // Create a row for the permission, starting with the description
           // cell.
-          $form["provider_$provider"]['permissions'][$perm]['description'] = [
-            '#type' => 'inline_template',
-            '#template' => '<span class="title">{{ title }}</span>{% if description or warning %}<div class="description">{% if warning %}<em class="permission-warning">{{ warning }}</em><br />{% endif %}{{ description }}</div>{% endif %}',
-            '#context' => [
-              'title' => $perm_item['title'],
-            ],
-            '#wrapper_attributes' => [
-              'class' => ['permission'],
-            ],
-          ];
+          $form["provider_$provider"]['permissions'][$perm]['description'] = $form['permissions'][$perm]['description'];
+          $form['permissions'][$perm]['description']['#context']['description'] = $perm_item['description'];
+          $form['permissions'][$perm]['description']['#context']['warning'] = $perm_item['warning'];
 
           // Finally build a checkbox cell for every group role.
           foreach ($role_info as $role_name => $info) {
-            // Determine whether the permission is available for this role.
-            $na = $info['is_anonymous'] && !in_array('anonymous', $perm_item['allowed for']);
-            $na = $na || ($info['is_outsider'] && !in_array('outsider', $perm_item['allowed for']));
-            $na = $na || ($info['is_member'] && !in_array('member', $perm_item['allowed for']));
-
-            // Show a red '-' if the permission is unavailable.
-            if ($na) {
-              $form["provider_$provider"]['permissions'][$perm][$role_name] = [
-                '#title' => $info['label'] . ': ' . $perm_item['title'],
-                '#title_display' => 'invisible',
-                '#wrapper_attributes' => [
-                  'class' => ['checkbox'],
-                  'style' => 'color: #ff0000;',
-                ],
-                '#markup' => '-',
-              ];
-            }
-            // Show a checkbox if the permissions is available.
-            else {
-              $form["provider_$provider"]['permissions'][$perm][$role_name] = [
-                '#title' => $info['label'] . ': ' . $perm_item['title'],
-                '#title_display' => 'invisible',
-                '#wrapper_attributes' => [
-                  'class' => ['checkbox'],
-                ],
-                '#type' => 'checkbox',
-                '#default_value' => in_array($perm, $info['permissions']) ? 1 : 0,
-                '#attributes' => [
-                  'class' => [
-                    'rid-' . $role_name,
-                    'js-rid-' . $role_name,
-                  ],
-                ],
-                '#parents' => [$role_name, $perm],
-              ];
-            }
+            $form["provider_$provider"]['permissions'][$perm][$role_name] = $form['permissions'][$perm][$role_name];
           }
         }
       }
+
+      // Do not show relationship permissions in the UI.
+      foreach ($this->cpRolesHelper->getRestrictedPermissions($this->getGroupType()) as $permission) {
+        unset($form["provider_$provider"]['permissions'][$permission]);
+      }
     }
 
-    // Do not show relationship permissions in the UI.
-    foreach ($this->cpRolesHelper->getRestrictedPermissions($this->getGroupType()) as $permission) {
-      unset($form['permissions'][$permission]);
-    }
+    // The default permissions form element is no longer required.
+    unset($form['permissions']);
 
     return $form;
   }
