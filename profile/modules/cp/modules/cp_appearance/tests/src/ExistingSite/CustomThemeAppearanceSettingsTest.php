@@ -35,7 +35,7 @@ class CustomThemeAppearanceSettingsTest extends TestBase {
     $this->visitViaVsite('cp/appearance', $this->group);
 
     $this->assertSession()->statusCodeEquals(200);
-    $this->assertSession()->responseContains('#system-themes-list--custom_theme');
+    $this->assertSession()->pageTextContains('custom theme');
     $this->assertSession()->pageTextContains('Cp Appearance Test 1 theme');
     $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/set/os_ct_cp_appearance_test_1");
     $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/preview/os_ct_cp_appearance_test_1");

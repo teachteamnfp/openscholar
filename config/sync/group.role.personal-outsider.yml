@@ -12,8 +12,18 @@ audience: outsider
 group_type: personal
 permissions_ui: true
 permissions:
-  - 'view group'
-  - 'view group_node:person entity'
-  - 'view group_entity:bibcite_reference entity'
-  - 'view group_entity:bibcite_reference content'
-  - 'download citations'
+  0: 'view group'
+  1: 'view group_node:person entity'
+  2: 'view group_entity:bibcite_reference entity'
+  3: 'view group_entity:bibcite_reference content'
+  4: 'download citations'
+  8: 'view group_node:blog entity'
+  9: 'view group_node:class entity'
+  10: 'view group_node:events entity'
+  11: 'view group_node:faq entity'
+  12: 'view group_node:link entity'
+  13: 'view group_node:news entity'
+  14: 'view group_node:page entity'
+  16: 'view group_node:presentation entity'
+  17: 'view group_node:software_project entity'
+  18: 'view group_node:software_release entity'

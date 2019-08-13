@@ -3,9 +3,11 @@
 namespace Drupal\os_publications\Plugin;
 
 use Drupal\bibcite\CitationStylerInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\PluginBase;
 use Drupal\Core\Url;
+use Drupal\os_publications\CitationHelper;
 
 /**
  * Class SampleCitations.
@@ -15,13 +17,40 @@ use Drupal\Core\Url;
 class SampleCitations extends PluginBase {
 
   /**
+   * Styler service.
+   *
+   * @var \Drupal\bibcite\CitationStylerInterface
+   */
+  protected $styler;
+
+  /**
+   * Config Factory service.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
+   * Citation helper service.
+   *
+   * @var \Drupal\os_publications\CitationHelper
+   */
+  protected $citationHelper;
+
+  /**
    * SampleCitations constructor.
    *
    * @param \Drupal\bibcite\CitationStylerInterface $styler
    *   To use styler service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory instance.
+   * @param \Drupal\os_publications\CitationHelper $citation_helper
+   *   Citation Helper service.
    */
-  public function __construct(CitationStylerInterface $styler) {
+  public function __construct(CitationStylerInterface $styler, ConfigFactoryInterface $config_factory, CitationHelper $citation_helper) {
     $this->styler = $styler;
+    $this->configFactory = $config_factory;
+    $this->citationHelper = $citation_helper;
   }
 
   /**
@@ -49,7 +78,8 @@ class SampleCitations extends PluginBase {
         $citation_example = $this->osPublicationsBuildCitationExample($style->id());
         $cite_example_text = $citation_example;
         // Concat it all together.
-        $hidden = ($style->id() != $default_style) ? 'hidden' : '';
+        $vsite_style = $this->configFactory->get('os_publications.settings')->get('default_style');
+        $hidden = ($style->id() != $vsite_style) ? 'hidden' : '';
         $cite_example_output .= '<div data-example-id="' . $style->id() . '" id="' . str_replace('.', '', $style->id()) . '" class="citebox ' . $hidden . '">' . $cite_example_title . $cite_example_text . '</div>';
       }
       $this->styler->setStyleById($default_style);
@@ -87,19 +117,19 @@ class SampleCitations extends PluginBase {
     $contributors = [
       [
         'family' => 'Doe',
-        'given' => 'John',
+        'given' => 'John A',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Smith',
-        'given' => 'Richard',
+        'given' => 'Richard B',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Editor',
-        'given' => 'Edwin',
+        'given' => 'Edwin Z',
         'category' => 'primary',
         'role' => 'editor',
       ],
@@ -110,73 +140,73 @@ class SampleCitations extends PluginBase {
     $contributors_etall = [
       [
         'family' => 'Doe',
-        'given' => 'John',
+        'given' => 'John A',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Smith',
-        'given' => 'Richard',
+        'given' => 'Richard B',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Rodgers',
-        'given' => 'Edwin',
+        'given' => 'Edwin Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Howard',
-        'given' => 'Ron',
+        'given' => 'Ron Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Rodgers',
-        'given' => 'Jill',
+        'given' => 'Jill Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => "O'Donnell",
-        'given' => 'Frank',
+        'given' => 'Frank Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'McQuiad',
-        'given' => 'Robert',
+        'given' => 'Robert Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Smith',
-        'given' => 'Jane',
+        'given' => 'Jane Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Ortiz',
-        'given' => 'Oscar',
+        'given' => 'Oscar Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Edwards',
-        'given' => 'Rebecca',
+        'given' => 'Rebecca Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => "O'Neil",
-        'given' => 'Thomas',
+        'given' => 'Thomas Z',
         'category' => 'primary',
         'role' => 'author',
       ],
       [
         'family' => 'Smith',
-        'given' => 'Kathrine',
+        'given' => 'Kathrine Z',
         'category' => 'primary',
         'role' => 'author',
       ],
@@ -191,7 +221,7 @@ class SampleCitations extends PluginBase {
     $node                      = new \stdClass();
     $node->id                  = -1;
     $node->example_type        = 'Book Chapter';
-    $node->title               = '"' . $book_title . '"';
+    $node->title               = $book_title;
     $node->author              = $contributors;
     $node->type                = 'chapter';
     $node->issued              = $date;
@@ -203,11 +233,11 @@ class SampleCitations extends PluginBase {
     $node->bibcite_coins       = '';
 
     // Journal Article.
-    $journal_title       = Link::fromTextAndUrl('My Journal Article', Url::fromUri('internal:#'))->toString();
-    $node1               = new \stdClass();
-    $node1->id           = -1;
-    $node1->example_type = 'Journal Article';
-    $node1->title        = '"' . $journal_title . '"';;
+    $journal_title              = Link::fromTextAndUrl('My Journal Article', Url::fromUri('internal:#'))->toString();
+    $node1                      = new \stdClass();
+    $node1->id                  = -1;
+    $node1->example_type        = 'Journal Article';
+    $node1->title               = $journal_title;
     $node1->author              = $contributors;
     $node1->type                = 'article-journal';
     $node1->issued              = $date;
@@ -222,7 +252,7 @@ class SampleCitations extends PluginBase {
     $node2                      = new \stdClass();
     $node2->id                  = -1;
     $node2->example_type        = 'Book with 10+ authors (et al)';
-    $node2->title               = '"' . $book_title . '"';
+    $node2->title               = $book_title;
     $node2->author              = $contributors_etall;
     $node2->type                = 'book';
     $node2->issued              = $date;
@@ -256,12 +286,38 @@ class SampleCitations extends PluginBase {
     // Display the citation.
     foreach ($node_array as $value) {
       $output = '';
+      $data = [];
       // Strip off the "example_type" array value if one exists.
       if (isset($value->example_type)) {
         $example_type = '<strong>' . $value->example_type . ' ' . $this->t('example:') . '</strong>';
         $output .= $example_type . '<br />';
       }
-      $output .= $this->styler->render($value);
+
+      // Prepare data array required by render method.
+      $data['title'] = $value->title;
+      foreach ($value->author as $author) {
+        if ($author->role == 'author') {
+          $data['author'][] = json_decode(json_encode($author), TRUE);
+        }
+        elseif ($author->role == 'editor') {
+          $data['editor'][] = json_decode(json_encode($author), TRUE);
+        }
+      }
+      $data['type'] = $value->type;
+      $data['issued'] = json_decode(json_encode($value->issued), TRUE);
+      $data['volume'] = $value->volume ?? NULL;
+      $data['edition'] = $value->edition ?? NULL;
+      $data['issue'] = $value->issue ?? NULL;
+      $data['container-tilte'] = $value->{'container-title'} ?? NULL;
+      $data['publisher-place'] = $value->{'publisher-place'} ?? NULL;
+
+      // If hca alter author/editor names.
+      if ($style == 'harvard_chicago_author_date') {
+        if ($value->type == 'article-journal' || $value->type == 'chapter') {
+          $this->citationHelper->alterAuthors($data);
+        }
+      }
+      $output .= str_replace(' ,', '', $this->styler->render($data));
       $styled_node .= '<div class="citation-example">' . $output . '</div>';
     }
     return $styled_node;

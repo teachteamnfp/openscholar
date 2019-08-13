@@ -198,7 +198,7 @@ class CpUsersAddForm extends FormBase {
     if (!empty($form_state_values['username'])) {
       $account = user_load_by_name($form_state_values['username']);
       if ($account) {
-        $form_state->setError($form['new-user']['username'], $this->t('User with this username already exists. Please choose a different email.'));
+        $form_state->setError($form['new-user']['username'], $this->t('User with this username already exists. Please choose a different username.'));
         return FALSE;
       }
     }

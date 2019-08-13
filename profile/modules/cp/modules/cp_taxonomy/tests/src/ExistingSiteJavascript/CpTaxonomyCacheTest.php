@@ -9,7 +9,7 @@ use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 /**
  * Tests cache invalidation listing and entity page.
  *
- * @group functional
+ * @group functional-javascript
  * @group cp
  */
 class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {

@@ -7,9 +7,11 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\Core\Ajax\PrependCommand;
+use Drupal\Core\Ajax\RemoveCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element\StatusMessages;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -55,8 +57,17 @@ class WidgetLibraryController extends ControllerBase {
     $response = new AjaxResponse();
 
     /** @var \Drupal\block_content\BlockContentInterface $block_content */
-    if ($block_content = $form_state->getFormObject()->getEntity()) {
-
+    if ($form_state->getErrors()) {
+      $messages = StatusMessages::renderMessages(NULL);
+      $output[] = $messages;
+      $output[] = $form;
+      $form_class = '.' . str_replace(['content_', '_'], ['', '-'], $form_state->getFormObject()->getFormId());
+      // Remove any previously added error messages.
+      $response->addCommand(new RemoveCommand('#drupal-modal .messages--error'));
+      // Replace old form with new one and with error message.
+      $response->addCommand(new ReplaceCommand($form_class, $output));
+    }
+    elseif ($block_content = $form_state->getFormObject()->getEntity()) {
       $instances = $block_content->getInstances();
       if (!$instances) {
         $plugin_id = 'block_content:' . $block_content->uuid();

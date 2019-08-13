@@ -107,7 +107,7 @@ function template_preprocess_cp_appearance_themes_page(array &$variables) {
         ],
       ];
       $current_theme['more_operations'] = $theme->more_operations;
-      $theme_group['themes'][] = $current_theme;
+      $theme_group['themes'][$theme->getName()] = $current_theme;
     }
     $groups[] = $theme_group;
   }
