@@ -35,7 +35,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/global-settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -50,7 +50,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
     $this->assertTrue($checkHtmlValue, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/global-settings/seo");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $fieldValue = $page->findField('site_title')->getValue();
@@ -69,7 +69,7 @@ class CpSettingsOsMetatagTest extends OsExistingSiteJavascriptTestBase {
   public function testHtmlHeadValuesOnFrontPage(): void {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->groupAdmin);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/seo");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/global-settings/seo");
     $web_assert->statusCodeEquals(200);
 
     $edit = [

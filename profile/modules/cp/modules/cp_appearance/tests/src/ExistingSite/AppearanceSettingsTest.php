@@ -44,7 +44,7 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testSave(): void {
-    $this->visit('/cp-appearance/cp/appearance');
+    $this->visit('/cp-appearance/cp/appearance/themes');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Select Theme');
@@ -64,7 +64,7 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSetDefault(): void {
-    $this->visit('/cp-appearance/cp/appearance/set/hwpi_college');
+    $this->visit('/cp-appearance/cp/appearance/themes/set/hwpi_college');
 
     $this->assertSession()->statusCodeEquals(200);
 
@@ -81,12 +81,12 @@ class AppearanceSettingsTest extends TestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testStartPreview(): void {
-    $this->visit('/cp-appearance/cp/appearance/preview/vibrant');
+    $this->visit('/cp-appearance/cp/appearance/themes/preview/vibrant');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Previewing: Vibrant');
 
-    $this->visit('/cp-appearance/cp/appearance/preview/hwpi_sterling');
+    $this->visit('/cp-appearance/cp/appearance/themes/preview/hwpi_sterling');
 
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('Previewing: Sterling');
