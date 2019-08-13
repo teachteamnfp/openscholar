@@ -57,3 +57,7 @@ services:
     arguments: ['@vsite.context_manager']
     tags:
       - { name: cache.context }
+
+  vsite.form_delete_destination:
+    class: Drupal\vsite\FormDeleteDestination
+    arguments: ['@vsite.context_manager']
