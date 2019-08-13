@@ -5,3 +5,7 @@ global-styling:
       //use.fontawesome.com/releases/v5.1.0/css/all.css: {external: true}
       css/style.css: {}
       /libraries/os-toolbar/os-toolbar.css: {}
+
+theme-picker:
+  js:
+    js/theme-picker.js: {}
