@@ -73,10 +73,9 @@ abstract class CpUsersPermissionsForm extends GroupPermissionsForm {
     // elements from parent.
     foreach ($this->getPermissions() as $provider => $sections) {
       $form["provider_$provider"] = [
-        '#type' => 'fieldset',
+        '#type' => 'details',
         '#title' => $this->moduleHandler->getName($provider),
-        '#collapsible' => TRUE,
-        '#collapsed' => TRUE,
+        '#open' => FALSE,
       ];
 
       $form["provider_$provider"]['permissions'] = [
