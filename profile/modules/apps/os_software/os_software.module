@@ -27,6 +27,7 @@ function os_software_form_alter(&$form, FormStateInterface $form_state, $form_id
  */
 function os_software_form_node_software_release_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   _os_software_hide_node_title_form($form);
+  Drupal::service('os.software.helper')->prePopulateSoftwareProjectField($form);
 }
 
 /**

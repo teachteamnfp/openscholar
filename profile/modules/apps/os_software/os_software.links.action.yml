@@ -1,0 +1,8 @@
+os_software.add_software_release:
+  route_name: 'node.add'
+  route_parameters:
+    node_type: 'software_release'
+  class: '\Drupal\os_software\Plugin\Menu\LocalAction\AddSoftwareReleaseAction'
+  title: 'Add new software release'
+  appears_on:
+    - entity.node.canonical
