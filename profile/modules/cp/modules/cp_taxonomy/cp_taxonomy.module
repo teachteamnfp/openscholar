@@ -370,11 +370,9 @@ function cp_taxonomy_field_widget_multivalue_reference_taxonomy_terms_form_alter
   $original_elements = $elements;
   $elements = [];
   foreach ($original_elements['#field_widget_definitions'] as $vid => $original_element) {
-    $original_element['#title'] = $vid;
     $elements[$vid] = [
-      '#entity_type' => $original_elements[0]['#entity_type'],
-      '#bundle' => $original_elements[0]['#bundle'],
-      '_weight' => $original_elements[0]['_weight'],
+      '#entity_type' => $original_elements['#entity_type'],
+      '#bundle' => $original_elements['#bundle'],
     ] + $original_element;
   }
 }

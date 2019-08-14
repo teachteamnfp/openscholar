@@ -3,11 +3,14 @@
 namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -102,11 +105,34 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $main_element = [];
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
-      $main_element['#field_widget_definitions'][$vid] = $fieldWidget->formElement($items, $delta, $element, $form, $form_state);
-      $main_element['#field_widget_definitions'][$vid] += [
-        '#chosen' => 1,
-      ];
+      $plugin_id = $fieldWidget->getPluginId();
+      if (in_array($plugin_id, ['options_select', 'options_buttons'])) {
+        $options = $this->getOptions($items->getEntity());
+        if (!empty($options[$vid])) {
+          $main_element['#field_widget_definitions'][$vid] = [
+            '#type' => $plugin_id == 'options_select' ? 'select' : 'checkboxes',
+            '#options' => $options[$vid],
+            '#default_value' => $this->getSelectedOptions($items),
+            '#multiple' => 1,
+            '#chosen' => 1,
+            '#title' => $vid,
+          ];
+        }
+      }
+      else {
+        $main_element['#field_widget_definitions'][$vid] = $fieldWidget->formElement($items, $delta, $element, $form, $form_state);
+        if ($plugin_id == 'term_reference_tree') {
+          $main_element['#field_widget_definitions'][$vid]['#vocabularies'] = [
+            $vid => $main_element['#field_widget_definitions'][$vid]['#vocabularies'][$vid],
+          ];
+          $main_element['#field_widget_definitions'][$vid]['#title'] = $vid;
+        }
+        if ($plugin_id == 'entity_reference_autocomplete') {
+          $main_element['#field_widget_definitions'][$vid]['target_id']['#title'] = $vid;
+        }
+      }
     }
     return $main_element;
   }
@@ -123,12 +149,15 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $merged_values = [];
-    foreach ($this->widgetTypes as $vid => $widgetInfo) {
-      $widget_values = $this->fieldWidgets[$vid]->massageFormValues($values[$vid], $form, $form_state);
+    foreach ($this->fieldWidgets as $vid => $fieldWidget) {
+      $widget_values = $fieldWidget->massageFormValues($values[$vid], $form, $form_state);
       if (empty($widget_values)) {
         continue;
       }
       foreach ($widget_values as $value) {
+        if (in_array($value, $merged_values)) {
+          continue;
+        }
         $merged_values[] = $value;
       }
     }
@@ -145,6 +174,77 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       static::WIDGET_TYPE_OPTIONS_BUTTONS => t('Check boxes / Radio buttons'),
       static::WIDGET_TYPE_TREE => t('Tree'),
     ];
+  }
+
+  /**
+   * Returns the array of options for the widget.
+   *
+   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
+   *   The entity for which to return options.
+   *
+   * @return array
+   *   The array of options for the widget.
+   */
+  protected function getOptions(FieldableEntityInterface $entity) {
+    if (!isset($this->options)) {
+      // Limit the settable options for the current user account.
+      $options_provider = $this->fieldDefinition
+        ->getFieldStorageDefinition()
+        ->getOptionsProvider('target_id', $entity);
+      $field_definition = $options_provider->getFieldDefinition();
+      $options = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
+
+      $options = ['_none' => t('- None -')] + $options;
+
+      $module_handler = \Drupal::moduleHandler();
+      $context = [
+        'fieldDefinition' => $this->fieldDefinition,
+        'entity' => $entity,
+      ];
+      $module_handler->alter('options_list', $options, $context);
+
+      array_walk_recursive($options, [$this, 'sanitizeLabel']);
+
+      $this->options = $options;
+    }
+    return $this->options;
+  }
+
+  /**
+   * Determines selected options from the incoming field values.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   The field values.
+   *
+   * @return array
+   *   The array of corresponding selected options.
+   */
+  protected function getSelectedOptions(FieldItemListInterface $items) {
+    // We need to check against a flat list of options.
+    $flat_options = OptGroup::flattenOptions($this->getOptions($items->getEntity()));
+
+    $selected_options = [];
+    foreach ($items as $item) {
+      $value = $item->target_id;
+      // Keep the value if it actually is in the list of options (needs to be
+      // checked against the flat list).
+      if (isset($flat_options[$value])) {
+        $selected_options[] = $value;
+      }
+    }
+
+    return $selected_options;
+  }
+
+  /**
+   * Sanitizes a string label to display as an option.
+   *
+   * @param string $label
+   *   The label to sanitize.
+   */
+  protected function sanitizeLabel(&$label) {
+    // Allow a limited set of HTML tags.
+    $label = FieldFilteredMarkup::create($label);
   }
 
 }
