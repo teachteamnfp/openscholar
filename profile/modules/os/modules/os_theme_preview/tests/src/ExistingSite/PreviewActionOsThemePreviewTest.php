@@ -71,7 +71,7 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
   public function testVisibility(): void {
-    $this->visit('/os-theme-preview/cp/appearance/preview/documental');
+    $this->visit('/os-theme-preview/cp/appearance/themes/preview/documental');
 
     $this->assertSession()->pageTextContains('Previewing: Documental');
   }
@@ -86,7 +86,7 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testSave(): void {
-    $this->visit('/os-theme-preview/cp/appearance/preview/documental');
+    $this->visit('/os-theme-preview/cp/appearance/themes/preview/documental');
     $this->getCurrentPage()->pressButton('Save');
 
     $this->visit('/os-theme-preview');
@@ -112,7 +112,7 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   public function testCancel(): void {
-    $this->visit('/os-theme-preview/cp/appearance/preview/documental');
+    $this->visit('/os-theme-preview/cp/appearance/themes/preview/documental');
     $this->getCurrentPage()->pressButton('Cancel');
 
     /** @var \Drupal\Core\Config\ImmutableConfig $actual_theme_config */
@@ -130,7 +130,7 @@ class PreviewActionOsThemePreviewTest extends OsExistingSiteTestBase {
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    */
   public function testBack(): void {
-    $this->visit('/os-theme-preview/cp/appearance/preview/documental');
+    $this->visit('/os-theme-preview/cp/appearance/themes/preview/documental');
     $this->getCurrentPage()->pressButton('Back to themes');
 
     /** @var \Drupal\Core\Config\ImmutableConfig $actual_theme_config */

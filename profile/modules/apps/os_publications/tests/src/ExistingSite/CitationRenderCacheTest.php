@@ -76,11 +76,13 @@ class CitationRenderCacheTest extends TestBase {
 
     // Test different styles have different output.
     $this->changeStyle('ieee');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
     $ieee_citation = $this->getActualHtml();
     $this->assertNotSame($ieee_citation, $apa_citation);
 
     // Test on switching back to previous style gives same output.
     $this->changeStyle('apa');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
     $apa_citation2 = $this->getActualHtml();
     $this->assertSame($apa_citation, $apa_citation2);
   }
@@ -95,11 +97,13 @@ class CitationRenderCacheTest extends TestBase {
 
     // Test different styles have different output.
     $this->changeStyle('ieee');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
     $ieee_citation = $this->getActualHtml();
     $this->assertNotSame($ieee_citation, $apa_citation);
 
     // Test on switching back to previous style gives same output.
     $this->changeStyle('apa');
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
     $apa_citation2 = $this->getActualHtml();
     $this->assertSame($apa_citation, $apa_citation2);
   }
@@ -111,7 +115,7 @@ class CitationRenderCacheTest extends TestBase {
    *   The style to be set.
    */
   private function changeStyle(string $style): void {
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->submitForm(['os_publications_preferred_bibliographic_format' => $style], 'edit-submit');
     $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
   }
