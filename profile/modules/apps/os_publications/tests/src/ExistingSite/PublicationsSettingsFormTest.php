@@ -38,7 +38,7 @@ class PublicationsSettingsFormTest extends TestBase {
   public function testPublicationSettingsPath(): void {
     $this->drupalLogin($this->groupAdmin);
 
-    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
     $this->assertSession()->statusCodeEquals(200);
   }
 
@@ -50,7 +50,7 @@ class PublicationsSettingsFormTest extends TestBase {
    */
   public function testPublicationSettingsForm(): void {
     $this->drupalLogin($this->groupAdmin);
-    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->drupalGet("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
     // Testing multiple form fields.
     $edit = [
       'os_publications_preferred_bibliographic_format' => 'apa',
@@ -80,7 +80,7 @@ class PublicationsSettingsFormTest extends TestBase {
       ],
     ]);
     $this->group->addContent($reference, 'group_entity:bibcite_reference');
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
 
     // Test short note does not appear.
     $edit = [
@@ -91,7 +91,7 @@ class PublicationsSettingsFormTest extends TestBase {
     $this->assertSession()->elementNotExists('css', '.field--name-notes');
 
     // Test short note appears.
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $edit = [
       'os_publications_note_in_teaser' => TRUE,
     ];

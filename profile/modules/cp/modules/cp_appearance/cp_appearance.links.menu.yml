@@ -1,5 +1,5 @@
 cp.themes:
   title: 'Themes'
-  route_name: cp.appearance
+  route_name: cp.appearance.themes
   weight: 2
   parent: cp.appearance
