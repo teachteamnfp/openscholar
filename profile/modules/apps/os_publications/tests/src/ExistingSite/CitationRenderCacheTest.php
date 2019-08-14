@@ -108,16 +108,4 @@ class CitationRenderCacheTest extends TestBase {
     $this->assertSame($apa_citation, $apa_citation2);
   }
 
-  /**
-   * Changes vsite style.
-   *
-   * @param string $style
-   *   The style to be set.
-   */
-  private function changeStyle(string $style): void {
-    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
-    $this->submitForm(['os_publications_preferred_bibliographic_format' => $style], 'edit-submit');
-    $this->visitViaVsite('bibcite/reference/' . $this->reference->id(), $this->group);
-  }
-
 }
