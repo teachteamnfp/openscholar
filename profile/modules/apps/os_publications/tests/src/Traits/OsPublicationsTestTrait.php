@@ -106,7 +106,7 @@ trait OsPublicationsTestTrait {
    *   The style to be set.
    */
   protected function changeStyle(string $style): void {
-    $this->visitViaVsite('cp/settings/publications', $this->group);
+    $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->submitForm(['os_publications_preferred_bibliographic_format' => $style], 'edit-submit');
   }
 
