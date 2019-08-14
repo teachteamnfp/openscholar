@@ -10,7 +10,7 @@ label: Publications
 type: 'canonical_entities:bibcite_reference'
 pattern: 'publications/[bibcite_reference:title]'
 selection_criteria:
-  058b4844-358c-4eea-8121-5550fa161238:
+  49ae6669-ee0d-48d8-ad96-2309d6debade:
     id: 'entity_bundle:bibcite_reference'
     bundles:
       artwork: artwork
@@ -24,6 +24,7 @@ selection_criteria:
       classical: classical
       conference_paper: conference_paper
       conference_proceedings: conference_proceedings
+      data: data
       database: database
       film: film
       government_report: government_report
@@ -45,14 +46,15 @@ selection_criteria:
       statute: statute
       thesis: thesis
       unpublished: unpublished
-      website: website
       web_article: web_article
       web_project_page: web_project_page
       web_service: web_service
+      website: website
+      working_paper: working_paper
     negate: false
     context_mapping:
       bibcite_reference: bibcite_reference
-    uuid: 058b4844-358c-4eea-8121-5550fa161238
+    uuid: 49ae6669-ee0d-48d8-ad96-2309d6debade
 selection_logic: and
 weight: -5
 relationships: {  }

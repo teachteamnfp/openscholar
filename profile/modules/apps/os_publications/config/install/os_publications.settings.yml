@@ -1,8 +1,8 @@
 default_style: harvard_chicago_author_date
-biblio_sort: year
+biblio_sort: title
 note_in_teaser: 0
 biblio_order: DESC
-shorten_citations: 0
+shorten_citations: 1
 export_format:
   bibtex: bibtex
   endnote8: endnote8
@@ -21,6 +21,7 @@ filter_publication_types:
   classical: classical
   conference_paper: conference_paper
   conference_proceedings: conference_proceedings
+  data: data
   database: database
   film: film
   government_report: government_report
@@ -46,11 +47,11 @@ filter_publication_types:
   web_project_page: web_project_page
   web_service: web_service
   website: website
+  working_paper: working_paper
 citation_distribute_autoflags:
-  citation_distribute_googlescholar: false
-  citation_distribute_sword_dash: false
-  citation_distribute_repec: false
-citation_distribute_module_mode: ''
+  citation_distribute_repec: 0
+  citation_distribute_googlescholar: 0
+citation_distribute_module_mode: per_submission
 pub_month_options:
   1: 1
   2: 2
@@ -99,6 +100,6 @@ pub_day_options:
 publications_years_text:
   10000: Forthcoming
   10010: Submitted
-  10020: In Preparation
-  10030: In Press
-  10040: Working Paper
+  10020: 'In Preparation'
+  10030: 'In Press'
+  10040: 'Working Paper'
