@@ -2,4 +2,4 @@ cp_appearance.custom_theme_add:
   route_name: entity.cp_custom_theme.add_form
   title: 'Add Custom Theme'
   appears_on:
-    - cp.appearance
+    - cp.appearance.themes

@@ -38,7 +38,7 @@ class PublicationsRedirectTest extends TestBase {
   public function testRedirect(): void {
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
     $this->assertSession()->statusCodeEquals(200);
 
     $this->drupalPostForm(NULL, [

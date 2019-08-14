@@ -38,7 +38,7 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
    */
   public function testPreviewToggle(): void {
     $this->drupalLogin($this->groupAdmin);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
 
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
