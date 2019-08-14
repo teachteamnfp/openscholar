@@ -83,7 +83,7 @@ class OsSoftwareHelper implements OsSoftwareHelperInterface {
       return;
     }
     $group = $this->vsiteContextManager->getActiveVsite();
-    if (empty($group)) {
+    if (!$group) {
       return;
     }
     $storage = $this->entityTypeManager->getStorage('node');

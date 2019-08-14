@@ -39,6 +39,19 @@ class AddSoftwareReleaseLinkFunctionalTest extends OsExistingSiteTestBase {
   }
 
   /**
+   * Test add software release link not visible on other node types.
+   */
+  public function testAddSoftwareReleaseLinkHidden() {
+    $web_assert = $this->assertSession();
+    $node = $this->createNode([
+      'type' => 'software_release',
+    ]);
+    $this->group->addContent($node, 'group_node:software_release');
+    $this->visitViaVsite('node/' . $node->id(), $this->group);
+    $web_assert->linkNotExists('Add new software release');
+  }
+
+  /**
    * Test add software release form page pre-populate valid id.
    */
   public function testAddSoftwareReleaseFormPageValidId() {

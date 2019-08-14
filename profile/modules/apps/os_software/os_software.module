@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\views\Views;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -74,6 +75,18 @@ function os_software_node_view_alter(array &$build, EntityInterface $entity, Ent
   foreach (['recommended_block', 'recent_block'] as $display_id) {
     _os_software_add_views_display_to_build($build, $display_id, $entity);
   }
+
+  $options['query']['field_software_project'] = $entity->id();
+  $url = Url::fromRoute('node.add', ['node_type' => 'software_release'], $options);
+  $build['add_software_release_link'] = [
+    '#title' => t('Add new software release'),
+    '#attributes' => [
+      'class' => ['add-software-release-link'],
+    ],
+    '#type' => 'link',
+    '#url' => $url,
+    '#weight' => -100,
+  ];
 }
 
 /**
