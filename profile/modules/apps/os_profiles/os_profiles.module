@@ -132,6 +132,7 @@ function os_profiles_preprocess_node(&$variables) {
       $default_image_render_array = [
         '#theme' => 'image',
         '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/' . $image_name),
+        "#alt" => t('default-image'),
         '#attributes' => [
           'class' => ['person-default-image'],
         ],
