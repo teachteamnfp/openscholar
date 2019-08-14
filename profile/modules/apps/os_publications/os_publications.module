@@ -906,7 +906,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
   $publication = $variables['data']['entity'];
-  if ($publication) {
+  if ($publication && $publication->id()) {
     $text = Markup::create($publication->html_title->value);
     $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
