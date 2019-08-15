@@ -15,11 +15,13 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
    * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
+   * @covers ::os_app_access_node_access
+   * @covers ::_os_app_access_node_type_access
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
-  public function test(): void {
+  public function testNode(): void {
     // Setup.
     $group_admin = $this->createUser();
     $this->addGroupAdmin($group_admin, $this->group);
@@ -60,6 +62,55 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     $this->visitViaVsite("node/{$news->id()}", $this->group);
     $this->assertSession()->statusCodeEquals(403);
     $this->visitViaVsite('news', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+  }
+
+  /**
+   * @covers \Drupal\os_app_access\Access\AppAccess::access
+   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
+   * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
+   * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
+   * @covers ::os_app_access_bibcite_reference_access
+   *
+   * @throws \Behat\Mink\Exception\ExpectationException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPublications(): void {
+    // Setup.
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $reference = $this->createReference();
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+
+    // Tests.
+    // Test default config.
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+
+    // Test disabled app setting.
+    $this->drupalLogin($group_admin);
+    $this->visitViaVsite('cp/settings/app-access', $this->group);
+    $this->submitForm([
+      'enabled[blog][privacy]' => 0,
+      'enabled[class][privacy]' => 0,
+      'enabled[event][privacy]' => 0,
+      'enabled[faq][privacy]' => 0,
+      'enabled[links][privacy]' => 0,
+      'enabled[news][privacy]' => 0,
+      'enabled[page][privacy]' => 0,
+      'enabled[presentations][privacy]' => 0,
+      'enabled[profiles][privacy]' => 0,
+      'enabled[publications][privacy]' => 1,
+      'enabled[software][privacy]' => 0,
+    ], 'Save configuration');
+
+    $this->drupalLogout();
+
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('publications', $this->group);
     $this->assertSession()->statusCodeEquals(403);
   }
 
