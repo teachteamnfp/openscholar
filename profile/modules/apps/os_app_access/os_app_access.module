@@ -5,6 +5,7 @@
  * OS app access.
  */
 
+use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResultNeutral;
@@ -76,4 +77,17 @@ function _os_app_access_node_type_access(AccountInterface $account, $node_type) 
     return $app_access->access($account, $app);
   }
   return new AccessResultNeutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access() for checking publications app access.
+ */
+function os_app_access_bibcite_reference_access(ReferenceInterface $entity, $operation, AccountInterface $account) {
+  /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
+  $app_manager = Drupal::service('vsite.app.manager');
+  /** @var \Drupal\vsite\AppInterface $app */
+  $app = $app_manager->createInstance('publications');
+  /** @var \Drupal\os_app_access\Access\AppAccess $app_access */
+  $app_access = \Drupal::service('os_app_access.app_access');
+  return $app_access->access($account, $app->getPluginId());
 }
