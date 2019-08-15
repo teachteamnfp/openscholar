@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f104176fc5619381e5f5e79c547c9bed",
+    "content-hash": "5e483d49fa2d7db3d7e18a3a563253db",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -3407,6 +3407,10 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
+                    "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4448,7 +4452,8 @@
                     "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                     "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
                     "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
-                    "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
+                    "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch",
+                    "Image styles fails with absolute path": "https://www.drupal.org/files/issues/image_styles-2754273-7.patch"
                 }
             },
             "autoload": {
@@ -8085,7 +8090,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2018-04-17T19:49:13+00:00"
+            "time": "2019-07-16T19:44:46+00:00"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -8975,7 +8980,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2016-07-25T18:07:21+00:00"
+            "time": "2019-05-17T18:21:20+00:00"
         },
         {
             "name": "symfony-cmf/routing",
