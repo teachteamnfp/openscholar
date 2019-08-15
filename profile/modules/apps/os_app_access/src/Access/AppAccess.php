@@ -107,10 +107,7 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
       /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
       $active_vsite = $this->vsiteContextManager->getActiveVsite();
 
-      if (!$active_vsite) {
-        $result = AccessResult::neutral();
-      }
-      elseif (!$active_vsite->hasPermission('access private apps', $account)) {
+      if ($active_vsite && !$active_vsite->hasPermission('access private apps', $account)) {
         $result = AccessResult::forbidden();
       }
     }
