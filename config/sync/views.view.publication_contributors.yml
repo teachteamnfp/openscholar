@@ -5,6 +5,7 @@ dependencies:
   module:
     - bibcite_entity
     - group
+    - os_app_access
     - vsite
 id: publication_contributors
 label: 'Publication contributors'
@@ -22,8 +23,9 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: app
+        options:
+          app: publications
       cache:
         type: tag
         options: {  }

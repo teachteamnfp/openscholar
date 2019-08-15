@@ -8,9 +8,9 @@ dependencies:
     - node.type.link
     - system.menu.main
   module:
-    - group
     - link
     - node
+    - os_app_access
     - vsite_infinite_scroll
 _core:
   default_config_hash: VWyi6jvmAslr_TH2S8zUwE0mKGwT4wh9tIzrNCngmwg
@@ -30,9 +30,9 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
+        type: app
         options:
-          group_permission: 'view group_node:link entity'
+          app: links
       cache:
         type: tag
         options: {  }
@@ -262,7 +262,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -373,7 +372,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -399,7 +397,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
@@ -421,7 +418,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
