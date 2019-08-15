@@ -100,6 +100,6 @@ pub_day_options:
 publications_years_text:
   10000: Forthcoming
   10010: Submitted
-  10020: In Preparation
-  10030: In Press
-  10040: Working Paper
+  10020: 'In Preparation'
+  10030: 'In Press'
+  10040: 'Working Paper'
