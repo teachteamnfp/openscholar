@@ -121,20 +121,24 @@ class AppAccess extends AccessPluginBase {
   public function access(AccountInterface $account) {
     $app_levels = $this->configFactory->get('os_app_access.access');
     $app = $this->options['app'];
-    $level = $app_levels->get($app);
+    $level = (int) $app_levels->get($app);
     if (!isset($level)) {
       $level = AppAccessLevels::PUBLIC;
     }
 
-    if ($level == AppAccessLevels::DISABLED) {
+    if ($level === AppAccessLevels::DISABLED) {
       return FALSE;
     }
-    elseif ($level == AppAccessLevels::PUBLIC) {
+
+    if ($level === AppAccessLevels::PUBLIC) {
       return TRUE;
     }
-    elseif ($level == AppAccessLevels::PRIVATE) {
+
+    if ($level === AppAccessLevels::PRIVATE) {
       return $account->hasPermission('access private apps');
     }
+
+    return FALSE;
   }
 
   /**
