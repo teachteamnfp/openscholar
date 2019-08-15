@@ -231,7 +231,8 @@
         "drupal/bibcite": "1.x-dev",
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
-        "harvesthq/chosen": "^1.8"
+        "harvesthq/chosen": "^1.8",
+        "drupal/config_ignore": "^2.1"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -368,6 +369,10 @@
             "drupal/bibcite": {
                 "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch",
                 "Editors and others roles treated as author": "https://www.drupal.org/files/issues/2019-08-01/other-roles-shown-as-authors-3006180-6.patch"
+            },
+            "drupal/config_ignore": {
+                "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
+                "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
             }
         },
         "patches-ignore": {

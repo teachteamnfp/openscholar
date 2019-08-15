@@ -7,7 +7,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Class OsSoftwareHelperTest.
  *
- * @group cp
+ * @group os
  * @group kernel
  *
  * @package Drupal\Tests\os_software\ExistingSite
