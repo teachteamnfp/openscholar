@@ -21,7 +21,6 @@
 @import "component/dropdown";
 @import "component/search";
 @import "component/readmore";
-@import "component/button";
 @import "component/branding";
 @import "component/pager";
 @import "component/poweredby";
@@ -30,6 +29,7 @@
 @import "component/spinner";
 @import "component/widgets-publication-author";
 @import "component/table";
+@import "component/button";
 // jQuery UI style overrides.
 @import "jquery-ui/autocomplete";
 
@@ -78,7 +78,7 @@ p:last-child,
 
 .help-block,
 .control-group .help-inline {
-  color: $gray-light;
+  color: $color-gray1;
   font-size: 12px;
   margin: 5px 0 10px;
   padding: 0;

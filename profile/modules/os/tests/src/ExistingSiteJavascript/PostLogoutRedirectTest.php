@@ -49,7 +49,7 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
 
     // Tests.
     $this->drupalLogin($account);
-    $this->visitViaVsite('cp/appearance', $this->group);
+    $this->visitViaVsite('cp/appearance/themes', $this->group);
     $this->getSession()->getPage()->clickLink($account->getAccountName());
     $this->getSession()->getPage()->clickLink('Log out');
 
@@ -59,6 +59,29 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
     // expected.
     $this->getSession()->getPage()->clickLink('Admin Login');
     $this->assertStringEndsWith("destination={$this->groupAlias}/node", $this->getSession()->getCurrentUrl());
+  }
+
+  /**
+   * Tests the redirect when the destination is going to be a cp setting.
+   *
+   * @covers ::os_link_alter
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testCpSettingDestination(): void {
+    $content = $this->createNode();
+    $this->group->addContent($content, "group_node:{$content->bundle()}");
+    $account = $this->createUser();
+    $this->addGroupAdmin($account, $this->group);
+
+    // Tests.
+    $this->drupalLogin($account);
+    $this->visitViaVsite('cp/content', $this->group);
+    $this->getSession()->getPage()->clickLink($account->getAccountName());
+    $this->getSession()->getPage()->clickLink('Log out');
+
+    $this->assertStringEndsWith($this->groupAlias, $this->getSession()->getCurrentUrl());
   }
 
 }

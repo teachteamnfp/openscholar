@@ -1,6 +1,6 @@
 .block-place-region.region.region-footer-bottom.ui-sortable {
   position: fixed;
-  left: 0px;
+  right: 0px;
   top: 25px;
   outline: 0;
   box-shadow: none;
@@ -10,6 +10,7 @@
   transition: top .3s ease;
   width: 240px;
   z-index: 9999;
+  height: calc(100% - 40px);
   &:after {
     content: "";
   }
@@ -17,12 +18,12 @@
     margin: 10px 0 0 0;
     color: $color-gray5;
   }
-  .toolbar-vertical.toolbar-tray-open & {
-    top: 300px;
-  }
   .toolbar-horizontal.toolbar-tray-open & {
     top: 64px;
     z-index: 99;
+    #block-place-widget-selector-wrapper {
+      height: calc(100vh - 270px);
+    }
   }
   .select-wrapper {
     z-index: 0;
@@ -33,10 +34,17 @@
   background: $color-light-gray9;
   border: 0;
   color: $color-gray5;
+  height: calc(100vh - 230px);
 }
 #block-list {
   background-color: $color-white;
   border: 1px solid $color-light-gray10;
+  height: calc(100% - 115px);
+  border-radius: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  color: $color-black;
+  padding: 10px;
   .block.ui-sortable-handle {
     border-bottom: 1px solid $color-light-gray10;
     padding: 5px 0;
@@ -76,97 +84,99 @@
     cursor: pointer;
     text-transform: capitalize;
   }
-  ul.links {
-    list-style-type: none;
-    margin-left: 4px;
-    margin-top: 10px;
-    li {
-      padding: .5em 0;
-      display: block;
-      a {
-        &:before {
-          content: "";
-          background: url(../../../themes/os_base/images/puzzle.png) no-repeat;
-          height: 21px;
-          width: 21px;
-          position: absolute;
-          left: 7px;
-        }
-      }
-      &.addthis {
+  #factory-wrapper {
+    ul.links {
+      list-style-type: none;
+      margin-left: 4px;
+      margin-top: 10px;
+      li {
+        padding: .5em 0;
+        display: block;
         a {
           &:before {
-            background: url(../../../themes/os_base/images/widgets/add-this.png) no-repeat;
+            content: "";
+            background: url(../../../themes/os_base/images/puzzle.png) no-repeat;
+            height: 21px;
+            width: 21px;
+            position: absolute;
+            left: 7px;
           }
         }
-      }
-      &.basic {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/basic-block.png) no-repeat;
+        &.addthis {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/add-this.png) no-repeat;
+            }
           }
         }
-      }
-      &.custom-text-html {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/html.png) no-repeat;
+        &.basic {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/basic-block.png) no-repeat;
+            }
           }
         }
-      }
-      &.embed-media {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+        &.custom-text-html {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/html.png) no-repeat;
+            }
           }
         }
-      }
-      &.publication-types {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/publication12.png) no-repeat;
+        &.embed-media {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+            }
           }
         }
-      }
-      &.featured-posts {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/featured-post.png) no-repeat;
+        &.publication-types {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/publication12.png) no-repeat;
+            }
           }
         }
-      }
-      &.media-gallery {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+        &.featured-posts {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/featured-post.png) no-repeat;
+            }
           }
         }
-      }
-      &.publication-years {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/date.png) no-repeat;
+        &.media-gallery {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/media.png) no-repeat;
+            }
           }
         }
-      }
-      &.rss-feed {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/rss.png) no-repeat;
+        &.publication-years {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/date.png) no-repeat;
+            }
           }
         }
-      }
-      &.taxonomy {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/taxonomy-icon.png) no-repeat;
+        &.rss-feed {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/rss.png) no-repeat;
+            }
           }
         }
-      }
-      &.twitter-feed {
-        a {
-          &:before {
-            background: url(../../../themes/os_base/images/widgets/twitter.png) no-repeat;
+        &.taxonomy {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/taxonomy-icon.png) no-repeat;
+            }
+          }
+        }
+        &.twitter-feed {
+          a {
+            &:before {
+              background: url(../../../themes/os_base/images/widgets/twitter.png) no-repeat;
+            }
           }
         }
       }

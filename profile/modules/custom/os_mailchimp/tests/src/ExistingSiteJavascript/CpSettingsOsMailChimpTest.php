@@ -59,7 +59,7 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/mailchimp");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/global-settings/mailchimp");
     $web_assert->statusCodeEquals(200);
 
     $edit = [
@@ -71,7 +71,7 @@ class CpSettingsOsMailChimpTest extends OsExistingSiteJavascriptTestBase {
     $this->assertTrue($check_html_value, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/mailchimp");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/global-settings/mailchimp");
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $field_value = $page->findField('api_key')->getValue();

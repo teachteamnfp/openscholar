@@ -21,3 +21,39 @@ cp.bibcite_reference.delete_multiple_form:
     entity_type_id: 'bibcite_reference'
   requirements:
     _entity_delete_multiple_access: 'bibcite_reference'
+
+cp.settings.appearance_settings:
+  path: '/cp/appearance'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Appearance Settings'
+  requirements:
+    _group_permission: 'manage cp appearance'
+    _group_member: 'TRUE'
+
+cp.settings.collection:
+  path: '/cp/settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Manage Cp Settings'
+  requirements:
+    _group_permission: 'administer cp settings'
+    _group_member: 'TRUE'
+
+cp.settings.apps_settings:
+  path: '/cp/settings/apps-settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Manage Apps Settings'
+  requirements:
+    _group_permission: 'administer apps settings'
+    _group_member: 'TRUE'
+
+cp.settings.global_settings:
+  path: '/cp/settings/global-settings'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Manage Global Settings'
+  requirements:
+    _group_permission: 'administer cp settings'
+    _group_member: 'TRUE'

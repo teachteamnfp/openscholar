@@ -1,0 +1,9 @@
+create url aliases:
+  title: 'Create and edit URL aliases'
+  section: 'Permission'
+
+administer nodes:
+  title: 'Administer content'
+  description: 'Promote, change ownership, edit revisions, and perform other tasks across all content types.'
+  restrict access: true
+  section: 'Permission'

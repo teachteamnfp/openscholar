@@ -3,3 +3,6 @@ services:
     class: Drupal\cp\Theme\CpThemeNegotiator
     tags:
       - { name: theme_negotiator, priority: 0 }
+  cp.cp_manager:
+    class: \Drupal\cp\CpManager
+    arguments: ['@system.manager', '@menu.active_trail']

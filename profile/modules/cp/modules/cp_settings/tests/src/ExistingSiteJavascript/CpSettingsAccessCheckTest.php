@@ -29,7 +29,7 @@ class CpSettingsAccessCheckTest extends OsExistingSiteJavascriptTestBase {
 
     $this->visitViaVsite('', $this->group);
 
-    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/settings/breadcrumb");
+    $this->assertSession()->linkByHrefExists("{$this->groupAlias}/cp/appearance/breadcrumb");
 
     $this->drupalLogout();
 
@@ -37,7 +37,7 @@ class CpSettingsAccessCheckTest extends OsExistingSiteJavascriptTestBase {
 
     $this->visitViaVsite('', $this->group);
 
-    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/settings/breadcrumb");
+    $this->assertSession()->linkByHrefNotExists("{$this->groupAlias}/cp/appearance/breadcrumb");
   }
 
 }

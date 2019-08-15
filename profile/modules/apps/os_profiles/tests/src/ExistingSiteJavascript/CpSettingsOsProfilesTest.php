@@ -51,7 +51,7 @@ class CpSettingsOsProfilesTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->groupAdmin);
 
-    $this->visitViaVsite("cp/settings/profiles", $this->group);
+    $this->visitViaVsite("cp/settings/apps-settings/profiles", $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $field_value = $page->findField('display_type')->getValue();
@@ -66,7 +66,7 @@ class CpSettingsOsProfilesTest extends OsExistingSiteJavascriptTestBase {
     $this->assertTrue($check_html_value, 'The form did not write the correct message.');
 
     // Check form elements load default values.
-    $this->visitViaVsite("cp/settings/profiles", $this->group);
+    $this->visitViaVsite("cp/settings/apps-settings/profiles", $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $field_value = $page->findField('display_type')->getValue();
@@ -80,7 +80,7 @@ class CpSettingsOsProfilesTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
     $this->drupalLogin($this->groupAdmin);
     // Make sure no_image_teaser is selected.
-    $this->visitViaVsite("cp/settings/profiles", $this->group);
+    $this->visitViaVsite("cp/settings/apps-settings/profiles", $this->group);
     $web_assert->statusCodeEquals(200);
     $edit = [
       'display_type' => 'no_image_teaser',
