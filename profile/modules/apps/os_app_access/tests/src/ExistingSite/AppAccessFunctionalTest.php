@@ -5,14 +5,16 @@ namespace Drupal\Tests\os_app_access\ExistingSite;
 /**
  * AppAccessFunctionalTest.
  *
- * @coversDefaultClass \Drupal\os_app_access\Access\AppAccess
  * @group functional
  * @group os
  */
 class AppAccessFunctionalTest extends AppAccessTestBase {
 
   /**
-   * @covers ::access
+   * @covers \Drupal\os_app_access\Access\AppAccess::access
+   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
+   * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
+   * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
@@ -32,6 +34,8 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     // Tests.
     // Test default config.
     $this->visitViaVsite("node/{$news->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visitViaVsite('news', $this->group);
     $this->assertSession()->statusCodeEquals(200);
 
     // Test disabled app setting.
@@ -54,6 +58,8 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     $this->drupalLogout();
 
     $this->visitViaVsite("node/{$news->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('news', $this->group);
     $this->assertSession()->statusCodeEquals(403);
   }
 
