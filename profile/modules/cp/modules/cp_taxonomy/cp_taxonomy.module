@@ -370,9 +370,20 @@ function cp_taxonomy_field_widget_multivalue_reference_taxonomy_terms_form_alter
   $original_elements = $elements;
   $elements = [];
   foreach ($original_elements['#field_widget_definitions'] as $vid => $original_element) {
+    if (!empty($original_element['#entity_reference_autocomplete_elements'])) {
+      $elements[$vid] = $original_element['#entity_reference_autocomplete_elements'];
+      continue;
+    }
     $elements[$vid] = [
       '#entity_type' => $original_elements['#entity_type'],
       '#bundle' => $original_elements['#bundle'],
     ] + $original_element;
   }
+}
+
+/**
+ * Implements hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
+ */
+function cp_taxonomy_field_widget_multivalue_entity_reference_autocomplete_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+  $original_elements = $elements;
 }

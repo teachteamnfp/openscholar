@@ -12,6 +12,7 @@ use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Render\Element;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
@@ -130,7 +131,16 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
           $main_element['#field_widget_definitions'][$vid]['#title'] = $vid;
         }
         if ($plugin_id == 'entity_reference_autocomplete') {
-          $main_element['#field_widget_definitions'][$vid]['target_id']['#title'] = $vid;
+          $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($items, $form, $form_state);
+          foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
+            $element = &$entity_reference_autocomplete_elements[$delta];
+            if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
+              continue;
+            }
+            $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
+          }
+          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements'] = $entity_reference_autocomplete_elements;
+          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements']['#title'] = $vid;
         }
       }
     }
@@ -150,12 +160,15 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $merged_values = [];
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
+      if (isset($values[$vid]['add_more'])) {
+        unset($values[$vid]['add_more']);
+      }
       $widget_values = $fieldWidget->massageFormValues($values[$vid], $form, $form_state);
       if (empty($widget_values)) {
         continue;
       }
       foreach ($widget_values as $value) {
-        if (in_array($value, $merged_values)) {
+        if (in_array($value, $merged_values) || empty($value)) {
           continue;
         }
         $merged_values[] = $value;
@@ -187,7 +200,6 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   protected function getOptions(FieldableEntityInterface $entity) {
     if (!isset($this->options)) {
-      // Limit the settable options for the current user account.
       $options_provider = $this->fieldDefinition
         ->getFieldStorageDefinition()
         ->getOptionsProvider('target_id', $entity);
