@@ -6,6 +6,7 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Access\AccessResultNeutral;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -13,11 +14,12 @@ use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\os_app_access\AppAccessLevels;
 use Drupal\views\Views;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Class AppAccess.
  */
-class AppAccess implements AccessInterface {
+class AppAccess implements AccessInterface, ContainerInjectionInterface {
 
   /**
    * Config factory service.
@@ -47,6 +49,16 @@ class AppAccess implements AccessInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('vsite.context_manager')
+    );
+  }
+
+  /**
    * Access route match.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
@@ -61,10 +73,9 @@ class AppAccess implements AccessInterface {
     $params = $route_match->getParameters();
     $view = Views::getView($params->get('view_id'));
     if ($view->setDisplay($params->get('display_id'))) {
-      $access = $view->getDisplay()->getPlugin('access');
-      if ($access instanceof AppAccess) {
-        return $this->access($account, $access->options['app']);
-      }
+      /** @var \Drupal\os_app_access\Plugin\views\access\AppAccess $access_plugin */
+      $access_plugin = $view->getDisplay()->getPlugin('access');
+      return $this->access($account, $access_plugin->options['app']);
     }
 
     return new AccessResultNeutral();
@@ -90,7 +101,7 @@ class AppAccess implements AccessInterface {
     $result = AccessResult::neutral();
 
     if ($access_level === AppAccessLevels::PUBLIC) {
-      $result = AccessResult::neutral();
+      $result = AccessResult::allowed();
     }
     if ($access_level === AppAccessLevels::PRIVATE) {
       /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
