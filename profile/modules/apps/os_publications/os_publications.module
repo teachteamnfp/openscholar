@@ -124,7 +124,7 @@ function os_publications_page_attachments(array &$page) {
 
   // Adds metadata to the publications pages.
   $entities = $current_route->getParameters();
-  if ($entities->has('bibcite_reference') && !strpos($current_route->getRouteName(), 'edit_form')) {
+  if ($entities->has('bibcite_reference') && strpos($current_route->getRouteName(), 'canonical')) {
     foreach ($entities as $entity => $value) {
       $repos = $value->distribution->getString();
       $repos = explode(',', $repos);
@@ -171,29 +171,22 @@ function os_publications_views_pre_render(ViewExecutable $view) {
   }
 
   if ($view->current_display !== 'cp') {
-
     // Include citation download button.
     $view->attachment_before = \Drupal::service('os_publications.citation_helper')->getCitationDownloadButton();
-
-    // Convert citation title into publication entity page's url.
-    $results = $view->result;
-    foreach ($results as $result) {
-      $publication = $result->_entity;
-      $text = Markup::create($publication->html_title->value);
-      $link = '"' . $publication->toLink($text)->toString() . '"';
-      $publication->html_title->value = $link;
-    }
   }
+}
 
-  foreach ($view->field as $field_name => $field) {
-    // Alter the citation style as per settings.
-    if ($field_name === 'citation') {
-      /** @var \Drupal\Core\Config\ImmutableConfig $bibcite_settings */
-      $publication_settings = \Drupal::config('os_publications.settings');
-      /** @var string $publication_style */
-      $publication_style = $publication_settings->get('default_style');
-
-      $field->options['csl_style'] = $publication_style;
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_publications_preprocess_views_view_unformatted(&$variables) {
+  // Change grouping headers to corresponding mapped years text.
+  if ($variables['view']->id() == 'publications' && $variables['view']->current_display == 'page_4') {
+    $pub_config = \Drupal::configFactory()->get('os_publications.settings')->get('publications_years_text');
+    $title = is_object($variables['title']) ? $variables['title']->__toString() : $variables['title'];
+    if (in_array($title, array_keys($pub_config))) {
+      $year_number = $title;
+      $variables['title'] = $pub_config[$year_number];
     }
   }
 }
@@ -241,6 +234,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         ],
         'weight' => '10',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['is_sticky'] = BaseFieldDefinition::create('boolean')
@@ -251,21 +245,12 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['title_first_char_excl_prep'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Title first letter excluding prepositions'));
-
-    $fields['status'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published to this site'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-      ])
-      ->setDefaultValue(TRUE)
-      ->setDisplayConfigurable('form', TRUE);
+      ->setLabel(t('Title first letter excluding prepositions'))
+      ->setRevisionable(TRUE);
 
     $fields['full_text'] = BaseFieldDefinition::create('text_long')
       ->setLabel('FULL TEXT')
@@ -280,6 +265,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 5,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['notes'] = BaseFieldDefinition::create('text_long')
@@ -295,6 +281,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'text_textfield',
         'weight' => 6,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['html_title'] = BaseFieldDefinition::create('text_long')
@@ -308,6 +295,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'rows' => 1,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['path'] = BaseFieldDefinition::create('path')
@@ -318,6 +306,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayOptions('form', [
         'type' => 'path',
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
@@ -329,6 +318,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
         'type' => 'datetime_timestamp',
         'weight' => 10,
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -341,7 +331,40 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
           'display_label' => TRUE,
         ],
       ])
+      ->setRevisionable(TRUE)
       ->setDisplayConfigurable('form', TRUE);
+
+    $pub_month_options = \Drupal::configFactory()->get('os_publications.settings')->get('pub_month_options');
+
+    $fields['publication_month'] = BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Publication Month'))
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'settings' => [
+          'display_label' => FALSE,
+        ],
+      ])
+      ->setSetting('allowed_values', $pub_month_options)
+      ->setRevisionable(TRUE)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setCardinality(1)
+      ->setTranslatable(FALSE);
+
+    $pub_day_options = \Drupal::configFactory()->get('os_publications.settings')->get('pub_day_options');
+
+    $fields['publication_day'] = BaseFieldDefinition::create('list_integer')
+      ->setLabel(t('Publication Day'))
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'settings' => [
+          'display_label' => FALSE,
+        ],
+      ])
+      ->setRevisionable(TRUE)
+      ->setSetting('allowed_values', $pub_day_options)
+      ->setDisplayConfigurable('form', TRUE)
+      ->setCardinality(1)
+      ->setTranslatable(FALSE);
 
     return $fields;
   }
@@ -350,10 +373,11 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
 /**
  * Implements hook_form_BASE_FORM_ID_alter().
  */
-function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $config_factory = \Drupal::service('config.factory');
+function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Config\ImmutableConfig $config_factory */
+  $config_factory = \Drupal::service('config.factory')->get('os_publications.settings');
   /** @var array $auto_flags */
-  $auto_flags = $config_factory->get('os_publications.settings')->get('citation_distribute_autoflags');
+  $auto_flags = $config_factory->get('citation_distribute_autoflags');
   /** @var \Drupal\bibcite_entity\Entity\ReferenceInterface $reference */
   $reference = $form_state->getFormObject()->getEntity();
 
@@ -397,6 +421,37 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     }
   }
 
+  // Publication details group.
+  $form['publication_details'] = [
+    '#type' => 'details',
+    '#title' => t('Publication Details'),
+    '#group' => 'content',
+    '#weight' => 65,
+  ];
+  $form['full_text']['#group'] = 'publication_details';
+  $form['notes']['#group'] = 'publication_details';
+  $form['field_publication_image']['#group'] = 'publication_details';
+  $form['field_extra_fields']['#group'] = 'publication_details';
+
+  // Publishing options group.
+  $form['publishing_options'] = [
+    '#type' => 'details',
+    '#title' => t('Publishing Options'),
+    '#group' => 'advanced',
+    '#weight' => 1,
+  ];
+  $form['status']['#group'] = 'publishing_options';
+  $form['status']['widget']['value']['#title'] = t('Published to this site');
+  $form['is_sticky']['#group'] = 'publishing_options';
+  $form['noindex']['#group'] = 'publishing_options';
+
+  // Url group.
+  $form['path']['widget']['0']['#group'] = 'advanced';
+  $form['path']['widget']['0']['#weight'] = 2;
+  $form['path']['widget']['0']['#access'] = TRUE;
+  $form['path']['#access'] = TRUE;
+
+  // Menu group.
   $form['menu'] = [
     '#type' => 'details',
     '#title' => t('Menu settings'),
@@ -405,9 +460,66 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
       'library' => ['menu_ui/drupal.menu_ui'],
     ],
     '#tree' => TRUE,
-    '#weight' => 1,
+    '#weight' => 3,
     '#attributes' => ['class' => ['menu-link-form']],
   ];
+
+  // Distribute to repos group.
+  $form['distribute_to_repos'] = [
+    '#type' => 'details',
+    '#title' => t('Distribute to Academic Repositories'),
+    '#group' => 'advanced',
+    '#weight' => 4,
+  ];
+  $form['distribution']['#group'] = 'distribute_to_repos';
+
+  // Authoring information group.
+  $form['authoring_info'] = [
+    '#type' => 'details',
+    '#title' => t('Post Created/Edited By'),
+    '#group' => 'advanced',
+    '#weight' => 5,
+  ];
+  $form['created']['#group'] = 'authoring_info';
+  $form['uid']['#group'] = 'authoring_info';
+  $form['created']['#access'] = TRUE;
+  $form['uid']['#access'] = TRUE;
+
+  // Revision information group.
+  if ($reference->id()) {
+    // Revision checkbox and log message title change.
+    $form['revision']['#title'] = t('When checked, a new version of this content will be created');
+    $form['revision']['#default_value'] = TRUE;
+    $form['revision_log_message']['widget']['0']['value']['#title'] = t('Revision Notes');
+    // Revision info changes.
+    $form['revision_information']['#group'] = 'advanced';
+    $form['revision_information']['#type'] = 'details';
+    $form['revision_information']['#title'] = t('Revision Information');
+    $form['revision_information']['#weight'] = 6;
+
+    // Get number of revisions for this publication.
+    $rev_query = Drupal::database()->select('bibcite_reference_revision', 'rev')
+      ->fields('rev', ['id'])
+      ->condition('id', $reference->id());
+    $num_revisions = count($rev_query->execute()->fetchAll()) - 1;
+    if ($num_revisions > 0) {
+      $revisions_url = Url::fromRoute('entity.bibcite_reference.version_history', ['bibcite_reference' => $reference->id()])
+        ->setOption('attributes', ['id' => 'revisons-links']);
+      $rev_link = Link::fromTextAndUrl(t("@num revisions", ['@num' => ' ' . $num_revisions]), $revisions_url)
+        ->toString();
+      $form['revision_information']['info']['#markup'] = '<p>' . t("There are currently") . $rev_link . '.</p>';
+      $form['revision_information']['help'] = [
+        '#type' => 'link',
+        '#title' => t('What’s being stored as a revision?'),
+        '#url' => Url::fromUri('https://help.theopenscholar.com/revisions'),
+        '#weight' => 50,
+      ];
+    }
+  }
+  elseif (!$reference->id()) {
+    unset($form['revision'], $form['revision_information'], $form['revision_log_message']);
+  }
+
   $form['menu']['enabled'] = [
     '#type' => 'checkbox',
     '#title' => t('Provide a menu link'),
@@ -459,6 +571,218 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
       $form['actions'][$action]['#submit'][] = 'os_publications_bibcite_reference_form_submit';
     }
   }
+
+  // Year of publication alterations.
+  $form['bibcite_year_group'] = [
+    '#type' => 'fieldset',
+    '#title' => $form['bibcite_year']['widget']['#title'] . ' <span class="form-required" title="' . t('This field is required.') . '"></span>',
+    '#collapsible' => FALSE,
+    '#weight' => $form['bibcite_year']['#weight'],
+    '#group' => $form['bibcite_year']['#group'],
+  ];
+
+  $form['bibcite_year_group']['bibcite_year'] = $form['bibcite_year'];
+  $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#attributes']['placeholder'] = t('Year');
+  $form['bibcite_year_group']['bibcite_year']['#weight'] = 30;
+  $form['bibcite_year_group']['bibcite_year']['#group'] = 'bibcite_year_group';
+  $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#required'] = FALSE;
+
+  $visibility_condition = ['visible' => [':input[name="bibcite_year_coded"]' => ['value' => 0]]];
+  $form['bibcite_year_group']['bibcite_year']['#states'] = $visibility_condition;
+
+  // Adding date and month fields for publication day for Harvard - Chicago
+  // Author citation.
+  $vsite_style = $config_factory->get('default_style');
+  $chicago_author_date_mode = FALSE;
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    $chicago_author_date_mode = TRUE;
+  }
+
+  if ($chicago_author_date_mode) {
+    $form['bibcite_year_group']['bibcite_year']['#title'] = t('Date of Publication');
+
+    $form['bibcite_year_group']['year_selection'] = [
+      '#type' => 'container',
+      '#weight' => 25,
+      '#prefix' => '<div class="year-selection-wrapper">',
+      '#suffix' => '</div>',
+      '#states' => $visibility_condition,
+    ];
+
+    $form['bibcite_year_group']['bibcite_year']['#group'] = 'year_selection';
+    $form['bibcite_year_group']['publication_month'] = $form['publication_month'];
+    $form['bibcite_year_group']['publication_day'] = $form['publication_day'];
+    $form['bibcite_year_group']['publication_month']['widget']['#options']['_none'] = t('Month');
+    $form['bibcite_year_group']['publication_day']['widget']['#options']['_none'] = t('Day');
+    $form['bibcite_year_group']['bibcite_year']['#weight'] = -3;
+    $form['bibcite_year_group']['publication_month']['#weight'] = -2;
+    $form['bibcite_year_group']['publication_day']['#weight'] = -1;
+    $form['bibcite_year_group']['publication_month']['#group'] = 'year_selection';
+    $form['bibcite_year_group']['publication_day']['#group'] = 'year_selection';
+
+    // Form element changes - wrap in a fieldset with the checkboxes element,
+    // and fix additional attributes accordingly.
+    unset(
+      $form['bibcite_year_group']['publication_month']['widget']['#title'],
+      $form['bibcite_year_group']['publication_day']['widget']['#title'],
+      $form['publication_month'],
+      $form['publication_day']
+    );
+  }
+  else {
+    // Form element changes - wrap in a fieldset with the checkboxes element,
+    // and fix additional attributes accordingly.
+    $form['bibcite_year_group']['bibcite_year']['#prefix'] = '<div class="year-wrapper">';
+    $form['bibcite_year_group']['bibcite_year']['#suffix'] = '</div>';
+
+    unset(
+      $form['publication_month'],
+      $form['publication_day']
+    );
+  }
+
+  unset(
+    $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#title'],
+    $form['bibcite_year_group']['bibcite_year']['widget'][0]['value']['#description'],
+    $form['bibcite_year']
+  );
+  // Adding date and month validation message for Harvard - Chicago Author
+  // citation.
+  if ($chicago_author_date_mode) {
+    $params['@year'] = date('Y');
+    $form_validation_date_month = '<div id="biblio-month-group-validate">' . t('Permitted date formats: 2/10/@year, 2/@year, @year.', $params) . '</div>';
+  }
+  else {
+    $form_validation_date_month = '';
+  }
+
+  // Add validation message for validating the field via JS.
+  $form['bibcite_year_group']['#suffix'] = $form_validation_date_month . '<div id="bibcite-year-group-validate">' . t('Year must be in the form YYYY. Only numerical digits are allowed.') . '</div>';
+
+  // Year validation needs to happen before the standard validation.
+  array_unshift($form['#validate'], 'os_publications_validate_year_field');
+
+  // Adding submit handler to flip between the year and the date field.
+  array_unshift($form['actions']['submit']['#submit'], 'os_publications_year_date_flip');
+
+  /** @var array $years */
+  $years = $config_factory->get('publications_years_text') ?? [];
+  $default_year = 0;
+  if (in_array($reference->bibcite_year->value, array_keys($years))) {
+    $default_year = $reference->bibcite_year->value;
+  }
+  $form['bibcite_year_group']['bibcite_year_coded'] = [
+    '#type' => 'radios',
+    '#options' => [
+      0 => t('Published'),
+    ] + $years,
+    '#multiple' => FALSE,
+    '#weight' => 20,
+    '#default_value' => $default_year,
+    '#after_build' => ['os_publications_date_of_publication_alter'],
+  ];
+}
+
+/**
+ * After build callback.
+ *
+ * Change the element so we could place the published in the beginning of the
+ * row and separate it with an 'or' text.
+ */
+function os_publications_date_of_publication_alter($element) {
+  // Since the published year type is 0 the key of the published radio is 0.
+  // Nothing special to wonder about.
+  $element[0]['#weight'] = 0;
+  $element[0]['#suffix'] = '<b>' . t('@sp1Or@sp2', ['@sp1' => ' ', '@sp2' => ' ']) . '</b>';
+  return $element;
+}
+
+/**
+ * Adding submit handler to flip between the year and the date field.
+ */
+function os_publications_year_date_flip($form, FormStateInterface $form_state) {
+  /** @var \Drupal\Core\Config\ImmutableConfig $config_factory */
+  $config_factory = \Drupal::service('config.factory')->get('os_publications.settings');
+
+  // Swap the values.
+  $values = $form_state->getValues();
+  $years = $config_factory->get('publications_years_text');
+  if ($values['bibcite_year_coded'] && isset($years[$values['bibcite_year_coded']])) {
+    $form_state->setValue('bibcite_year', [['value' => $values['bibcite_year_coded']]]);
+  }
+}
+
+/**
+ * Validate handler/Verify year field value to avoid mismatch between.
+ *
+ * Text field and checkboxes.
+ */
+function os_publications_validate_year_field($form, FormStateInterface $form_state) {
+
+  /** @var \Drupal\Core\Config\ImmutableConfig $pub_config */
+  $pub_config = \Drupal::service('config.factory')->get('os_publications.settings');
+  $style = $pub_config->get('default_style');
+
+  $values = $form_state->getValues();
+  $years = $pub_config->get('publications_years_text');
+  $pub_year = array_shift($values['bibcite_year'])['value'];
+
+  // If published is selected on no year entered throw error.
+  if (isset($years[$pub_year])) {
+    return;
+  }
+  elseif ($values['bibcite_year_coded'] == 0 && !$pub_year) {
+    $form_state->setErrorByName('bibcite_year', t('Year is mandatory'));
+  }
+
+  // Adding extra validation for date and month for Harvard - Chicago Author
+  // citation.
+  if ($style == 'harvard_chicago_author_date') {
+    $pub_month = array_shift($values['publication_month'])['value'];
+    $pub_day = array_shift($values['publication_day'])['value'];
+    if (($pub_month || $pub_day) && !$pub_year) {
+      $form_state->setErrorByName('bibcite_year', t('Year is mandatory'));
+      return;
+    }
+    elseif ($pub_year && !is_numeric($pub_year) || is_numeric($pub_year) && ($pub_year < 1000 || $pub_year > 9999)) {
+      $form_state->setErrorByName('bibcite_year', t('Year value must be in a YYYY format.'));
+      return;
+    }
+    elseif (($pub_month && $pub_day) && !os_publications_validate_date_fields($pub_month, $pub_day, $pub_year)) {
+      $form_state->setErrorByName('publication_month', t('Date must be valid.'));
+      $form_state->setErrorByName('publication_day');
+      $form_state->setErrorByName('bibcite_year');
+      return;
+    }
+  }
+  else {
+    // Validate a year is numeric and that it's only four digits long.
+    if ($pub_year && !is_numeric($pub_year) || is_numeric($pub_year) && ($pub_year < 1000 || $pub_year > 9999)) {
+      $form_state->setErrorByName('bibcite_year', t('Year value must be in a YYYY format.'));
+      return;
+    }
+  }
+}
+
+/**
+ * Validate Month, Day and Year inputs.
+ */
+function os_publications_validate_date_fields($month, $day, $year) {
+  $month_series_odd = [1, 3, 5, 7, 8, 10, 12];
+  $month_series_even = [4, 6, 9, 11];
+  if ((($year % 4 == 0 && $year % 100 != 0) || $year % 400 == 0) && $month == 2 && $day <= 29) {
+    // Check Leap years.
+    return TRUE;
+  }
+  elseif ($month == 2 && $day <= 28) {
+    // Check February for non-leap years.
+    return TRUE;
+  }
+  elseif ((in_array($month, $month_series_odd) && $day <= 31) || (in_array($month, $month_series_even) && $day <= 30)) {
+    // Check remaining months.
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /**
@@ -571,6 +895,7 @@ function os_publications_alter_post_bibcite_reference_delete_redirect(array &$fo
  * Implements hook_preprocess_HOOK().
  */
 function os_publications_preprocess_bibcite_citation(&$variables) {
+
   $citation_styler = \Drupal::service('bibcite.citation_styler');
   $site_wide_style = $citation_styler->getStyle()->id();
   $publications_config = \Drupal::configFactory()->get('os_publications.settings');
@@ -579,31 +904,68 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
   // Change sitewide config for rendering citation.
   $citation_styler->setStyleById($vsite_style);
 
-  // Get current route name.
-  $route_name = \Drupal::routeMatch()->getRouteName();
-
-  // If publication view page.
-  if ($route_name === 'entity.bibcite_reference.canonical') {
-    $publication = \Drupal::routeMatch()->getParameter('bibcite_reference');
+  /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
+  $publication = $variables['data']['entity'];
+  if ($publication->id()) {
     $text = Markup::create($publication->html_title->value);
-    $link = '"' . $publication->toLink($text)->toString() . '"';
+    $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
-
-    /** @var \Drupal\bibcite\CitationStylerInterface $styler */
-    $styler = \Drupal::service('bibcite.citation_styler');
-    $data = $variables['data'];
-
-    $variables['content'] = [
-      '#markup' => $styler->render($data),
-      '#cache' => [
-        'tags' => ['publication_citation'],
-      ],
-    ];
   }
+
+  // Map the numbers back to text.
+  $years = $publications_config->get('publications_years_text');
+  if (in_array($publication->bibcite_year->value, array_keys($years)) && $publication->bibcite_year->value != 0) {
+    $variables['data']['issued']['date-parts'] = [[
+      $years[$publication->bibcite_year->value],
+    ],
+    ];
+    $variables['data']['issued']['literal'] = $years[$publication->bibcite_year->value];
+  }
+
+  // Alteration for hca style to match D7.
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    if ($variables['data']['type'] == 'article-journal' || $variables['data']['type'] == 'chapter') {
+      \Drupal::service('os_publications.citation_helper')->alterAuthors($variables['data']);
+    }
+  }
+
+  /** @var \Drupal\bibcite\CitationStylerInterface $styler */
+  $styler = \Drupal::service('bibcite.citation_styler');
+  $data = $variables['data'];
+
+  // If more than one author or editor , remove extra commas.
+  $markup = str_replace(' ,', '', $styler->render($data));
+
+  if ($vsite_style == 'harvard_chicago_author_date') {
+    $pub_year = $publication->bibcite_year->value;
+    $pub_month = $publication->publication_month->value;
+    $pub_day = $publication->publication_day->value;
+    // Pushing day and month in those both are present in Publication for
+    // Harvard - Chicago Author cititation.
+    if (($pub_year) && strpos($markup, $pub_year) !== FALSE && ($pub_month)) {
+      // In case day value is present.
+      if ($pub_day) {
+        $day = $pub_day . '/';
+      }
+      else {
+        $day = '';
+      }
+      $markup = str_replace($pub_year, $pub_month . '/' . $day . $pub_year, $markup);
+    }
+  }
+
+  $variables['content'] = [
+    '#markup' => $markup,
+    '#cache' => [
+      'tags' => ['publication_citation'],
+    ],
+  ];
 
   // Put site wide config back to default style.
   $citation_styler->setStyleById($site_wide_style);
 
+  // Get current route name.
+  $route_name = \Drupal::routeMatch()->getRouteName();
   // If it is publication view page and shorten url setting is on,
   // add a shortented url to the citation.
   if ($publications_config->get('shorten_citations') && $route_name === 'entity.bibcite_reference.canonical') {
@@ -624,7 +986,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
       $export_button = \Drupal::service('renderer')->render($export_array);
       $variables['content']['#markup'] .= $export_button;
       $variables['content']['#allowed_tags'] = [
-        'a', 'button', 'ul', 'li', 'span', 'div',
+        'a', 'button', 'ul', 'li', 'span', 'div', 'em', 'sub', 'sup',
       ];
     }
   }
@@ -649,6 +1011,8 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
     if (!$note_in_teaser) {
       unset($build['notes']);
     }
+    // Do not remove, important for proper citation rendering.
+    $build['citation']['#data']['entity'] = $entity;
   }
 
   // If publication has pmid entered, show pubmed link.
@@ -669,6 +1033,8 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
       '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span>',
       '#weight' => 49,
     ];
+    // Do not remove, important for proper citation rendering.
+    $build['citation']['#data']['entity'] = $entity;
   }
 }
 

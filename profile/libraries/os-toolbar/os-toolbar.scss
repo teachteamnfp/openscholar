@@ -5,6 +5,7 @@ $color-light-gray: #efefef;
 $color-light-gray1: #ddd;
 $color-link: #215990;
 $color-gray: #565656;
+$color-black: #000;
 
 .toolbar {
   .toolbar-tray-vertical {
@@ -122,9 +123,16 @@ $color-gray: #565656;
         }
       }
     }
+    /**** accessibility fixes ****/
+    .visually-hidden {
+      color: $color_black;
+    }
   }
   .toolbar-toggle-orientation {
     background: $color-white;
+    .toolbar-icon {
+      color: $color-black;
+    }
   }
   .toolbar-tray {
     a {

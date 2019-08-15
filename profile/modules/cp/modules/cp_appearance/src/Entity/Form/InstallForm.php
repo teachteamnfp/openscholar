@@ -77,7 +77,7 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
    * {@inheritdoc}
    */
   public function getCancelUrl() {
-    return Url::fromRoute('cp.appearance');
+    return Url::fromRoute('cp.appearance.themes');
   }
 
   /**
@@ -119,7 +119,7 @@ final class InstallForm extends ConfirmFormBase implements ContainerInjectionInt
       ]));
     }
 
-    $form_state->setRedirect('cp.appearance');
+    $form_state->setRedirect('cp.appearance.themes');
   }
 
 }

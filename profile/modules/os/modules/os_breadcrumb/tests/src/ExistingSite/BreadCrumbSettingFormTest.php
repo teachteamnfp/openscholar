@@ -46,7 +46,7 @@ class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
    */
   public function testBreadcrumbSettingsFormAccess() {
     $this->drupalLogin($this->simpleUser);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/breadcrumb");
     // Testing Access.
     $this->assertSession()->statusCodeEquals(403);
   }
@@ -58,7 +58,7 @@ class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
    */
   public function testBreadcrumbSettingsForm() {
     $this->drupalLogin($this->groupAdmin);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/breadcrumb");
     // Testing checked.
     $edit = [
       'show_breadcrumbs' => 'checked',
@@ -84,7 +84,7 @@ class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
     $this->drupalLogin($this->groupAdmin);
 
     // Test is visible.
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/breadcrumb");
     $edit = [
       'show_breadcrumbs' => TRUE,
     ];
@@ -93,7 +93,7 @@ class BreadCrumbSettingFormTest extends OsExistingSiteTestBase {
     $this->assertSession()->elementExists('css', 'ol.breadcrumb');
 
     // Test is not visible.
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/breadcrumb");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/appearance/breadcrumb");
     $edit = [
       'show_breadcrumbs' => FALSE,
     ];

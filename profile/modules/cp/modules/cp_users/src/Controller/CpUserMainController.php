@@ -2,12 +2,15 @@
 
 namespace Drupal\cp_users\Controller;
 
+use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
+use Drupal\cp_users\Access\ChangeOwnershipAccessCheck;
+use Drupal\cp_users\CpUsersHelperInterface;
 use Drupal\user\UserInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -35,12 +38,28 @@ class CpUserMainController extends ControllerBase {
   protected $entityTypeManager;
 
   /**
+   * ChangeOwnershipAccessCheck service.
+   *
+   * @var \Drupal\cp_users\Access\ChangeOwnershipAccessCheck
+   */
+  protected $changeOwnershipAccessChecker;
+
+  /**
+   * CpUsers helper service.
+   *
+   * @var \Drupal\cp_users\CpUsersHelperInterface
+   */
+  protected $cpUsersHelper;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('cp_users.change_ownership_access_check'),
+      $container->get('cp_users.cp_users_helper')
     );
   }
 
@@ -51,10 +70,16 @@ class CpUserMainController extends ControllerBase {
    *   Vsite Context Manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   Entity Type Manager.
+   * @param \Drupal\cp_users\Access\ChangeOwnershipAccessCheck $change_ownership_access_check
+   *   ChangeOwnershipAccessCheck service.
+   * @param \Drupal\cp_users\CpUsersHelperInterface $cp_users_helper
+   *   CpUsers helper service.
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, ChangeOwnershipAccessCheck $change_ownership_access_check, CpUsersHelperInterface $cp_users_helper) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->changeOwnershipAccessChecker = $change_ownership_access_check;
+    $this->cpUsersHelper = $cp_users_helper;
   }
 
   /**
@@ -67,27 +92,27 @@ class CpUserMainController extends ControllerBase {
     }
     /** @var \Drupal\Core\Session\AccountInterface $current_user */
     $current_user = $this->currentUser();
+    $can_change_ownership = ($this->changeOwnershipAccessChecker->access($current_user) instanceof AccessResultAllowed);
 
     $users = $group->getContentEntities('group_membership');
 
     $build = [];
 
-    $can_change_ownership = ($group->getOwnerId() === $current_user->id());
-
     $userRows = [];
     /* @var \Drupal\user\UserInterface $u */
     foreach ($users as $u) {
+      $is_vsite_owner = $this->cpUsersHelper->isVsiteOwner($group, $u);
       $roles = $group->getMember($u)->getRoles();
+      $role_link = '';
 
-      if ($can_change_ownership) {
+      if ($can_change_ownership && $is_vsite_owner) {
         $role_link = Link::createFromRoute('Change Owner', 'cp.users.owner', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       }
-      elseif ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles')) {
+      elseif (!$is_vsite_owner &&
+        ($this->currentUser()->hasPermission('change user roles') || $group->getMember($this->currentUser())->hasPermission('manage cp roles'))) {
         $role_link = Link::createFromRoute($this->t('Change Role'), 'cp_users.role.change', ['user' => $u->id()])->toString();
       }
-      else {
-        $role_link = '';
-      }
+
       $remove_link = Link::createFromRoute($this->t('Remove'), 'cp.users.remove', ['user' => $u->id()], ['attributes' => ['class' => ['use-ajax']]])->toString();
       $row = [
         'data-user-id' => $u->id(),
@@ -116,10 +141,18 @@ class CpUserMainController extends ControllerBase {
         '#type' => 'container',
         'add-member' => [
           '#type' => 'link',
-          '#title' => $this->t('+ Add a member'),
+          '#title' => $this->t('Add a member'),
           '#url' => Url::fromRoute('cp.users.add'),
           '#attributes' => [
-            'class' => ['os-green-button', 'cp-user-float-right', 'use-ajax'],
+            'class' => [
+              'os-green-button',
+              'cp-user-float-right',
+              'use-ajax',
+              'button',
+              'button--primary',
+              'button-action',
+              'action-links',
+            ],
             'data-dialog-type' => 'modal',
           ],
           '#attached' => [
@@ -158,6 +191,15 @@ class CpUserMainController extends ControllerBase {
    */
   public function addUserForm() {
     $group = $this->vsiteContextManager->getActiveVsite();
+    $dialogOptions = [
+      'dialogClass' => 'add-user-dialog',
+      'width' => 800,
+      'modal' => TRUE,
+      'position' => [
+        'my' => "center top",
+        'at' => "center top",
+      ],
+    ];
     if (!$group) {
       throw new AccessDeniedHttpException();
     }
@@ -166,7 +208,7 @@ class CpUserMainController extends ControllerBase {
 
     $modal_form = $this->formBuilder()->getForm('Drupal\cp_users\Form\CpUsersAddForm');
 
-    $response->addCommand(new OpenModalDialogCommand('Add Member', $modal_form, ['width' => '800']));
+    $response->addCommand(new OpenModalDialogCommand('Add Member', $modal_form, $dialogOptions));
 
     return $response;
   }

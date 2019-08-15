@@ -7,7 +7,7 @@
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\Entity\File;
+use Drupal\media\Entity\Media;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -89,8 +89,10 @@ function os_profiles_preprocess_node(&$variables) {
     && empty($content['field_photo_person']['#items'])
     && !$config->get('disable_default_image')) {
 
-    if ($default_image_fid = $config->get('default_image_fid')) {
-      $file = File::load($default_image_fid);
+    if ($default_image_mid = $config->get('default_image_mid')) {
+      $media = Media::load($default_image_mid);
+      $media_images = $media->get('field_media_image')->referencedEntities();
+      $file = array_shift($media_images);
       $image_style_name = 'crop_photo_person';
       if ($variables['view_mode'] == 'full') {
         $image_style_name = 'crop_photo_person_full';
@@ -130,6 +132,7 @@ function os_profiles_preprocess_node(&$variables) {
       $default_image_render_array = [
         '#theme' => 'image',
         '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/' . $image_name),
+        "#alt" => t('default-image'),
         '#attributes' => [
           'class' => ['person-default-image'],
         ],

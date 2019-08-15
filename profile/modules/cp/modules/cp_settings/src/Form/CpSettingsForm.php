@@ -140,6 +140,14 @@ class CpSettingsForm extends ConfigFormBase {
   }
 
   /**
+   * Set the page title to the title of the settings group.
+   */
+  public function formTitle() {
+    $group = $this->getSettingGroup();
+    return $this->cpSettingsManager->getTitleForGroup($group);
+  }
+
+  /**
    * Helper to expose file entity element.
    *
    * This method is mendatory to works with "buildCropToForm",

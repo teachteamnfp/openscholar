@@ -1,0 +1,17 @@
+/**** code for responsive tabs ****/
+.is-collapse-enabled {
+  .tabs {
+    overflow: hidden;
+  }
+  .tabs__trigger {
+    padding: 6px;
+  }
+  .tabs__tab {
+    a {
+      padding: 5px 2em 7px 1em;
+    }
+  }
+}
+.tabs__tab {
+  background: $color-light-gray8;
+}

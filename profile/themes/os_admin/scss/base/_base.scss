@@ -1,6 +1,6 @@
 body {
   color: $color-text;
-  font-family: "Helvetica Neue", sans-serif;
+  font: normal 95%/1.538em "Helvetica Neue", sans-serif;
 }
 a,
 .link {
@@ -10,4 +10,12 @@ a,
 .page-title {
   font-size: 3em;
   font-weight: 500;
+}
+/**** font awesoem ****/
+.fa, .far {
+  font-family: inherit;
+  &:before {
+    font-family: "Font Awesome 5 Free";
+    margin-right: 2px;
+  }
 }

@@ -1,6 +1,0 @@
-manage cp appearance:
-  title: 'Manage CP Themes'
-  description: 'Allow users to access the CP Appearance tool suite'
-  restrict access: false
-  provider: cp
-  section: 'Permission'

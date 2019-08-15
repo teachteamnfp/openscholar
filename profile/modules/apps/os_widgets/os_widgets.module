@@ -5,6 +5,7 @@
  * OS widgets.
  */
 
+use Drupal\Core\Render\Element;
 use Drupal\os_widgets\Plugin\DisplayVariant\PlaceBlockPageVariant;
 use Drupal\Core\Url;
 use Drupal\Core\Ajax\ReplaceCommand;
@@ -23,7 +24,8 @@ use Drupal\views\Plugin\views\cache\CachePluginBase;
 function os_widgets_library_info_alter(&$libraries, $extension) {
   if ($extension == 'os_widgets') {
     if (isset($libraries['layout'])) {
-      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = Url::fromRoute('os_widgets.save_layout')->toString();
+      $libraries['layout']['drupalSettings']['path']['layout']['saveLayout'] = 'cp/layout/save';
+      $libraries['layout']['drupalSettings']['path']['layout']['resetLayout'] = 'cp/layout/reset';
     }
   }
 }
@@ -151,6 +153,12 @@ function os_widgets_theme($existing, $type, $theme, $path) {
         'children' => [],
       ],
     ],
+    'field__block_content__field_widgets__widget_collection' => [
+      'variables' => [
+        'items' => [],
+        'render_style' => '',
+      ],
+    ],
   ];
 }
 
@@ -166,6 +174,26 @@ function template_preprocess_os_widgets_taxonomy_display_type_menu(&$variables) 
  */
 function template_preprocess_os_widgets_taxonomy_display_type_slider(&$variables) {
   template_preprocess_item_list($variables);
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_field__block_content__field_widgets__widget_collection(&$vars) {
+  $vars['render_style'] = $vars['element']['#render_style'];
+  $keys = Element::children($vars['element']);
+  $vars['items'] = array_intersect_key($vars['element'], array_flip($keys));
+  $vars['titles'] = [];
+  $vars['id'] = $vars['element']['#object']->id();
+  foreach ($vars['items'] as $k => $i) {
+    /** @var \Drupal\block_content\BlockContentInterface $bc */
+    $bc = $i['#block_content'];
+    /** @var \Drupal\block\Entity\Block[] $instances */
+    $instances = $bc->getInstances();
+    $block = reset($instances);
+    $vars['items'][$k] = \Drupal::service('renderer')->render(\Drupal::entityTypeManager()->getViewBuilder('block')->view($block));
+    $vars['titles'][$k] = $bc->label();
+  }
 }
 
 /**
@@ -214,10 +242,10 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
       if (!empty($form['field_taxonomy_vocabulary']['widget']['#default_value'][0])) {
         /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
         $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
-        $data['vid']['#default_value'] = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
-        $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+        $vid = $form['field_taxonomy_vocabulary']['widget']['#default_value'][0];
+        $settings = $taxonomy_helper->getVocabularySettings($vid);
 
-        _os_widgets_taxonomy_filter_bundle_options($form, $saved_entity_types);
+        _os_widgets_taxonomy_filter_bundle_options($form, $settings['allowed_vocabulary_reference_types']);
       }
       break;
 
@@ -231,6 +259,12 @@ function os_widgets_form_alter(&$form, FormStateInterface $form_state, $form_id)
         ],
       ];
       break;
+
+    case 'block_content_publication_types_form':
+    case 'block_content_publication_types_edit_form':
+      $form['field_types_whitelist']['widget']['#options'][''] = t('Select all');
+      ksort($form['field_types_whitelist']['widget']['#options']);
+      break;
   }
 }
 
@@ -241,9 +275,10 @@ function os_widgets_field_taxonomy_vocabulary_ajax(array &$form, FormStateInterf
   $selected_vocabulary = $form_state->getValue('field_taxonomy_vocabulary');
   /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
   $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
-  $data['vid']['#default_value'] = $selected_vocabulary[0]['target_id'] ?? '';
-  $saved_entity_types = $taxonomy_helper->getSelectedBundles($data);
+  $vid = $selected_vocabulary[0]['target_id'] ?? '';
+  $settings = $taxonomy_helper->getVocabularySettings($vid);
 
+  $saved_entity_types = $settings['allowed_vocabulary_reference_types'];
   foreach ($saved_entity_types as $entity_key) {
     if ($entity_key == 'node:events') {
       $saved_entity_types[] = 'node:past_events';

@@ -85,6 +85,8 @@ class CpRolesFunctionalTest extends CpUsersExistingSiteTestBase {
   /**
    * Checks the accessibility of group roles as a vsite admin.
    *
+   * @covers \Drupal\cp_users\Form\CpUsersPermissionsSpecificForm
+   *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
@@ -102,7 +104,17 @@ class CpRolesFunctionalTest extends CpUsersExistingSiteTestBase {
 
     $this->visitViaVsite("cp/users/permissions/{$group_role->id()}", $this->group);
     $this->assertSession()->statusCodeEquals(200);
+
     $this->assertSession()->fieldExists("{$group_role->id()}[access control panel]");
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[view group_node:blog entity]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[view group_node:blog content]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[create group_node:blog content]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[update own group_node:blog content]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[update any group_node:blog content]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[delete own group_node:blog content]"));
+    $this->assertNull($this->getSession()->getPage()->findField("{$group_role->id()}[delete any group_node:blog content]"));
+    $this->assertNotNull($this->getSession()->getPage()->findField("{$group_role->id()}[create group_node:blog entity]"));
+
     $this->visitViaVsite("cp/users/roles/{$group_role->id()}/edit", $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $this->visitViaVsite("cp/users/roles/{$group_role->id()}/delete", $this->group);

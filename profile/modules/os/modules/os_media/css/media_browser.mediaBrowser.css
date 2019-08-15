@@ -45,7 +45,8 @@
   display: inline-block;
   text-align: center;
   padding: 5px;
-  color: #4e84c4;
+  font-size: 14px;
+  color: #215990;
 }
 
 .media-browser-button:hover {
@@ -276,9 +277,9 @@ button[ng-disabled="!pager.canPage(1)"],
 button[ng-disabled="!pager.canPage(-1)"] {
   border: none;
   background-color: #fff;
-  color: #4e84c4;
   font-weight: bold;
   font-size: 1.1em;
+  color: #4e84c4;
 }
 
 .tw-widget button[ng-click="addMore(vocab.id)"] {
@@ -366,11 +367,11 @@ div[file-edit] .control button,
   text-align: center;
   font-weight: normal;
   font-size: 1.077em;
-  border: 1px solid #888;
-  border-bottom: 1px solid #888;
-  border-left-color: #888;
-  border-right-color: #888;
-  background: #888;
+  border: 1px solid #555;
+  border-bottom: 1px solid #555;
+  border-left-color: #555;
+  border-right-color: #555;
+  background: #555;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 2px;
@@ -379,7 +380,7 @@ div[file-edit] .control button,
 
 .media-browser-pane #media-browser-file-select {
   left: 36%;
-  width: 160px;
+  width: auto;
   height: 40px;
 }
 
@@ -529,6 +530,7 @@ div[file-edit] .control button,
   from {
     background-position: 0 0;
   }
+
   to {
     background-position: 40px 0;
   }
@@ -538,6 +540,7 @@ div[file-edit] .control button,
   from {
     background-position: 0 0;
   }
+
   to {
     background-position: 40px 0;
   }
@@ -547,6 +550,7 @@ div[file-edit] .control button,
   from {
     background-position: 0 0;
   }
+
   to {
     background-position: 40px 0;
   }
@@ -585,9 +589,11 @@ div[file-edit] .control button,
 .form-managed-file .media-browser-drop-box .help {
   top: -9px;
 }
+
 .form-managed-file .media-browser-drop-box .help:after {
   right: 40%;
 }
+
 #edit-field-upload div {
   overflow: visible;
 }
@@ -631,6 +637,7 @@ div[file-edit] .control button,
 .field--widget-media-browser-widget img.file-icon {
   width: 16px;
 }
+
 .form-item .file-list-single ul {
   display: inline-block;
   width: 34%;
@@ -649,10 +656,12 @@ div[file-edit] .control button,
     margin-left: 0px;
     animation-timing-function: ease-out;
   }
+
   50% {
     margin-left: 20px;
     animation-timing-function: ease-in;
   }
+
   100% {
     margin-left: 0px;
   }
@@ -677,4 +686,53 @@ div[file-edit] .control button,
 
 .ui-dialog .container-fluid {
   height: auto !important;
+}
+
+.media-actions li {
+  display: inline-block;
+  border-left: 1px solid #ccc;
+  padding: 0 10px;
+  font-size: 13px;
+}
+
+.media-actions li.last {
+  margin-right: 0;
+  padding-right: 2px;
+}
+
+.media-actions {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 250px;
+  text-align: center;
+}
+
+@media(max-width: 767px) {
+  .media-actions {
+    width: 95px;
+    border-left: 1px solid #ccc;
+    flex-wrap: wrap;
+    text-align: left;
+  }
+
+  .media-actions li {
+    border-bottom: 1px solid #ccc;
+    border-left: 0 none;
+    width: 100%;
+  }
+}
+
+.file-list-single {
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+}
+
+.file-list-single span {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  font-size: 14px;
+  width: 70%;
 }

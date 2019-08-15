@@ -33,7 +33,7 @@
    */
   let originalUrl = Drupal.url;
   Drupal.url = function(path) {
-    if (drupalSettings.spaces != undefined && path.indexOf(drupalSettings.spaces.purl) === false) {
+    if (drupalSettings.spaces != undefined && path.indexOf(drupalSettings.spaces.purl) == -1) {
       return drupalSettings.path.baseUrl + drupalSettings.spaces.purl + '/' + drupalSettings.path.pathPrefix + path;
     }
     return drupalSettings.path.baseUrl + drupalSettings.path.pathPrefix + path;

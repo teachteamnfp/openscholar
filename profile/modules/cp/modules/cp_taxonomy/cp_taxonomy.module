@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\views\ViewExecutable;
 use Drupal\vsite\Config\HierarchicalStorage;
 use Drupal\Core\Form\FormStateInterface;
@@ -27,16 +28,20 @@ function cp_taxonomy_entity_operation_alter(array &$operations, EntityInterface 
   $vsiteContextManager = \Drupal::service('vsite.context_manager');
   if ($vsiteContextManager->getActiveVsite()) {
     if ($entity->getEntityTypeId() == 'taxonomy_vocabulary') {
-      $operations = array_intersect_key($operations, [
-        'edit' => '',
-        'list' => '',
-        'add' => '',
-      ]);
-      /** @var \Drupal\Core\Url $url */
-      $url = $operations['list']['url'];
-      $operations['list']['url'] = Url::fromRoute('cp.taxonomy.list', $url->getRouteParameters());
-      $operations['edit']['url'] = Url::fromRoute('cp.taxonomy.edit', $url->getRouteParameters());
-      $operations['add']['url'] = Url::fromRoute('cp.taxonomy.term.add', $url->getRouteParameters());
+      $keys = [
+        'edit' => 'cp.taxonomy.edit',
+        'list' => 'cp.taxonomy.list',
+        'add' => 'cp.taxonomy.term.add',
+      ];
+      $operations = array_intersect_key($operations, $keys);
+      foreach ($keys as $key => $route_name) {
+        if (empty($operations[$key]['url'])) {
+          continue;
+        }
+        /** @var \Drupal\Core\Url $url */
+        $url = $operations[$key]['url'];
+        $operations[$key]['url'] = Url::fromRoute($route_name, $url->getRouteParameters());
+      }
     }
   }
 }
@@ -85,14 +90,28 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
   /** @var \Drupal\cp_taxonomy\CpTaxonomyHelperInterface $taxonomy_helper */
   $taxonomy_helper = Drupal::service('cp.taxonomy.helper');
   $options = $taxonomy_helper->getSelectableBundles();
-  $saved_entity_types = $taxonomy_helper->getSelectedBundles($form);
   $form['allowed_entity_types'] = [
     '#type' => 'checkboxes',
     '#options' => $options,
     '#title' => t('Allowed entity types'),
-    '#default_value' => $saved_entity_types,
   ];
-  $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_save_allowed_bundles_submit';
+
+  $form['widget_type'] = [
+    '#title' => t('Form element type'),
+    '#type' => 'radios',
+    '#options' => TaxonomyTermsWidget::getWidgetTypes(),
+  ];
+  if (!empty($form['vid']['#default_value'])) {
+    $vocabulary_settings = $taxonomy_helper->getVocabularySettings($form['vid']['#default_value']);
+  }
+  if (!empty($vocabulary_settings)) {
+    $form['allowed_entity_types']['#default_value'] = $vocabulary_settings['allowed_vocabulary_reference_types'];
+    $form['widget_type']['#default_value'] = $vocabulary_settings['widget_type'];
+  }
+  else {
+    $form['widget_type']['#default_value'] = TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT;
+  }
+  $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_save_vocabulary_settings_submit';
 }
 
 /**
@@ -161,19 +180,18 @@ function cp_taxonomy_form_add_vocab_submit(array &$form, FormStateInterface &$fo
 }
 
 /**
- * Save allowed bundles to vocabulary when done.
+ * Save vocabulary settings submit handler.
  *
  * @param array $form
  *   The form.
  * @param \Drupal\Core\Form\FormStateInterface $form_state
  *   The form state.
  */
-function cp_taxonomy_form_save_allowed_bundles_submit(array &$form, FormStateInterface &$form_state) {
+function cp_taxonomy_form_save_vocabulary_settings_submit(array &$form, FormStateInterface &$form_state) {
   $vid = $form_state->getValue('vid');
-  $allowed_entity_types = $form_state->getValue('allowed_entity_types');
-  if (!is_null($allowed_entity_types)) {
-    Drupal::service('cp.taxonomy.helper')->saveAllowedBundlesToVocabulary($vid, $allowed_entity_types);
-  }
+  $settings['allowed_entity_types'] = $form_state->getValue('allowed_entity_types');
+  $settings['widget_type'] = $form_state->getValue('widget_type');
+  Drupal::service('cp.taxonomy.helper')->saveVocabularySettings($vid, $settings);
 }
 
 /**

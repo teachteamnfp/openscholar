@@ -16,3 +16,22 @@ layout:
     - core/drupal.announce
     - core/drupal.debounce
     - core/drupal.dropbutton
+tabbedWidget:
+  js:
+    js/os_widgets.tabbed.js: {}
+  css:
+    component:
+      css/os_widgets.tabbed.css: {}
+  dependencies:
+    - core/jquery.ui.tabs
+accordionWidget:
+  js:
+    js/os_widgets.accordion.js: {}
+  css:
+    component:
+      css/os_widgets.accordion.css: {}
+  dependencies:
+    - core/jquery.ui.accordion
+randomWidget:
+  js:
+    js/os_widgets.random.js: {}

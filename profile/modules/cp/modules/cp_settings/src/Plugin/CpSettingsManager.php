@@ -34,12 +34,21 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
     $links = [];
     $defs = $this->getDefinitions();
     foreach ($defs as $d) {
-      $links[$d['group']['id']] = [
+      $link_meta = [
         'title' => $d['group']['title']->render(),
         'route_name' => 'cp.settings.group',
         'route_parameters' => ['setting_group' => $d['group']['id']],
         'parent' => $d['group']['parent'],
-      ] + $base_plugin_definition;
+      ];
+
+      if ($d['group']['parent'] === 'cp.appearance') {
+        $link_meta['route_name'] = 'cp.settings.appearance.group';
+      }
+      elseif ($d['group']['parent'] === 'cp.settings.app') {
+        $link_meta['route_name'] = 'cp.settings.apps_settings.group';
+      }
+
+      $links[$d['group']['id']] = array_merge($link_meta, $base_plugin_definition);
     }
     return $links;
   }
@@ -63,6 +72,22 @@ class CpSettingsManager extends DefaultPluginManager implements CpSettingsManage
     }, $defs);
 
     return $plugins;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getTitleForGroup(string $group): string {
+    $defs = $this->getDefinitions();
+    $defs = array_filter($defs, function ($a) use ($group) {
+      return ($a['group']['id'] == $group);
+    });
+
+    // reset() returned null for some reason. Workaround.
+    $keys = array_keys($defs);
+    $d = $defs[reset($keys)];
+
+    return $d['group']['title'];
   }
 
 }

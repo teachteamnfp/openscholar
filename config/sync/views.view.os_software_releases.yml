@@ -587,10 +587,11 @@ display:
     display_title: All
     position: 3
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       path: software/%/releases
       display_description: ''
-      title: '{{ arguments.nid }} - All Releases'
+      title: 'All Releases'
       defaults:
         title: false
         pager: false
@@ -632,15 +633,117 @@ display:
     display_title: 'Recent Block'
     position: 1
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       display_description: ''
       use_more: true
       defaults:
         use_more: false
         use_more_always: false
         use_more_text: false
+        filters: false
+        filter_groups: false
       use_more_always: true
       use_more_text: 'more releases'
+      block_description: 'Recent Releases'
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          value:
+            software_release: software_release
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        current_vsite_filter:
+          id: current_vsite_filter
+          table: group_content
+          field: current_vsite_filter
+          relationship: group_content
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: group_content
+          plugin_id: vsite_current_filter
+        field_is_recommended_version_value:
+          id: field_is_recommended_version_value
+          table: node__field_is_recommended_version
+          field: field_is_recommended_version_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -657,7 +760,8 @@ display:
     display_title: 'Recommended Block'
     position: 2
     display_options:
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender: {  }
       display_description: ''
       title: 'Recommended Releases'
       defaults:
@@ -762,6 +866,7 @@ display:
         operator: AND
         groups:
           1: AND
+      block_description: 'Recommended Release'
     cache_metadata:
       max-age: -1
       contexts:

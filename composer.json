@@ -23,6 +23,10 @@
             "url": "https://github.com/openscholar/repec"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/drupal-test-traits"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -220,18 +224,21 @@
         "drupal/google_analytics": "^2.4",
         "drupal/groupmenu": "^1.0",
         "drupal/cancel_button": "^1.1",
-        "drupal/bibcite": "1.0-alpha10",
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
         "drupal/shorten": "2.x-dev",
-        "drupal/field_group": "^3.0",
-        "drupal/key_value_field": "^1.0"
+        "drupal/key_value_field": "^1.0",
+        "drupal/bibcite": "1.x-dev",
+        "drupal/term_reference_tree": "1.x-dev",
+        "drupal/chosen": "^2.7",
+        "harvesthq/chosen": "^1.8",
+        "drupal/config_ignore": "^2.1"
     },
     "require-dev": {
         "drupal/features": "^3.7",
         "webflo/drupal-core-require-dev": "8.6.16",
         "drupal/devel": "^1.2",
-        "weitzman/drupal-test-traits": "^1.0@beta",
+        "weitzman/drupal-test-traits": "dev-pass-chrome-driver-options",
         "dmore/chrome-mink-driver": "^2.6"
     },
     "conflict": {
@@ -359,8 +366,12 @@
                 "Update is.gd service api url": "https://www.drupal.org/files/issues/2019-07-03/update-isgd-api-3065567-2.patch"
             },
             "drupal/bibcite": {
-                "Contextual links for bibcite reference entities": "patches/3065990-2.patch",
-                "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch"
+                "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch",
+                "Editors and others roles treated as author": "https://www.drupal.org/files/issues/2019-08-01/other-roles-shown-as-authors-3006180-6.patch"
+            },
+            "drupal/config_ignore": {
+                "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
+                "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
             }
         },
         "patches-ignore": {

@@ -38,21 +38,25 @@
   border-bottom-left-radius: 10px;
 }
 
-#block-list {
-  background-color: lightgray;
-  height: calc(90% - 47px);
-  border-radius: 5px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  color: #000;
-  height: 200px;
-  padding: 10px;
-}
-
 #block-place-widget-selector-wrapper a,
 #block-place-widget-selector-wrapper a:hover {
   color: white;
   text-decoration: none;
+}
+
+#block-list .block {
+  position: relative;
+}
+
+/**
+ * Places the quick edit region over the title
+ */
+#block-list .block .contextual-region {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 #block-list .block-content,
