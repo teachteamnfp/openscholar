@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\os_app_access\ExistingSite;
 
+use Drupal\Core\Access\AccessResultAllowed;
 use Drupal\Core\Access\AccessResultForbidden;
 use Drupal\Core\Access\AccessResultNeutral;
 use Drupal\os_app_access\AppAccessLevels;
@@ -41,7 +42,7 @@ class AppAccessTest extends AppAccessTestBase {
     $mut_app_access_config->set('blog', AppAccessLevels::PUBLIC)->save();
     /** @var \Drupal\Core\Access\AccessResult $result */
     $result = $os_app_access_service->access($group_admin, 'blog');
-    $this->assertInstanceOf(AccessResultNeutral::class, $result);
+    $this->assertInstanceOf(AccessResultAllowed::class, $result);
     $this->assertContains('app:access_changed', $result->getCacheTags());
     $this->assertContains('vsite', $result->getCacheContexts());
 
