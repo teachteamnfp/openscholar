@@ -571,7 +571,7 @@
           $scope.toInsert.push(file);
           uploadNext(file.mid);
         }).error(function (e) {
-          addMessage(e.title);
+          addMessage(e.message);
           uploadNext();
         });
       }

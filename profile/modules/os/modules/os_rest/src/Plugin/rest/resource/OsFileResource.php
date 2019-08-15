@@ -84,7 +84,12 @@ class OsFileResource extends FileUploadResource {
     $file = _file_save_upload_single($file_raw, 'upload', $validators, $destination, FILE_EXISTS_REPLACE);
 
     if (!$file) {
-      throw new HttpException(500, 'File could not be saved.');
+      $messages = \Drupal::messenger()->all();
+      $errors = [];
+      foreach ($messages['error'] as $message) {
+        $errors[] = $message->__toString();
+      }
+      throw new HttpException(422, implode("\n", $errors));
     }
 
     $extension = pathinfo($file->getFileUri(), PATHINFO_EXTENSION);
