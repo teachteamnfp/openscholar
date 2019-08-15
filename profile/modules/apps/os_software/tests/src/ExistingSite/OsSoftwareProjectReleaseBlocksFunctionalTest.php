@@ -7,7 +7,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Class OsSoftwareProjectReleaseBlocksFunctionalTest.
  *
- * @group cp
+ * @group os
  * @group functional
  *
  * @package Drupal\Tests\os_software\ExistingSite

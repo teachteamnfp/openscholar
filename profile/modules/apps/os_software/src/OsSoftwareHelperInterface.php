@@ -20,4 +20,12 @@ interface OsSoftwareHelperInterface {
    */
   public function prepareReleaseTitle(NodeInterface $release_node) : string;
 
+  /**
+   * Pre populate the node form array by query parameters.
+   *
+   * @param array $form
+   *   Node Form array.
+   */
+  public function prePopulateSoftwareProjectField(array &$form) : void;
+
 }
