@@ -205,12 +205,12 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function aliasExists($alias, $langcode, $source = NULL) {
+    $alias_with_token = $this->pathToToken($alias);
     /** @var \Drupal\group\Entity\GroupInterface $group */
-    if ($group = $this->vsiteContextManager->getActiveVsite()) {
-      $alias = '/[vsite:' . $group->id() . ']' . $alias;
+    if ($group = $this->vsiteContextManager->getActiveVsite() && $alias_with_token == $alias) {
+      $alias_with_token = '/[vsite:' . $group->id() . ']' . $alias;
     }
-    $alias = $this->pathToToken($alias);
-    return $this->storage->aliasExists($alias, $langcode, $source);
+    return $this->storage->aliasExists($alias_with_token, $langcode, $source);
   }
 
   /**
