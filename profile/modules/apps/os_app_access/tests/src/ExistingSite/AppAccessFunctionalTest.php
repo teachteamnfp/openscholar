@@ -41,7 +41,6 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
 
   /**
    * @covers \Drupal\os_app_access\Access\AppAccess::access
-   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
    * @covers ::os_app_access_node_access
@@ -111,7 +110,6 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
 
   /**
    * @covers \Drupal\os_app_access\Access\AppAccess::access
-   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
    * @covers ::os_app_access_bibcite_reference_access

@@ -4,15 +4,11 @@ namespace Drupal\os_app_access\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Access\AccessResultInterface;
-use Drupal\Core\Access\AccessResultNeutral;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\os_app_access\AppAccessLevels;
-use Drupal\views\Views;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -56,29 +52,6 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
       $container->get('config.factory'),
       $container->get('vsite.context_manager')
     );
-  }
-
-  /**
-   * Access route match.
-   *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   Route match.
-   * @param \Drupal\Core\Session\AccountProxyInterface $account
-   *   The user account.
-   *
-   * @return \Drupal\Core\Access\AccessResultInterface
-   *   Access result.
-   */
-  public function accessFromRouteMatch(RouteMatchInterface $route_match, AccountProxyInterface $account) {
-    $params = $route_match->getParameters();
-    $view = Views::getView($params->get('view_id'));
-    if ($view->setDisplay($params->get('display_id'))) {
-      /** @var \Drupal\os_app_access\Plugin\views\access\AppAccess $access_plugin */
-      $access_plugin = $view->getDisplay()->getPlugin('access');
-      return $this->access($account, $access_plugin->options['app']);
-    }
-
-    return new AccessResultNeutral();
   }
 
   /**

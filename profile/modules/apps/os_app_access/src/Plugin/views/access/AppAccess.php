@@ -131,6 +131,13 @@ class AppAccess extends AccessPluginBase {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account) {
+    /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+    $active_vsite = $this->vsiteContextManager->getActiveVsite();
+
+    if (!$active_vsite) {
+      return FALSE;
+    }
+
     $app_levels = $this->configFactory->get('os_app_access.access');
     $app = $this->options['app'];
     $level = (int) $app_levels->get($app);
@@ -142,17 +149,22 @@ class AppAccess extends AccessPluginBase {
       return FALSE;
     }
 
+    /** @var array $group_permissions */
+    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($this->options['app']);
+    $default_access = FALSE;
+
+    if ($level === AppAccessLevels::PUBLIC || $level === AppAccessLevels::PRIVATE) {
+      foreach ($group_permissions as $group_permission) {
+        $default_access = $active_vsite->hasPermission($group_permission, $account);
+      }
+    }
+
     if ($level === AppAccessLevels::PUBLIC) {
-      return TRUE;
+      return $default_access;
     }
 
     if ($level === AppAccessLevels::PRIVATE) {
-      /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
-      $active_vsite = $this->vsiteContextManager->getActiveVsite();
-
-      if ($active_vsite) {
-        return $active_vsite->hasPermission('access private apps', $account);
-      }
+      return ($default_access && $active_vsite->hasPermission('access private apps', $account));
     }
 
     return FALSE;
@@ -162,7 +174,10 @@ class AppAccess extends AccessPluginBase {
    * {@inheritdoc}
    */
   public function alterRouteDefinition(Route $route) {
-    $route->setRequirement('_custom_access', '\Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch');
+    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($this->options['app']);
+
+    $route->setRequirement('_group_permission', implode(',', $group_permissions));
+    $route->setOption('parameters', ['group' => ['type' => 'entity:group']]);
   }
 
 }
