@@ -93,15 +93,20 @@ function os_classes_node_view(array &$build, EntityInterface $entity, EntityView
     return;
   }
 
-  $nid = $entity->id();
-  $url = Url::fromRoute('os_classes.paragraph_add_form', [
-    'nid' => $nid,
-    'type' => 'class_material',
-  ], ['attributes' => ['class' => 'class_material_field_class_anchor']]);
+  /** @var \Drupal\Core\Session\AccountInterface $current_user */
+  $current_user = \Drupal::currentUser();
 
-  $link = Link::fromTextAndUrl('Add class material', $url)->toString();
-  $build['add_class_material']['#markup'] = $link;
-  $build['add_class_material']['#weight'] = 20;
+  if ($current_user->hasPermission('administer site configuration')) {
+    $nid = $entity->id();
+    $url = Url::fromRoute('os_classes.paragraph_add_form', [
+      'nid' => $nid,
+      'type' => 'class_material',
+    ], ['attributes' => ['class' => 'class_material_field_class_anchor']]);
+
+    $link = Link::fromTextAndUrl('Add class material', $url)->toString();
+    $build['add_class_material']['#markup'] = $link;
+    $build['add_class_material']['#weight'] = 20;
+  }
 }
 
 /**
