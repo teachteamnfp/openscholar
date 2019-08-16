@@ -715,7 +715,6 @@ div[file-edit] .control button,
     flex-wrap: wrap;
     text-align: left;
   }
-
   .media-actions li {
     border-bottom: 1px solid #ccc;
     border-left: 0 none;
@@ -735,4 +734,11 @@ div[file-edit] .control button,
   overflow: hidden;
   font-size: 14px;
   width: 70%;
+}
+
+/**** ckeditor media icon ****/
+.cke_button_icon.cke_button__mediabrowser_icon {
+  background-size: 20px !important;
+  height: 20px !important;
+  width: 20px !important;
 }
