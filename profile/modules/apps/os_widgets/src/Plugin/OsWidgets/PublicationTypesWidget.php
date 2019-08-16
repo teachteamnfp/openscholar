@@ -3,6 +3,7 @@
 namespace Drupal\os_widgets\Plugin\OsWidgets;
 
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Database\Query\PagerSelectExtender;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
 use Drupal\os_widgets\OsWidgetsBase;
@@ -92,7 +93,8 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     }
     $query->addExpression('COUNT(br.id)', 'count');
     $query->groupBy('br.type');
-    $result = $query->execute();
+    $pager = $query->extend(PagerSelectExtender::class)->limit(10);
+    $result = $pager->execute();
     $types_count_list = [];
     while ($row = $result->fetchAssoc()) {
       $types_count_list[$row['type']] = $types_info[$row['type']];
@@ -104,6 +106,9 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
       '#theme' => 'os_widgets_publication_types',
       '#types' => $types_count_list,
       '#is_display_count' => !empty($field_display_count_values[0]['value']),
+      '#pager' => [
+        '#type' => 'pager',
+      ],
     ];
   }
 
