@@ -1,5 +1,5 @@
 .path-user {
-  body {
+  @at-root body#{&} {
     background: $color-light-gray7;
   }
   .main-container {
