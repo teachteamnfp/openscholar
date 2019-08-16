@@ -3,6 +3,8 @@
 namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
+use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldFilteredMarkup;
@@ -51,6 +53,8 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   protected $fieldWidgets;
   protected $widgetTypes;
   protected $pluginManager;
+  protected $entityTypeManager;
+  protected $selectionPluginManager;
 
   /**
    * TaxonomyTermsWidget constructor.
@@ -69,14 +73,20 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    *   Config Factory.
    * @param \Drupal\Component\Plugin\PluginManagerInterface $plugin_manager
    *   Plugin manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity Type Manager.
+   * @param \Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface $selection_plugin_manager
+   *   Selection Plugin Manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager, EntityTypeManagerInterface $entity_type_manager, SelectionPluginManagerInterface $selection_plugin_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->taxonomyHelper = $taxonomy_helper;
     $this->widgetTypes = $this->taxonomyHelper->getWidgetTypes($field_definition->getTargetEntityTypeId() . ':' . $field_definition->getTargetBundle());
     $this->pluginManager = $plugin_manager;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->selectionPluginManager = $selection_plugin_manager;
 
     $configuration['field_definition'] = $field_definition;
     $configuration['settings'] = $settings;
@@ -97,7 +107,9 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       $configuration['settings'],
       $configuration['third_party_settings'],
       $container->get('cp.taxonomy.helper'),
-      $container->get('plugin.manager.field.widget')
+      $container->get('plugin.manager.field.widget'),
+      $container->get('entity_type.manager'),
+      $container->get('plugin.manager.entity_reference_selection')
     );
   }
 
@@ -108,6 +120,8 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
     $main_element = [];
     /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
+      $vocabulary = $this->entityTypeManager->getStorage('taxonomy_vocabulary')->load($vid);
+      $title = $vocabulary->label();
       $plugin_id = $fieldWidget->getPluginId();
       if (in_array($plugin_id, ['options_select', 'options_buttons'])) {
         $options = $this->getOptions($items->getEntity());
@@ -118,7 +132,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
             '#default_value' => $this->getSelectedOptions($items),
             '#multiple' => 1,
             '#chosen' => 1,
-            '#title' => $vid,
+            '#title' => $title,
           ];
         }
       }
@@ -128,7 +142,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
           $main_element['#field_widget_definitions'][$vid]['#vocabularies'] = [
             $vid => $main_element['#field_widget_definitions'][$vid]['#vocabularies'][$vid],
           ];
-          $main_element['#field_widget_definitions'][$vid]['#title'] = $vid;
+          $main_element['#field_widget_definitions'][$vid]['#title'] = $title;
         }
         if ($plugin_id == 'entity_reference_autocomplete') {
           $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($items, $form, $form_state);
@@ -140,7 +154,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
             $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
           }
           $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements'] = $entity_reference_autocomplete_elements;
-          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements']['#title'] = $vid;
+          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements']['#title'] = $title;
         }
       }
     }
@@ -204,16 +218,9 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
         ->getFieldStorageDefinition()
         ->getOptionsProvider('target_id', $entity);
       $field_definition = $options_provider->getFieldDefinition();
-      $options = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
+      $options = $this->selectionPluginManager->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
 
-      $options = ['_none' => t('- None -')] + $options;
-
-      $module_handler = \Drupal::moduleHandler();
-      $context = [
-        'fieldDefinition' => $this->fieldDefinition,
-        'entity' => $entity,
-      ];
-      $module_handler->alter('options_list', $options, $context);
+      $options = ['_none' => $this->t('- None -')] + $options;
 
       array_walk_recursive($options, [$this, 'sanitizeLabel']);
 
