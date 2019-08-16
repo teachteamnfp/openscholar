@@ -66,22 +66,19 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     // Fill an array with whitelisted reference types and create links.
     // Init count with default zero.
     $field_types_whitelist_values = $block_content->get('field_types_whitelist')->getValue();
-    $types_list = [];
-    $types_count_list = [];
+    $types_info = [];
     foreach ($field_types_whitelist_values as $field_types_whitelist_value) {
       $type_machine_name = $field_types_whitelist_value['value'];
-      $types_list[] = $type_machine_name;
-      $types_count_list[$type_machine_name] = [
+      $types_info[$type_machine_name] = [
         'label' => $allowed_values[$type_machine_name] ?? $this->t('NoLabel'),
         'href' => Url::fromRoute('view.publications.page_1', ['type' => $type_machine_name])->toString(),
-        'count' => '0',
       ];
     }
 
     // Collect count of references with related reference types.
     $query = $this->connection->select('bibcite_reference', 'br');
     $query->fields('br', ['type']);
-    $query->condition('br.type', $types_list, 'IN');
+    $query->condition('br.type', array_keys($types_info), 'IN');
     // Filter to vsite content.
     if ($group) {
       $ids = [];
@@ -96,7 +93,9 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     $query->addExpression('COUNT(br.id)', 'count');
     $query->groupBy('br.type');
     $result = $query->execute();
+    $types_count_list = [];
     while ($row = $result->fetchAssoc()) {
+      $types_count_list[$row['type']] = $types_info[$row['type']];
       $types_count_list[$row['type']]['count'] = $row['count'];
     }
 
