@@ -134,3 +134,4 @@ permissions:
   147: 'delete own group_node:blog content'
   148: 'update own group_node:blog content'
   149: 'view group_node:blog content'
+  150: 'access private apps'
