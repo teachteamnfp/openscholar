@@ -1,4 +1,4 @@
-<label ng-if="title">{{title}}</label>
+<label ng-if="title" class="{{required_class}}">{{title}}</label>
 <div class="description" ng-bind-html="description"></div>
 <div id="edit-{{field_name}}-und-drop" class="form-managed-file">
     <div class="media-browser-drop-box" ngf-drop ngf-change="sendToBrowser($files, $event)" class="droppable"

@@ -104,6 +104,8 @@ class MediaBrowserWidget extends WidgetBase implements ContainerFactoryPluginInt
         'droppable_text' => 'Drop here.',
         'cardinality' => $this->fieldDefinition->getFieldStorageDefinition()->getCardinality(),
         'files' => 'files',
+        'title' => $this->fieldDefinition->getLabel(),
+        'required_class' => $this->fieldDefinition->isRequired() ? 'form-required' : '',
       ],
       '#markup' => $this->t('Loading the Media Browser. Please wait a moment.'),
       '#attached' => [
