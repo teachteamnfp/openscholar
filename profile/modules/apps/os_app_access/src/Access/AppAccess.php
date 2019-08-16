@@ -100,9 +100,6 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
     /** @var \Drupal\Core\Access\AccessResult $result */
     $result = AccessResult::neutral();
 
-    if ($access_level === AppAccessLevels::PUBLIC) {
-      $result = AccessResult::allowed();
-    }
     if ($access_level === AppAccessLevels::PRIVATE) {
       /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
       $active_vsite = $this->vsiteContextManager->getActiveVsite();
