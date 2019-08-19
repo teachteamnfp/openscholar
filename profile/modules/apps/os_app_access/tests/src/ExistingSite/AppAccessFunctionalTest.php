@@ -28,6 +28,13 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
   protected $groupMember;
 
   /**
+   * Non group member.
+   *
+   * @var \Drupal\user\UserInterface
+   */
+  protected $nonGroupMember;
+
+  /**
    * {@inheritdoc}
    */
   public function setUp() {
@@ -35,6 +42,7 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
 
     $this->groupAdmin = $this->createUser();
     $this->groupMember = $this->createUser();
+    $this->nonGroupMember = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
     $this->group->addMember($this->groupMember);
   }
@@ -77,7 +85,7 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     $this->visitViaVsite('news', $this->group);
     $this->assertSession()->statusCodeEquals(403);
 
-    $this->drupalLogin($this->groupMember);
+    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite("node/{$news->id()}", $this->group);
     $this->assertSession()->statusCodeEquals(403);
     $this->visitViaVsite('news', $this->group);
@@ -106,6 +114,12 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->visitViaVsite('news', $this->group);
     $this->assertSession()->statusCodeEquals(200);
+
+    $this->drupalLogin($this->nonGroupMember);
+    $this->visitViaVsite("node/{$news->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('news', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
   }
 
   /**
@@ -132,28 +146,50 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
     // Test disabled app setting.
     $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('cp/settings/app-access', $this->group);
-    $this->submitForm([
-      'enabled[blog][privacy]' => 0,
-      'enabled[class][privacy]' => 0,
-      'enabled[event][privacy]' => 0,
-      'enabled[faq][privacy]' => 0,
-      'enabled[links][privacy]' => 0,
-      'enabled[news][privacy]' => 0,
-      'enabled[page][privacy]' => 0,
-      'enabled[presentations][privacy]' => 0,
-      'enabled[profiles][privacy]' => 0,
-      'enabled[publications][privacy]' => 1,
-      'enabled[software][privacy]' => 0,
-    ], 'Save configuration');
+    $this->getSession()->getPage()->find('css', 'input[type=checkbox][name="enabled[publications][disable]"]')->check();
+    $this->getSession()->getPage()->pressButton('Save configuration');
 
     $this->drupalLogout();
-
     $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
     $this->assertSession()->statusCodeEquals(403);
     $this->visitViaVsite('publications', $this->group);
     $this->assertSession()->statusCodeEquals(403);
 
-    // TODO: Write private app setting test.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+
+    // Test enabled app setting.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('cp/settings/app-access', $this->group);
+    $this->getSession()->getPage()->find('css', 'input[type=checkbox][name="disabled[publications][enable]"]')->check();
+    $this->getSession()->getPage()->pressButton('Save configuration');
+
+    $this->drupalLogout();
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+
+    // Test private app setting.
+    $this->drupalLogin($this->groupAdmin);
+    $this->visitViaVsite('cp/settings/app-access', $this->group);
+    $this->getSession()->getPage()->selectFieldOption('enabled[publications][privacy]', 1);
+    $this->getSession()->getPage()->pressButton('Save configuration');
+
+    $this->drupalLogin($this->groupMember);
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->statusCodeEquals(200);
+
+    $this->drupalLogin($this->nonGroupMember);
+    $this->visitViaVsite("bibcite/reference/{$reference->id()}", $this->group);
+    $this->assertSession()->statusCodeEquals(403);
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->statusCodeEquals(403);
   }
 
 }
