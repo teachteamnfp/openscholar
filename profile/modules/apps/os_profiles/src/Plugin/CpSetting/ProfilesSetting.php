@@ -159,6 +159,10 @@ class ProfilesSetting extends CpSettingBase {
       '#title' => $this->t('Display types'),
       '#options' => $this->sortDisplayTypes($profile_styles_hover, $display_types_order),
       '#default_value' => $config->get('display_type'),
+    ];
+
+    $form['display_type_description'] = [
+      '#type' => 'item',
       '#description' => $this->t('Choose the display type of a person in the "/people" page.'),
     ];
 
@@ -286,10 +290,12 @@ class ProfilesSetting extends CpSettingBase {
       $media_images = $media->get('field_media_image')->referencedEntities();
       $image_file = array_shift($media_images);
       $path = $image_file->getFileUri();
+      $alt = $media->get('field_media_image')->getValue()[0]['alt'];
       $build = [
         '#theme' => 'image_style',
         '#uri' => $path,
         '#style_name' => $image_style,
+        '#alt' => $alt,
       ];
       return $this->renderer->renderRoot($build);
     }
@@ -298,6 +304,7 @@ class ProfilesSetting extends CpSettingBase {
       $build = [
         '#theme' => 'image',
         '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image.png'),
+        '#alt' => t('default-image'),
       ];
       return $this->renderer->renderRoot($build);
     }
@@ -310,6 +317,7 @@ class ProfilesSetting extends CpSettingBase {
     $build = [
       '#theme' => 'image',
       '#uri' => file_create_url(drupal_get_path('theme', 'os_base') . '/images/person-default-image-big.png'),
+      '#alt' => t('default-image'),
     ];
     return $this->renderer->renderRoot($build);
   }
