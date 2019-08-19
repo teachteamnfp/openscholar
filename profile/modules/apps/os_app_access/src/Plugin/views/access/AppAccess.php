@@ -174,10 +174,7 @@ class AppAccess extends AccessPluginBase {
    * {@inheritdoc}
    */
   public function alterRouteDefinition(Route $route) {
-    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($this->options['app']);
-
-    $route->setRequirement('_group_permission', implode(',', $group_permissions));
-    $route->setOption('parameters', ['group' => ['type' => 'entity:group']]);
+    $route->setRequirement('_custom_access', '\Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch');
   }
 
 }
