@@ -119,6 +119,7 @@ function os_widgets_theme($existing, $type, $theme, $path) {
       'variables' => [
         'types' => [],
         'is_display_count' => FALSE,
+        'pager' => '',
       ],
     ],
     'os_widgets_taxonomy_term_item' => [

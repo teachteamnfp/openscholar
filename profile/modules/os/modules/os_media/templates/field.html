@@ -1,4 +1,4 @@
-<label ng-if="title">{{title}}</label>
+<label ng-if="title" class="{{required_class}}">{{title}}</label>
 <div class="description" ng-bind-html="description"></div>
 <div id="edit-{{field_name}}-und-drop" class="form-managed-file">
     <div class="media-browser-drop-box" ngf-drop ngf-change="sendToBrowser($files, $event)" class="droppable"
@@ -19,15 +19,15 @@
                 <img class="file-icon" alt="" ng-src="{{file.icon}}">
                 {{file.name}} ({{file.filename}})
             </span>
-            <ul>
+            <ul class="media-actions">
                 <li class="replace first">
-                    <a href="" mb-open-modal replace="file" panes="{{panes.join(',')}}" types="{{types}}" on-select="replaceFile($inserted, $index)">Replace</a>
+                    <a href="" mb-open-modal replace="file" panes="{{panes.join(',')}}" types="{{types}}" on-select="replaceFile($inserted, $index)"><i class="fa fa-exchange-alt"></i> Replace</a>
                 </li>
                 <li class="edit">
-                    <a href="" file-editor-modal fid="{{file.mid}}">Edit</a>
+                    <a href="" file-editor-modal fid="{{file.mid}}"><i class="far fa-edit"></i> Edit</a>
                 </li>
                 <li class="remove last">
-                    <a href="" ng-click="removeFile($index)">Remove</a>
+                    <a href="" ng-click="removeFile($index)"><i class="far fa-trash-alt"></i> Remove</a>
                 </li>
             </ul>
         </div>

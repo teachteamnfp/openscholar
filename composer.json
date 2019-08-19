@@ -231,7 +231,8 @@
         "drupal/bibcite": "1.x-dev",
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
-        "harvesthq/chosen": "^1.8"
+        "harvesthq/chosen": "^1.8",
+        "drupal/config_ignore": "^2.1"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -319,7 +320,8 @@
                 "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                 "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
                 "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
-                "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
+                "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch",
+                "Image styles fails with absolute path": "https://www.drupal.org/files/issues/image_styles-2754273-7.patch"
             },
             "drupal/group_purl": {
                 "Prevent base path from interfering with purl detection": "https://www.drupal.org/files/issues/2019-04-12/group_purl.3026646-3.basepath.patch",
@@ -367,6 +369,10 @@
             "drupal/bibcite": {
                 "Extending the supported bibcite formats.": "patches/bibcite_formats_extension.patch",
                 "Editors and others roles treated as author": "https://www.drupal.org/files/issues/2019-08-01/other-roles-shown-as-authors-3006180-6.patch"
+            },
+            "drupal/config_ignore": {
+                "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
+                "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
             }
         },
         "patches-ignore": {

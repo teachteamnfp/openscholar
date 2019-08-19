@@ -210,7 +210,9 @@
             extensions: '@',
             upload_text: '@uploadText',
             droppable_text: '@droppableText',
-            cardinality: '@'
+            cardinality: '@',
+            title: '@title',
+            required_class: '@requiredClass'
           }
         }
       }
