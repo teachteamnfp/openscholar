@@ -102,10 +102,7 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
     if ($access_level === AppAccessLevels::DISABLED) {
       $result = AccessResult::forbidden('This App has been disabled.');
 
-      $result->addCacheTags(['app:access_changed']);
-      $result->addCacheContexts(['vsite']);
-
-      return $result;
+      return $this->cacheAccessResult($result);
     }
 
     // Check whether the user has access to all the bundles in app.
@@ -119,10 +116,7 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
     if ($access_level === AppAccessLevels::PUBLIC) {
       $result = AccessResult::allowedIf($default_access);
 
-      $result->addCacheTags(['app:access_changed']);
-      $result->addCacheContexts(['vsite']);
-
-      return $result;
+      return $this->cacheAccessResult($result);
     }
 
     if ($access_level === AppAccessLevels::PRIVATE) {
@@ -133,16 +127,10 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
         $result = AccessResult::allowed();
       }
 
-      $result->addCacheTags(['app:access_changed']);
-      $result->addCacheContexts(['vsite']);
-
-      return $result;
+      return $this->cacheAccessResult($result);
     }
 
-    $result->addCacheTags(['app:access_changed']);
-    $result->addCacheContexts(['vsite']);
-
-    return $result;
+    return $this->cacheAccessResult($result);
   }
 
   /**
@@ -181,10 +169,23 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
       $result = AccessResult::forbidden('This App has been disabled.');
     }
 
-    $result->addCacheTags(['app:access_changed']);
-    $result->addCacheContexts(['vsite']);
+    return $this->cacheAccessResult($result);
+  }
 
-    return $result;
+  /**
+   * Helper method to cache access result.
+   *
+   * @param \Drupal\Core\Access\AccessResult $access_result
+   *   The access result to cache.
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   *   The access result.
+   */
+  protected function cacheAccessResult(AccessResult $access_result): AccessResult {
+    $access_result->addCacheTags(['app:access_changed']);
+    $access_result->addCacheContexts(['vsite']);
+
+    return $access_result;
   }
 
 }
