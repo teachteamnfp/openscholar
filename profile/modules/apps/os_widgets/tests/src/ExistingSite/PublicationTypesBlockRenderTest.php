@@ -35,10 +35,17 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       'field_types_whitelist' => [
         'artwork',
         'book',
+        'bill',
       ],
       'field_display_count' => [
         FALSE,
       ],
+    ]);
+    $this->createReference([
+      'type' => 'artwork',
+    ]);
+    $this->createReference([
+      'type' => 'book',
     ]);
     $view_builder = $this->entityTypeManager
       ->getViewBuilder('block_content');
@@ -90,9 +97,6 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $this->assertContains('<a href="/publications?type=artwork">Artwork
                       <span class="count">(2)</span>
                 </a>', $markup->__toString());
-    $this->assertContains('<a href="/publications?type=book">Book
-                      <span class="count">(0)</span>
-                </a>', $markup->__toString());
   }
 
   /**
@@ -112,7 +116,6 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
       'type' => 'publication_types',
       'field_types_whitelist' => [
         'artwork',
-        'book',
       ],
       'field_display_count' => [
         TRUE,
@@ -128,9 +131,6 @@ class PublicationTypesBlockRenderTest extends OsWidgetsExistingSiteTestBase {
     $markup = $renderer->renderRoot($render);
     $this->assertContains('<a href="/publications?type=artwork">Artwork
                       <span class="count">(1)</span>
-                </a>', $markup->__toString());
-    $this->assertContains('<a href="/publications?type=book">Book
-                      <span class="count">(0)</span>
                 </a>', $markup->__toString());
   }
 

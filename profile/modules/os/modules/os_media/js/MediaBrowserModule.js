@@ -766,7 +766,7 @@
             minWidth: 600,
             width: 800,
             height: 650,
-            position: 'center',
+            position: { my: "center", at: "center", of: window },
             title: undefined,
             overlay: {
               backgroundColor: '#000000',
