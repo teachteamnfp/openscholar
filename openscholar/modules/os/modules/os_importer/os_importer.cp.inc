@@ -11,6 +11,10 @@ function os_importer_cp_settings() {
   $settings = array();
   $app_info = os_app_info();
   $vsite = vsite_get_vsite();
+  if (!$vsite) {
+    return array();  
+  }
+  
   $importer_menu_title = array(
     'biblio' => 'Publication',
     'media_gallery' => 'Media Gallery',
