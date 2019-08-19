@@ -323,7 +323,7 @@ class PublicationsViewsFunctionalTest extends TestBase {
   public function testAnonymousUserAccess(): void {
     $this->visit('/publications');
 
-    $this->assertSession()->statusCodeEquals(200);
+    $this->assertSession()->statusCodeEquals(403);
 
     $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/publications");
 
