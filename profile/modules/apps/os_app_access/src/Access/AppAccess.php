@@ -7,10 +7,8 @@ use Drupal\Core\Access\AccessResultInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\os_app_access\AppAccessLevels;
-use Drupal\views\Views;
 use Drupal\vsite\Plugin\AppManangerInterface;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -71,17 +69,25 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
   /**
    * Checks if user has access to app's view page.
    *
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The view page route.
+   * It is different from `$this->access()` because it uses group permissions
+   * as a fallback.
+   * It is necessary that public app views return `AccessResultAllowed`.
+   * Individual app view pages can work with `AccessResultNeutral`, because
+   * there are `hook_entity_access()`'es which "allows" it later.
+   *
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The user.
+   * @param string $app_name
+   *   The app name.
    *
    * @return \Drupal\Core\Access\AccessResultInterface
    *   The access result.
+   *
+   * @see \Drupal\os_app_access\Access\AppAccess::access()
+   * @see \os_bibcite_reference_access
+   * @see \gnode_node_access
    */
-  public function accessFromRouteMatch(RouteMatchInterface $route_match, AccountInterface $account): AccessResultInterface {
-    $params = $route_match->getParameters();
-    $view = Views::getView($params->get('view_id'));
+  public function accessFromRouteMatch(AccountInterface $account, $app_name): AccessResultInterface {
     /** @var \Drupal\Core\Access\AccessResult $result */
     $result = AccessResult::neutral();
     /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
@@ -91,13 +97,10 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
       return $result;
     }
 
-    $view->setDisplay($params->get('display_id'));
-    /** @var \Drupal\os_app_access\Plugin\views\access\AppAccess $access_plugin */
-    $access_plugin = $view->getDisplay()->getPlugin('access');
     /** @var \Drupal\Core\Config\ImmutableConfig $levels */
     $levels = $this->configFactory->get('os_app_access.access');
     /** @var int $access_level */
-    $access_level = (int) $levels->get($access_plugin->options['app']);
+    $access_level = (int) $levels->get($app_name);
 
     if ($access_level === AppAccessLevels::DISABLED) {
       $result = AccessResult::forbidden('This App has been disabled.');
@@ -107,7 +110,7 @@ class AppAccess implements AccessInterface, ContainerInjectionInterface {
 
     // Check whether the user has access to all the bundles in app.
     /** @var array $group_permissions */
-    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($access_plugin->options['app']);
+    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($app_name);
     $default_access = TRUE;
     foreach ($group_permissions as $group_permission) {
       $default_access = ($default_access && $active_vsite->hasPermission($group_permission, $account));

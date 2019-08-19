@@ -175,6 +175,7 @@ class AppAccess extends AccessPluginBase {
    */
   public function alterRouteDefinition(Route $route) {
     $route->setRequirement('_custom_access', '\Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch');
+    $route->setDefault('app_name', $this->options['app']);
   }
 
 }
