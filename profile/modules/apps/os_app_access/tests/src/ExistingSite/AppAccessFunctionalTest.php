@@ -49,10 +49,12 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
 
   /**
    * @covers \Drupal\os_app_access\Access\AppAccess::access
+   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
    * @covers ::os_app_access_node_access
    * @covers ::_os_app_access_node_type_access
+   * @covers ::os_app_access_entity_create_access
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    */
@@ -124,9 +126,12 @@ class AppAccessFunctionalTest extends AppAccessTestBase {
 
   /**
    * @covers \Drupal\os_app_access\Access\AppAccess::access
+   * @covers \Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::access
    * @covers \Drupal\os_app_access\Plugin\views\access\AppAccess::alterRouteDefinition
    * @covers ::os_app_access_bibcite_reference_access
+   * @covers ::os_app_access_publications_access
+   * @covers ::os_app_access_entity_create_access
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Drupal\Core\Entity\EntityStorageException

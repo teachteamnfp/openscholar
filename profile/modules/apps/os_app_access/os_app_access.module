@@ -6,6 +6,7 @@
  */
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
+use Drupal\Core\Access\AccessResultInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResultNeutral;
@@ -26,13 +27,7 @@ function os_app_access_entity_create_access(AccountInterface $account, array $co
       return _os_app_access_node_type_access($account, $bundle);
 
     case 'bibcite_reference':
-      /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
-      $app_manager = Drupal::service('vsite.app.manager');
-      /** @var \Drupal\vsite\AppInterface $app */
-      $app = $app_manager->createInstance('publications');
-      /** @var \Drupal\os_app_access\Access\AppAccess $app_access */
-      $app_access = \Drupal::service('os_app_access.app_access');
-      return $app_access->access($account, $app->getPluginId());
+      return os_app_access_publications_access($account);
 
     default:
       break;
@@ -83,6 +78,21 @@ function _os_app_access_node_type_access(AccountInterface $account, $node_type) 
  * Implements hook_ENTITY_TYPE_access() for checking publications app access.
  */
 function os_app_access_bibcite_reference_access(ReferenceInterface $entity, $operation, AccountInterface $account) {
+  return os_app_access_publications_access($account);
+}
+
+/**
+ * Checks if user has access to publications app.
+ *
+ * @param \Drupal\Core\Session\AccountInterface $account
+ *   The user.
+ *
+ * @return \Drupal\Core\Access\AccessResultInterface
+ *   The access result.
+ *
+ * @throws \Drupal\Component\Plugin\Exception\PluginException
+ */
+function os_app_access_publications_access(AccountInterface $account): AccessResultInterface {
   /** @var \Drupal\vsite\Plugin\AppManangerInterface $app_manager */
   $app_manager = Drupal::service('vsite.app.manager');
   /** @var \Drupal\vsite\AppInterface $app */
