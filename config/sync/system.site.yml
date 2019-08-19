@@ -1,5 +1,5 @@
 uuid: 230aaadc-2159-4db7-bc54-28a3b694c01c
-name: 'Drush Site-Install'
+name: OpenScholar
 mail: admin@example.com
 slogan: ''
 page:
@@ -12,3 +12,4 @@ langcode: en
 default_langcode: en
 _core:
   default_config_hash: yXadRE77Va-G6dxhd2kPYapAvbnSvTF6hO4oXiOEynI
+mail_notification: ''

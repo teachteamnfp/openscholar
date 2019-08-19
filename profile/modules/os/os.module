@@ -242,3 +242,11 @@ function os_form_node_form_alter(&$form, FormStateInterface $form_state, $form_i
   $form['sticky']['#access'] = $has_administer_content_access;
   $form['created']['#access'] = $has_administer_content_access;
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function os_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('system.site');
+  $form['#title'] = t('@site_name Login', ['@site_name' => $config->get('name')]);
+}
