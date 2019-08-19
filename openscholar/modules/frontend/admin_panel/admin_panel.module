@@ -228,10 +228,10 @@ function admin_panel_url_outbound_alter(&$path, &$options, $original) {
   // only alter login path if the user is logged
   // out, otherwise it is a link to "My account"
   global $user;
-  if (!in_array($path, $always_open_pages) || empty($options['query']['destination']) || ($path == 'user' && $user->uid)) {
+  if (!in_array($path, $always_open_pages) || empty($options['query']['destination']) || ($path == 'user' && $user->uid) || strpos($options['query']['destination'], 'admin_panel')) {
     return;
   }
-  $queryparam_add = (strpos($options['query']['destination'], '?') ? '&' : '?').drupal_http_build_query(array("admin_panel" => 1, 'login' => 1));
+  $queryparam_add = (strpos($options['query']['destination'], '?') ? '&' : '?') . drupal_http_build_query(array("admin_panel" => 1, 'login' => 1));
   $options['query']['destination'] = $options['query']['destination'] . $queryparam_add;
 }
 

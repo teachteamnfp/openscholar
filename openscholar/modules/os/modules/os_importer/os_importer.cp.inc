@@ -359,7 +359,7 @@ function os_importer_import_group_validate($values) {
         }
 
         if ($node_type == 'event') {
-          // Parse uploaded file content with ParserCSV class.          
+          // Parse uploaded file content with ParserCSV class.
           $file_content = _os_importer_fix_file_content($file);
           file_put_contents($file->uri, $file_content);
           feeds_include_library('ParserCSV.inc', 'ParserCSV');
