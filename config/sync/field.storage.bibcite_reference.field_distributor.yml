@@ -1,0 +1,21 @@
+uuid: ca3b78ac-d49f-4bea-8758-056f2565eb9d
+langcode: en
+status: true
+dependencies:
+  module:
+    - bibcite_entity
+id: bibcite_reference.field_distributor
+field_name: field_distributor
+entity_type: bibcite_reference
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
