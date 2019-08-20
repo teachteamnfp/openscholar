@@ -10,9 +10,11 @@ dependencies:
     - field.field.bibcite_reference.working_paper.field_publication_image
     - field.field.bibcite_reference.working_paper.field_redirect_to_source
     - field.field.bibcite_reference.working_paper.field_taxonomy_terms
+    - image.style.publication_details_view
   module:
-    - bibcite_entity
+    - image
     - layout_builder
+    - link
     - text
 third_party_settings:
   layout_builder:
@@ -40,7 +42,7 @@ content:
     region: content
   field_taxonomy_terms:
     type: entity_reference_label
-    weight: 3
+    weight: 4
     region: content
     label: inline
     settings:
@@ -48,7 +50,7 @@ content:
     third_party_settings: {  }
   notes:
     type: text_default
-    weight: 2
+    weight: 3
     region: content
     label: hidden
     settings: {  }
@@ -61,6 +63,18 @@ content:
       image_link: ''
     region: content
     label: above
+    third_party_settings: {  }
+  publishers_version:
+    type: link
+    weight: 2
+    region: content
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
     third_party_settings: {  }
 hidden:
   author: true
