@@ -65,6 +65,13 @@ function os_preprocess_block(array &$vars) {
     }
     $vars['content']['#markup'] .= t('<span id="powered-by"><a class="powered-by" href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
+  // Hiding breadcrumb from login and change password page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name == "user.login" || $route_name == "user.pass") {
+    if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_breadcrumb_block') {
+      $vars['content'] = '';
+    }
+  }
 }
 
 /**
