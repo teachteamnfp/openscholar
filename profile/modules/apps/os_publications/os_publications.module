@@ -16,6 +16,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\Url;
+use Drupal\link\LinkItemInterface;
 use Drupal\os_publications\RepecHelper;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\views\ViewExecutable;
@@ -366,6 +367,21 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setCardinality(1)
       ->setTranslatable(FALSE);
 
+    $fields['publishers_version'] = BaseFieldDefinition::create('link')
+      ->setLabel(t('Publishers version'))
+      ->setTranslatable(FALSE)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'link_type' => LinkItemInterface::LINK_GENERIC,
+        'title' => 1,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'link_default',
+        'weight' => 54,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 }
@@ -659,8 +675,9 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // Add validation message for validating the field via JS.
   $form['bibcite_year_group']['#suffix'] = $form_validation_date_month . '<div id="bibcite-year-group-validate">' . t('Year must be in the form YYYY. Only numerical digits are allowed.') . '</div>';
 
-  // Year validation needs to happen before the standard validation.
-  array_unshift($form['#validate'], 'os_publications_validate_year_field');
+  // Year and other field validations needs to happen before the standard
+  // validation.
+  array_unshift($form['#validate'], 'os_publications_validate_fields');
 
   // Adding submit handler to flip between the year and the date field.
   array_unshift($form['actions']['submit']['#submit'], 'os_publications_year_date_flip');
@@ -681,6 +698,33 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     '#default_value' => $default_year,
     '#after_build' => ['os_publications_date_of_publication_alter'],
   ];
+
+  // Publisher's version field changes.
+  if (!$form['publishers_version']['widget'][0]['title']['#default_value']) {
+    $form['publishers_version']['widget'][0]['title']['#default_value'] = t("Publisher's Version");
+  }
+  $form['publishers_version']['widget'][0]['title']['#weight'] = -1;
+  $form['publishers_version']['widget'][0]['uri']['#description'] = t('If published or sold online, e.g. http://www.cambridge.org/isbn/1166158');
+  $form['publishers_version']['widget'][0]['uri']['#title'] = t('Article URL');
+  unset($form['publishers_version']['widget'][0]['#title']);
+
+  // We are setting default value so this is necessary to avoid field widget
+  // validation errors.
+  array_unshift($form['publishers_version']['widget'][0]['#element_validate'], 'os_publication_empty_uri_validation');
+}
+
+/**
+ * Set title to null if no uri entered so that no false form errors are thrown.
+ *
+ * @param array $element
+ *   Publishers version form element.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   Form state.
+ */
+function os_publication_empty_uri_validation(array &$element, FormStateInterface $form_state) {
+  if ($element['uri']['#value'] === '') {
+    $element['title']['#value'] = '';
+  }
 }
 
 /**
@@ -717,7 +761,7 @@ function os_publications_year_date_flip($form, FormStateInterface $form_state) {
  *
  * Text field and checkboxes.
  */
-function os_publications_validate_year_field($form, FormStateInterface $form_state) {
+function os_publications_validate_fields($form, FormStateInterface $form_state) {
 
   /** @var \Drupal\Core\Config\ImmutableConfig $pub_config */
   $pub_config = \Drupal::service('config.factory')->get('os_publications.settings');
@@ -906,7 +950,7 @@ function os_publications_preprocess_bibcite_citation(&$variables) {
 
   /** @var \Drupal\bibcite_entity\Entity\Reference $publication */
   $publication = $variables['data']['entity'];
-  if ($publication->id()) {
+  if ($publication && $publication->id()) {
     $text = Markup::create($publication->html_title->value);
     $link = $publication->toLink($text)->toString();
     $variables['data']['title'] = $link;
