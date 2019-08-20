@@ -93,15 +93,23 @@ function os_classes_node_view(array &$build, EntityInterface $entity, EntityView
     return;
   }
 
-  $nid = $entity->id();
-  $url = Url::fromRoute('os_classes.paragraph_add_form', [
-    'nid' => $nid,
-    'type' => 'class_material',
-  ], ['attributes' => ['class' => 'class_material_field_class_anchor']]);
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_group */
+  $active_group = $vsite_context_manager->getActiveVsite();
+  $current_user = \Drupal::currentUser();
 
-  $link = Link::fromTextAndUrl('Add class material', $url)->toString();
-  $build['add_class_material']['#markup'] = $link;
-  $build['add_class_material']['#weight'] = 20;
+  if ($active_group && $active_group->hasPermission('create group_node:class entity', $current_user)) {
+    $nid = $entity->id();
+    $url = Url::fromRoute('os_classes.paragraph_add_form', [
+      'nid' => $nid,
+      'type' => 'class_material',
+    ], ['attributes' => ['class' => 'class_material_field_class_anchor']]);
+
+    $link = Link::fromTextAndUrl('Add class material', $url)->toString();
+    $build['add_class_material']['#markup'] = $link;
+    $build['add_class_material']['#weight'] = 20;
+  }
 }
 
 /**
