@@ -535,6 +535,26 @@ content:
     weight: 62
     settings: {  }
     third_party_settings: {  }
+  publication_day:
+    type: options_select
+    settings: {  }
+    region: content
+    weight: 102
+    third_party_settings: {  }
+  publication_month:
+    type: options_select
+    settings: {  }
+    region: content
+    weight: 101
+    third_party_settings: {  }
+  publishers_version:
+    type: link_default
+    weight: 54
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:

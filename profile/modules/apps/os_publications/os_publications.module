@@ -711,6 +711,10 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // We are setting default value so this is necessary to avoid field widget
   // validation errors.
   array_unshift($form['publishers_version']['widget'][0]['#element_validate'], 'os_publication_empty_uri_validation');
+
+  // Pages field changes.
+  $form['bibcite_pages']['widget'][0]['value']['#title'] = t('Pages');
+  $form['bibcite_pages']['widget'][0]['value']['#description'] = t('e.g. 12-25');
 }
 
 /**

@@ -469,4 +469,5 @@ hidden:
   field_redirect_to_source: true
   html_title: true
   langcode: true
+  publishers_version: true
   uid: true
