@@ -65,6 +65,13 @@ function os_preprocess_block(array &$vars) {
     }
     $vars['content']['#markup'] .= t('<span id="powered-by"><a class="powered-by" href=":link">OpenScholar</a></span>', [':link' => 'https://theopenscholar.com/']);
   }
+  // Hiding breadcrumb from login and change password page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name == "user.login" || $route_name == "user.pass") {
+    if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_breadcrumb_block') {
+      $vars['content'] = '';
+    }
+  }
 }
 
 /**
@@ -249,4 +256,6 @@ function os_form_node_form_alter(&$form, FormStateInterface $form_state, $form_i
 function os_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('system.site');
   $form['#title'] = t('@site_name Login', ['@site_name' => $config->get('name')]);
+  $form['name']['#title'] = t('@site_name Username or E-Mail', ['@site_name' => $config->get('name')]);
+  $form['pass']['#title'] = t('@site_name Password', ['@site_name' => $config->get('name')]);
 }

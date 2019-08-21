@@ -439,4 +439,5 @@ hidden:
   field_taxonomy_terms: true
   html_title: true
   langcode: true
+  publishers_version: true
   uid: true
