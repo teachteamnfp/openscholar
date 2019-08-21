@@ -1,3 +1,4 @@
+uuid: e6c57b59-4e6c-44a3-aff1-7d603c7b2b32
 langcode: en
 status: true
 dependencies:
@@ -5,6 +6,8 @@ dependencies:
     - image
     - media
     - user
+_core:
+  default_config_hash: TFUfJMkC5E-HhafRL20wJK0EdtJotDtqb_9kJw2att4
 id: media
 label: Media
 module: views
@@ -852,5 +855,3 @@ display:
         - url.query_args
         - user.permissions
       tags: {  }
-_core:
-  default_config_hash: TFUfJMkC5E-HhafRL20wJK0EdtJotDtqb_9kJw2att4

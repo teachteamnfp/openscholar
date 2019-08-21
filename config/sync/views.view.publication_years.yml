@@ -5,7 +5,6 @@ dependencies:
   module:
     - bibcite_entity
     - group
-    - os_app_access
     - vsite
 id: publication_years
 label: 'Publication years'
@@ -23,9 +22,8 @@ display:
     position: 0
     display_options:
       access:
-        type: app
-        options:
-          app: publications
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
