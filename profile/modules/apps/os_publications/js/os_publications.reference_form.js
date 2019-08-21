@@ -17,7 +17,7 @@
             if (!yearField.hasClass('error')) {
                 yearWarning.css('visibility', 'hidden');
             }
-            yearWarning.css('color', 'red');
+            yearWarning.css('color', '#BF1722');
 
             // Allowed year input.
             let numbers = /^[0-9]+$/;
