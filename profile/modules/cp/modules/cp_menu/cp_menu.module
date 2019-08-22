@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Management of a vsite's menus.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node menu create form element.
+ *
+ * Drupal's menu system and groupmenu module handles menu creation for node.
+ * But since, in our case, vsites must share default menu items, therefore, it
+ * makes sure that user is still able to create menu item for node, even when
+ * the vsite does not has its own menus.
+ *
+ * @see \groupmenu_form_node_form_alter
+ * @see \menu_ui_form_node_form_alter
+ * @see \cp_menu_form_alter
+ */
+function cp_menu_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  if (!$active_vsite) {
+    return;
+  }
+
+  /** @var \Drupal\group\Entity\GroupContentInterface[] $vsite_menus */
+  $vsite_menus = $active_vsite->getContent('group_menu:menu');
+
+  // Let the other form alters handle node menu creation, if vsite has its own
+  // menus.
+  if ($vsite_menus) {
+    return;
+  }
+
+  $form['menu']['#access'] = TRUE;
+  // TODO: Add custom submit handler for creating vsite menus.
+}
+
+/**
+ * Implements hook_module_implements_alter() for making sure that cp_menu's node form alter runs in the end.
+ */
+function cp_menu_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'form_alter') {
+    $cp_menu_group = $implementations['cp_menu'];
+    unset($implementations['cp_menu']);
+    $implementations['cp_menu'] = $cp_menu_group;
+  }
+}
+
+/**
+ * Implements hook_form_alter() for making sure cp_menu_form_node_form_alter is invoked after groupmenu_form_node_form_alter.
+ *
+ * @see \cp_menu_form_node_form_alter
+ * @see \groupmenu_form_node_form_alter
+ * @see \menu_ui_form_node_form_alter
+ */
+function cp_menu_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only required because cp_menu_form_node_form_alter needs to be invoked
+  // after `groupmenu_form_node_form_alter`.
+}
