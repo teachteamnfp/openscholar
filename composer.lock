@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6eb4ae6dbf03165bb4ac18e868aeec42",
+    "content-hash": "e68fbebf8f02ab104c5f0aa3545b1ce7",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -5423,7 +5423,8 @@
                     }
                 },
                 "patches_applied": {
-                    "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch"
+                    "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch",
+                    "Fix error in non vsite pages": "patches/groupmenu.12152.fix-error-in-non-vsite-pages.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -11777,7 +11778,7 @@
             "version": "8.3.3",
             "source": {
                 "type": "git",
-                "url": "https://git.drupal.org/project/coder.git",
+                "url": "https://git.drupalcode.org/project/coder.git",
                 "reference": "a33d3388fb2e1d94bd2aee36a8ff79186e9d8f43"
             },
             "require": {

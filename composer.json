@@ -376,7 +376,8 @@
                 "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
             },
             "drupal/groupmenu": {
-                "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch"
+                "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch",
+                "Fix error in non vsite pages": "patches/groupmenu.12152.fix-error-in-non-vsite-pages.patch"
             }
         },
         "patches-ignore": {
