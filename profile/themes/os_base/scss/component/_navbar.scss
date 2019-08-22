@@ -74,6 +74,7 @@ nav {
   }
 }
 .navbar-collapse {
+  padding: 0;
   .navbar-nav {
     > li {
       > a {
@@ -112,9 +113,14 @@ nav {
           }
         }
       }
-    }
-    .row {
-      margin: 0;
+      .dropdown-menu {
+        background: none;
+        li {
+          a {
+            line-height: 20px;
+          }
+        }
+      }
     }
   }
 }

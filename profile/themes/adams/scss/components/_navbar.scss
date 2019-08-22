@@ -2,7 +2,6 @@
   background: $color_tundora_approx;
   border-bottom: 8px solid $color_squirrel_approx;
   @media #{$mobile} {
-    padding: 0 !important;
     border: 0 none;
   }
   nav {
@@ -45,12 +44,8 @@
   /**** dropdown menu ****/
   .dropdown-menu {
     background-color: $color_mexican_red_approx;
-    @media #{$mobile} {
-      background: none;
-    }
     > li {
       > a {
-        background: none;
         color: $white;
         @media #{$mobile} {
           font-size: 19px;
