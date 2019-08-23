@@ -12,11 +12,11 @@ fields:
   title:
     visible: true
     required: false
-  author:
+  uid:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: true
@@ -52,13 +52,14 @@ fields:
     visible: false
     required: false
   bibcite_year:
+    hint: 'Format: yyyy'
     visible: true
     required: true
   bibcite_secondary_title:
     visible: false
     required: false
   bibcite_volume:
-    visible: false
+    visible: true
     required: false
   bibcite_edition:
     visible: false
@@ -67,7 +68,7 @@ fields:
     visible: false
     required: false
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
   bibcite_number_of_volumes:
     visible: false
@@ -76,14 +77,16 @@ fields:
     visible: false
     required: false
   bibcite_pages:
-    visible: true
-    required: false
     label: Description
+    visible: false
+    required: false
   bibcite_date:
-    visible: true
+    hint: 'Format: mm/yyyy'
+    visible: false
     required: false
   bibcite_type_of_work:
-    visible: true
+    hint: 'Masters Thesis'
+    visible: false
     required: false
   bibcite_lang:
     visible: false
@@ -92,35 +95,35 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
+    visible: false
     required: false
   bibcite_place_published:
+    label: City
     visible: true
     required: false
-    label: City
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -129,7 +132,7 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
     visible: true
@@ -156,5 +159,47 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
+    visible: false
+    required: false
+  bibcite_pmid:
+    visible: true
+    required: false
+  moderation_state:
+    visible: true
+    required: false
+  metatag:
+    visible: true
+    required: false
+  distribution:
+    visible: true
+    required: false
+  is_sticky:
+    visible: true
+    required: false
+  title_first_char_excl_prep:
+    visible: true
+    required: false
+  full_text:
+    visible: true
+    required: false
+  notes:
+    visible: true
+    required: false
+  html_title:
+    visible: true
+    required: false
+  path:
+    visible: true
+    required: false
+  noindex:
+    visible: true
+    required: false
+  publication_month:
+    visible: true
+    required: false
+  publication_day:
+    visible: true
+    required: false
+  publishers_version:
     visible: true
     required: false

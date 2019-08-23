@@ -60,7 +60,7 @@ fields:
     required: false
     label: 'Series Title'
   bibcite_volume:
-    visible: true
+    visible: false
     required: false
   bibcite_edition:
     visible: true
