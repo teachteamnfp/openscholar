@@ -55,4 +55,28 @@ class CpUsersTest extends CpUsersExistingSiteTestBase {
     $this->assertEquals('Basic member', $member_role->get('label'));
   }
 
+  /**
+   * Tests cache invalidation on group role save.
+   *
+   * @covers ::cp_users_group_role_update
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testCacheInvalidation(): void {
+    $role = $this->createGroupRole();
+    /** @var \Drupal\Core\Cache\CacheTagsChecksumInterface $cache_tags_invalidator_checksum */
+    $cache_tags_invalidator_checksum = $this->container->get('cache_tags.invalidator.checksum');
+    $checksum_before_save = $cache_tags_invalidator_checksum->getCurrentChecksum(['config:system.menu.control-panel']);
+
+    // Positive test.
+    $role->grantPermission('manage cp appearance')->save();
+    $this->assertNotEquals($checksum_before_save, $cache_tags_invalidator_checksum->getCurrentChecksum(['config:system.menu.control-panel']));
+    $this->assertGreaterThan($checksum_before_save, $cache_tags_invalidator_checksum->getCurrentChecksum(['config:system.menu.control-panel']));
+
+    // Negative test.
+    $checksum_before_save = $cache_tags_invalidator_checksum->getCurrentChecksum(['config:system.menu.control-panel']);
+    $role->save();
+    $this->assertEquals($checksum_before_save, $cache_tags_invalidator_checksum->getCurrentChecksum(['config:system.menu.control-panel']));
+  }
+
 }
