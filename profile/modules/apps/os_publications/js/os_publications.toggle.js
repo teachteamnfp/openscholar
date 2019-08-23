@@ -10,9 +10,8 @@
         attach: function (context, settings) {
             // Toggle Abstract field body.
             let abstractField = '.field--name-bibcite-abst-e';
-            $(abstractField + ' .field--item').hide();
             $(abstractField + ' .field--label').on('click' , function(e){
-                $(this).siblings('.field--item').toggle();
+                $(this).siblings('.field--item').toggleClass('visually-hidden');
             });
         }
     };

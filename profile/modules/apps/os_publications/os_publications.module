@@ -1107,3 +1107,15 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
 
   $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_publications_preprocess_field(&$variables) {
+  // If abstract field hide the item at first.
+  if ($variables['field_name'] == 'bibcite_abst_e') {
+    $field = $variables['items'];
+    $field = array_shift($field);
+    $field['attributes']->setAttribute('class', 'visually-hidden');
+  }
+}
