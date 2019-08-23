@@ -1112,8 +1112,9 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
  * Implements hook_preprocess_HOOK().
  */
 function os_publications_preprocess_field(&$variables) {
-  // If abstract field hide the item at first.
-  if ($variables['field_name'] == 'bibcite_abst_e') {
+  // If abstract field hide the item at first on publication view page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ((strpos($route_name, 'view.publications') !== FALSE) && $variables['field_name'] == 'bibcite_abst_e') {
     $field = $variables['items'];
     $field = array_shift($field);
     $field['attributes']->setAttribute('class', 'visually-hidden');
