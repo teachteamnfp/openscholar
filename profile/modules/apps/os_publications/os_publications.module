@@ -1063,12 +1063,21 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
     if (!$note_in_teaser) {
       unset($build['notes']);
     }
+    $build['bibcite_abst_e']['#title'] = Link::fromTextAndUrl('Abstract', Url::fromUri('internal:#'));
     // Do not remove, important for proper citation rendering.
     $build['citation']['#data']['entity'] = $entity;
+    $build['#attached']['library'][] = 'os_publications/drupal.os_publications.misc';
   }
 
   // If publication has pmid entered, show pubmed link.
   if ($display->getMode() === 'citation') {
+    // Last updated on information.
+    $changed = $entity->changed->value;
+    $build['changed'] = [
+      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span></br>',
+      '#weight' => 14,
+    ];
+
     if ($build['#bibcite_reference']->bibcite_pmid->value) {
       // Use bibcite module's bibcite link plugin to generate the pubmed link.
       $manager = \Drupal::service('plugin.manager.bibcite_link');
@@ -1076,15 +1085,10 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
       if ($link = $instance->build($entity)) {
         $build['pubmed_link'] = [
           '#markup' => '<span class = "citation-links-pubmed">' . \Drupal::service('renderer')->render($link) . '</span>',
-          '#weight' => 50,
+          '#weight' => 15,
         ];
       }
     }
-    $changed = $entity->changed->value;
-    $build['changed'] = [
-      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span>',
-      '#weight' => 49,
-    ];
     // Do not remove, important for proper citation rendering.
     $build['citation']['#data']['entity'] = $entity;
   }
@@ -1102,4 +1106,17 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
   $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_publications_preprocess_field(&$variables) {
+  // If abstract field hide the item at first on publication view page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ((strpos($route_name, 'view.publications') !== FALSE) && $variables['field_name'] == 'bibcite_abst_e') {
+    $field = $variables['items'];
+    $field = array_shift($field);
+    $field['attributes']->setAttribute('class', 'visually-hidden');
+  }
 }
