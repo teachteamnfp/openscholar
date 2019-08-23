@@ -119,7 +119,8 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->linkExists('Abstract');
 
     // Test links works fine and toggles data for the field.
-    $this->assertSession()->pageTextNotContains('This is a test for abstract field.');
+    $abst_field = $this->getCurrentPage()->find('css', '.field--name-bibcite-abst-e .field--item');
+    $abst_field->hasClass('visually-hidden');
     $this->getCurrentPage()->clickLink('Abstract');
     $this->assertSession()->pageTextContains('This is a test for abstract field.');
 
