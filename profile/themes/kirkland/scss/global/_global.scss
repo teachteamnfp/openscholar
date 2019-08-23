@@ -5,31 +5,36 @@
   border: none;
 }
 .not-front .navbar-collapse {
-  padding-bottom: 25px !important;
+  padding-bottom: 25px;
 }
-.bg-one .navbar-collapse {
-  background: url(../images/bg1.jpg?457) center bottom -180px no-repeat $white;
-}
-.bg-two .navbar-collapse {
-  background: url(../images/bg2.jpg) center bottom -180px no-repeat $white;
-}
-.bg-three .navbar-collapse {
-  background: url(../images/bg3.jpg) center bottom -180px no-repeat $white;
-}
-.bg-four .navbar-collapse {
-  background: url(../images/bg4.jpg) center bottom -180px no-repeat $white;
-}
-.bg-five .navbar-collapse {
-  background: url(../images/bg5.jpg) center bottom -180px no-repeat $white;
-}
-.bg-six .navbar-collapse {
-  background: url(../images/bg6.jpg) center bottom -180px no-repeat $white;
-}
-.bg-seven .navbar-collapse {
-  background: url(../images/bg7.jpg) center bottom -180px no-repeat $white;
-}
-.bg-eight .navbar-collapse {
-  background: url(../images/bg8.jpg) center bottom -180px no-repeat $white;
+.navbar-collapse {
+  .bg-one &{
+    background: url(../images/bg1.jpg?457) center bottom -180px no-repeat $white;
+  }
+  .bg-two & {
+    background: url(../images/bg2.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-three & {
+    background: url(../images/bg3.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-four & {
+    background: url(../images/bg4.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-five & {
+    background: url(../images/bg5.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-six & {
+    background: url(../images/bg6.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-seven & {
+    background: url(../images/bg7.jpg) center bottom -180px no-repeat $white;
+  }
+  .bg-eight & {
+    background: url(../images/bg8.jpg) center bottom -180px no-repeat $white;
+  }
+  .not-front & {
+    padding-bottom: 25px;
+  }
 }
 .search-block-form .form-submit {
   background: $color_endeavour_approx;
