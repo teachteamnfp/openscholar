@@ -843,7 +843,7 @@ function vsite_vsite_exists_access($vsites = array()) {
       global $base_url;
       // @todo remove duplicate message
       // @see _os_pinserver_auth_existing_vsite_redirect()
-      drupal_set_message(t('You do not have permission to create new OpenScholar sites. !link', array(
+      drupal_set_message(t('                 You do not have permission to create new OpenScholar sites. !link', array(
         '!link' => l(t('Return home.'), $base_url)
       )), 'error');
     }
