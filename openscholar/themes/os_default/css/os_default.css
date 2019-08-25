@@ -146,7 +146,7 @@ body.not-logged-in.page-user {
     content: '';
     background-color: #A51C30;
     z-index: -1;
-
+	padding-top: 50px;
 }
 .not-logged-in.page-user #columns #tasks {
 	margin-bottom: 2em;
