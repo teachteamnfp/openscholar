@@ -1117,6 +1117,6 @@ function os_publications_preprocess_field(&$variables) {
   if ((strpos($route_name, 'view.publications') !== FALSE) && $variables['field_name'] == 'bibcite_abst_e') {
     $field = $variables['items'];
     $field = array_shift($field);
-    $field['attributes']->setAttribute('class', 'visually-hidden');
+    $field['attributes']->setAttribute('class', ['visually-hidden', 'abstract--content']);
   }
 }
