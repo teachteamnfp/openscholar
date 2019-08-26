@@ -367,6 +367,7 @@ function cp_taxonomy_views_post_build(ViewExecutable $view) {
  * Implements hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
  */
 function cp_taxonomy_field_widget_multivalue_reference_taxonomy_terms_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+  return;
   $original_elements = $elements;
   $elements = [];
   foreach ($original_elements['#field_widget_definitions'] as $vid => $original_element) {
@@ -384,6 +385,6 @@ function cp_taxonomy_field_widget_multivalue_reference_taxonomy_terms_form_alter
 /**
  * Implements hook_field_widget_multivalue_WIDGET_TYPE_form_alter().
  */
-function cp_taxonomy_field_widget_multivalue_entity_reference_autocomplete_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
+function cp_taxonomy_field_widget_multivalue_cp_entity_reference_autocomplete_form_alter(array &$elements, FormStateInterface $form_state, array $context) {
   $original_elements = $elements;
 }

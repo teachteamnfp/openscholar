@@ -5,14 +5,11 @@ namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
-use Drupal\Core\Field\FieldFilteredMarkup;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Form\OptGroup;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
@@ -33,9 +30,9 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
  */
 class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, ContainerFactoryPluginInterface {
 
-  const WIDGET_TYPE_AUTOCOMPLETE = 'entity_reference_autocomplete';
-  const WIDGET_TYPE_OPTIONS_SELECT = 'options_select';
-  const WIDGET_TYPE_OPTIONS_BUTTONS = 'options_buttons';
+  const WIDGET_TYPE_AUTOCOMPLETE = 'cp_entity_reference_autocomplete';
+  const WIDGET_TYPE_OPTIONS_SELECT = 'cp_options_select';
+  const WIDGET_TYPE_OPTIONS_BUTTONS = 'cp_options_buttons';
   const WIDGET_TYPE_TREE = 'term_reference_tree';
 
   /**
@@ -117,35 +114,31 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
-    $main_element = [];
+    $main_element = [
+      '#tree' => TRUE,
+    ];
     /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
+      $filtered_items = $this->removeUnrelatedItems($items, $vid);
+      $field_name = $this->fieldDefinition->getName();
+      $parents = $form['#parents'];
+      $field_state = static::getWidgetState($parents, $field_name, $form_state);
+      $field_state['items_count'] = $filtered_items->count();
+      static::setWidgetState($parents, $field_name, $form_state, $field_state);
       $vocabulary = $this->entityTypeManager->getStorage('taxonomy_vocabulary')->load($vid);
-      $title = $vocabulary->label();
-      $plugin_id = $fieldWidget->getPluginId();
-      if (in_array($plugin_id, ['options_select', 'options_buttons'])) {
-        $options = $this->getOptions($items->getEntity());
-        if (!empty($options[$vid])) {
-          $main_element['#field_widget_definitions'][$vid] = [
-            '#type' => $plugin_id == 'options_select' ? 'select' : 'checkboxes',
-            '#options' => $options[$vid],
-            '#default_value' => $this->getSelectedOptions($items),
-            '#multiple' => 1,
-            '#chosen' => 1,
-            '#title' => $title,
-          ];
-        }
+      $this->saveVocabularyToFormState($form_state, $vocabulary);
+      if ($fieldWidget->handlesMultipleValues()) {
+        $main_element[$vid] = $fieldWidget->formElement($filtered_items, $delta, $element, $form, $form_state);
       }
       else {
-        $main_element['#field_widget_definitions'][$vid] = $fieldWidget->formElement($items, $delta, $element, $form, $form_state);
-        if ($plugin_id == 'term_reference_tree') {
-          $main_element['#field_widget_definitions'][$vid]['#vocabularies'] = [
-            $vid => $main_element['#field_widget_definitions'][$vid]['#vocabularies'][$vid],
+        if ($fieldWidget->getPluginId() == 'term_reference_tree') {
+          $main_element[$vid]['#vocabularies'] = [
+            $vid => $main_element[$vid]['#vocabularies'][$vid],
           ];
-          $main_element['#field_widget_definitions'][$vid]['#title'] = $title;
         }
-        if ($plugin_id == 'entity_reference_autocomplete') {
-          $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($items, $form, $form_state);
+        else {
+          $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
+          $entity_reference_autocomplete_elements['add_more']['#name'] .= '_vid_' . $vid;
           foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
             $element = &$entity_reference_autocomplete_elements[$delta];
             if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
@@ -153,8 +146,8 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
             }
             $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
           }
-          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements'] = $entity_reference_autocomplete_elements;
-          $main_element['#field_widget_definitions'][$vid]['#entity_reference_autocomplete_elements']['#title'] = $title;
+          $main_element[$vid] = $entity_reference_autocomplete_elements;
+          $main_element[$vid]['#title'] = $vocabulary->label();
         }
       }
     }
@@ -204,66 +197,32 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   }
 
   /**
-   * Returns the array of options for the widget.
    *
-   * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
-   *   The entity for which to return options.
-   *
-   * @return array
-   *   The array of options for the widget.
    */
-  protected function getOptions(FieldableEntityInterface $entity) {
-    if (!isset($this->options)) {
-      $options_provider = $this->fieldDefinition
-        ->getFieldStorageDefinition()
-        ->getOptionsProvider('target_id', $entity);
-      $field_definition = $options_provider->getFieldDefinition();
-      $options = $this->selectionPluginManager->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
-
-      $options = ['_none' => $this->t('- None -')] + $options;
-
-      array_walk_recursive($options, [$this, 'sanitizeLabel']);
-
-      $this->options = $options;
-    }
-    return $this->options;
-  }
-
-  /**
-   * Determines selected options from the incoming field values.
-   *
-   * @param \Drupal\Core\Field\FieldItemListInterface $items
-   *   The field values.
-   *
-   * @return array
-   *   The array of corresponding selected options.
-   */
-  protected function getSelectedOptions(FieldItemListInterface $items) {
-    // We need to check against a flat list of options.
-    $flat_options = OptGroup::flattenOptions($this->getOptions($items->getEntity()));
-
-    $selected_options = [];
+  protected function removeUnrelatedItems($items, $vid) {
+    /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
     foreach ($items as $item) {
-      $value = $item->target_id;
-      // Keep the value if it actually is in the list of options (needs to be
-      // checked against the flat list).
-      if (isset($flat_options[$value])) {
-        $selected_options[] = $value;
+      $delta = $item->getName();
+      $field_value = $item->getValue();
+      if (empty($field_value)) {
+        continue;
+      }
+      $term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_value['target_id']);
+      if ($term->bundle() != $vid) {
+        unset($items[$delta]);
       }
     }
-
-    return $selected_options;
+    return $items;
   }
 
   /**
-   * Sanitizes a string label to display as an option.
-   *
-   * @param string $label
-   *   The label to sanitize.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   * @param $vocabulary
    */
-  protected function sanitizeLabel(&$label) {
-    // Allow a limited set of HTML tags.
-    $label = FieldFilteredMarkup::create($label);
+  protected function saveVocabularyToFormState(FormStateInterface $form_state, $vocabulary): void {
+    $form_state_storage = $form_state->getStorage();
+    $form_state_storage['taxonomy_terms_widget_vocabulary'] = $vocabulary;
+    $form_state->setStorage($form_state_storage);
   }
 
 }
