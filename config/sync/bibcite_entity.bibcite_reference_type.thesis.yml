@@ -17,7 +17,7 @@ fields:
     required: false
     hint: 'Required author'
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: true
@@ -29,25 +29,25 @@ fields:
     visible: false
     required: false
   bibcite_custom1:
-    visible: true
+    visible: false
     required: false
   bibcite_custom2:
-    visible: true
+    visible: false
     required: false
   bibcite_custom3:
-    visible: true
+    visible: false
     required: false
   bibcite_custom4:
-    visible: true
+    visible: false
     required: false
   bibcite_custom5:
-    visible: true
+    visible: false
     required: false
   bibcite_custom6:
-    visible: true
+    visible: false
     required: false
   bibcite_custom7:
-    visible: true
+    visible: false
     required: false
   bibcite_auth_address:
     visible: false
@@ -60,7 +60,7 @@ fields:
     required: false
     label: 'Academic Department'
   bibcite_volume:
-    visible: true
+    visible: false
     required: false
     label: Degree
   bibcite_edition:
@@ -70,7 +70,7 @@ fields:
     visible: false
     required: false
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
   bibcite_number_of_volumes:
     visible: false
@@ -79,16 +79,16 @@ fields:
     visible: false
     required: false
   bibcite_pages:
-    visible: true
+    visible: false
     required: false
   bibcite_date:
-    visible: true
+    visible: false
     required: false
   bibcite_type_of_work:
     visible: true
     required: false
     label: 'Thesis Type'
-    hint: ''
+    hint: 'e.g. PhD thesis'
   bibcite_lang:
     visible: false
     required: false
@@ -96,36 +96,36 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
-    required: true
+    visible: false
+    required: false
     label: University
   bibcite_place_published:
-    visible: true
+    visible: false
     required: false
     label: City
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -134,7 +134,7 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
     visible: false
@@ -143,7 +143,7 @@ fields:
     visible: false
     required: false
   bibcite_original_publication:
-    visible: true
+    visible: false
     required: false
   bibcite_other_author_affiliations:
     visible: false
@@ -161,5 +161,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false

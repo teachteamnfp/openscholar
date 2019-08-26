@@ -16,7 +16,7 @@ fields:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: true
@@ -63,7 +63,7 @@ fields:
     required: false
     label: 'Code Number'
   bibcite_edition:
-    visible: true
+    visible: false
     required: false
     label: Session
   bibcite_section:
@@ -71,21 +71,21 @@ fields:
     required: false
     label: Sections
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
   bibcite_number_of_volumes:
     visible: true
     required: false
     label: 'Statute Number'
   bibcite_number:
-    visible: true
+    visible: false
     required: false
     label: 'Public Law Number'
   bibcite_pages:
     visible: true
     required: false
   bibcite_date:
-    visible: true
+    visible: false
     required: false
     label: 'Date Enacted'
     hint: ''
@@ -102,32 +102,32 @@ fields:
     visible: false
     required: false
   bibcite_place_published:
-    visible: true
+    visible: false
     required: false
     label: Country
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -136,17 +136,17 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
-    visible: true
+    visible: false
     required: false
     label: Abbreviation
   bibcite_translated_title:
     visible: false
     required: false
   bibcite_original_publication:
-    visible: true
+    visible: false
     required: false
     label: History
   bibcite_other_author_affiliations:
@@ -165,5 +165,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false
