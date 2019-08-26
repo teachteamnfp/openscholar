@@ -1,0 +1,26 @@
+uuid: 1bcfd76d-ed04-4904-be8a-43eb3b17b181
+langcode: en
+status: true
+dependencies:
+  config:
+    - bibcite_entity.bibcite_reference_type.working_paper
+    - field.storage.bibcite_reference.field_taxonomy_terms
+id: bibcite_reference.working_paper.field_taxonomy_terms
+field_name: field_taxonomy_terms
+entity_type: bibcite_reference
+bundle: working_paper
+label: 'Tag with Terms'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: reference_taxonomy_term
+      display_name: entity_reference_1
+      arguments:
+        - 'bibcite_reference:*'
+field_type: entity_reference

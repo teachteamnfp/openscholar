@@ -28,6 +28,8 @@ module:
   comment: 0
   config: 0
   config_filter: 0
+  config_ignore: 0
+  config_ignore_drush: 0
   config_split: 0
   config_update: 0
   contact: 0
@@ -81,6 +83,7 @@ module:
   layout_discovery: 0
   link: 0
   locale: 0
+  mail_login: 0
   mailchimp: 0
   mathjax: 0
   media: 0

@@ -1,5 +1,5 @@
 .path-user {
-  body {
+  @at-root body#{&} {
     background: $color-light-gray7;
   }
   .main-container {
@@ -9,5 +9,8 @@
     margin-top: 200px;
     background: $color-white;
     width: 90%;
+  }
+  h4.label {
+    color: currentColor;
   }
 }

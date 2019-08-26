@@ -1,3 +1,4 @@
 services:
   os.software.helper:
     class: Drupal\os_software\OsSoftwareHelper
+    arguments: ['@vsite.context_manager', '@entity_type.manager', '@request_stack']

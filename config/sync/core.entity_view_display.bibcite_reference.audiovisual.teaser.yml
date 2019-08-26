@@ -19,6 +19,7 @@ dependencies:
   module:
     - image
     - layout_builder
+    - link
     - text
 third_party_settings:
   layout_builder:
@@ -32,6 +33,13 @@ targetEntityType: bibcite_reference
 bundle: audiovisual
 mode: teaser
 content:
+  bibcite_abst_e:
+    type: basic_string
+    weight: 3
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   citation:
     weight: 1
     region: content
@@ -48,7 +56,7 @@ content:
     region: content
   field_taxonomy_terms:
     type: entity_reference_label
-    weight: 3
+    weight: 5
     region: content
     label: inline
     settings:
@@ -56,7 +64,7 @@ content:
     third_party_settings: {  }
   notes:
     type: text_default
-    weight: 2
+    weight: 4
     region: content
     label: hidden
     settings: {  }
@@ -70,9 +78,20 @@ content:
     region: content
     label: above
     third_party_settings: {  }
+  publishers_version:
+    type: link
+    weight: 2
+    region: content
+    label: visually_hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
 hidden:
   author: true
-  bibcite_abst_e: true
   bibcite_abst_f: true
   bibcite_access_date: true
   bibcite_accession_number: true
