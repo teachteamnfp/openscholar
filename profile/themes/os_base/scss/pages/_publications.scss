@@ -53,9 +53,9 @@
   }
   .abstract--content {
     line-height: 1.5em;
-    background: #FAFAFA;
+    background: $color-light-gray12;
     padding: 8px;
-    border: 1px solid #CCC;
+    border: 1px solid $color-gray2;
     &.visually-hidden {
       padding: 0;
     }
