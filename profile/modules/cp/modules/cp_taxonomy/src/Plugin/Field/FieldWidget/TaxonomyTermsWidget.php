@@ -81,7 +81,11 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager, EntityTypeManagerInterface $entity_type_manager, SelectionPluginManagerInterface $selection_plugin_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->taxonomyHelper = $taxonomy_helper;
-    $this->widgetTypes = $this->taxonomyHelper->getWidgetTypes($field_definition->getTargetEntityTypeId() . ':' . $field_definition->getTargetBundle());
+    $bundle = $field_definition->getTargetBundle();
+    if ($field_definition->getTargetEntityTypeId() != 'node') {
+      $bundle = '*';
+    }
+    $this->widgetTypes = $this->taxonomyHelper->getWidgetTypes($field_definition->getTargetEntityTypeId() . ':' . $bundle);
     $this->pluginManager = $plugin_manager;
     $this->entityTypeManager = $entity_type_manager;
     $this->selectionPluginManager = $selection_plugin_manager;
@@ -118,6 +122,9 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
     $main_element = [
       '#tree' => TRUE,
     ];
+    if (empty($this->fieldWidgets)) {
+      return $element;
+    }
     /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
       $filtered_items = $this->removeUnrelatedItems($items, $vid);

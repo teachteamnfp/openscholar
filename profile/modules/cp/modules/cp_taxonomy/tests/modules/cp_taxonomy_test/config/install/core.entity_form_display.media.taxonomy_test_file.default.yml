@@ -7,6 +7,7 @@ dependencies:
     - media.type.taxonomy_test_file
   module:
     - content_moderation
+    - cp_taxonomy
     - field_layout
     - file
     - layout_discovery
@@ -35,12 +36,9 @@ content:
     region: content
   field_taxonomy_terms:
     weight: 101
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_autocomplete
+    type: reference_taxonomy_terms
     region: content
   langcode:
     type: language_select
