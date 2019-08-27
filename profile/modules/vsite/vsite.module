@@ -62,20 +62,6 @@ function vsite_views_data_alter(&$data) {
 }
 
 /**
- * Implements hook_pathauto_alias_alter().
- */
-function vsite_pathauto_alias_alter(&$alias, array &$context) {
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-  $vsiteContext = \Drupal::service('vsite.context_manager');
-
-  if ($vsiteContext->getActiveVsite()) {
-    $purl = $vsiteContext->getActivePurl();
-    $trimmed_alias = ltrim($alias, '/');
-    $alias = '/' . $purl . '/' . $trimmed_alias;
-  }
-}
-
-/**
  * Implements hook_form_node_form_alter().
  */
 function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -166,9 +152,12 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
         $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
         $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
         $alias = $form['path']['widget'][0]['alias']['#default_value'];
+        $user_input = $formState->getUserInput();
+        if (!empty($user_input['path'][0]['alias'])) {
+          $alias = $user_input['path'][0]['alias'];
+        }
         $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
         $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
-        array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
       }
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
@@ -191,18 +180,6 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
       }
     }
   }
-}
-
-/**
- * Put back vsite purl to alias value to handle right validate.
- */
-function vsite_node_alias_purl_element_validate(array &$element, FormStateInterface $form_state) {
-  if (empty($element['alias']['#value'])) {
-    return;
-  }
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-  $vsiteContext = \Drupal::service('vsite.context_manager');
-  $element['alias']['#value'] = '/' . $vsiteContext->getActivePurl() . $element['alias']['#value'];
 }
 
 /**
