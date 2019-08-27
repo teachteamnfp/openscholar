@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f104176fc5619381e5f5e79c547c9bed",
+    "content-hash": "ba0eff6f5fbd33620837f25c86e63a7c",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -2461,8 +2461,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.26",
-                    "datestamp": "1558552081",
+                    "version": "8.x-1.25",
+                    "datestamp": "1549218480",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -3407,6 +3407,10 @@
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
                     }
+                },
+                "patches_applied": {
+                    "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
+                    "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -3457,7 +3461,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
+                    "version": "8.x-1.0-alpha2",
                     "datestamp": "1550188080",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3513,7 +3517,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha5",
+                    "version": "8.x-1.0-alpha4",
                     "datestamp": "1551264784",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3564,7 +3568,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-rc1",
+                    "version": "8.x-2.0-alpha6",
                     "datestamp": "1550290687",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3627,7 +3631,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-rc1",
+                    "version": "8.x-1.0-alpha6",
                     "datestamp": "1550294584",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3763,7 +3767,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta5",
+                    "version": "8.x-2.0-beta4",
                     "datestamp": "1550290984",
                     "security-coverage": {
                         "status": "not-covered",
@@ -4448,7 +4452,8 @@
                     "Views Date Filter Datetime Granularity Option": "https://www.drupal.org/files/issues/2018-12-11/views_date_filter_granularity_2868014-60.patch",
                     "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
                     "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
-                    "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch"
+                    "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch",
+                    "Image styles fails with absolute path": "https://www.drupal.org/files/issues/image_styles-2754273-7.patch"
                 }
             },
             "autoload": {
@@ -4604,12 +4609,8 @@
                     "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-3.2",
-                    "datestamp": "1550728386",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
+                    "version": "8.x-3.0",
+                    "datestamp": "1493401742"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
@@ -4641,10 +4642,6 @@
                     "name": "Daniel Wehner (dawehner)",
                     "homepage": "https://www.drupal.org/u/dawehner",
                     "role": "Maintainer"
-                },
-                {
-                    "name": "joelpittet",
-                    "homepage": "https://www.drupal.org/user/160302"
                 },
                 {
                     "name": "merlinofchaos",
@@ -4705,7 +4702,7 @@
                     "dev-2.x": "2.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.0-beta4",
+                    "version": "8.x-2.0-beta3",
                     "datestamp": "1556606885",
                     "security-coverage": {
                         "status": "not-covered",
@@ -4761,7 +4758,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.0-alpha2",
+                    "version": "8.x-1.0-alpha1",
                     "datestamp": "1556602985",
                     "security-coverage": {
                         "status": "not-covered",
@@ -4812,7 +4809,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.7",
+                    "version": "8.x-1.6",
                     "datestamp": "1554020884",
                     "security-coverage": {
                         "status": "covered",
@@ -4872,7 +4869,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.8",
-                    "datestamp": "1557434281",
+                    "datestamp": "1524864180",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5288,7 +5285,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-rc2",
-                    "datestamp": "1560345781",
+                    "datestamp": "1517836680",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "RC releases are not covered by Drupal security advisories."
@@ -5348,7 +5345,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-alpha1",
-                    "datestamp": "1559164381",
+                    "datestamp": "1546375980",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -5562,6 +5559,61 @@
             }
         },
         {
+            "name": "drupal/mail_login",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/mail_login.git",
+                "reference": "8.x-1.0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/mail_login-8.x-1.0.zip",
+                "reference": "8.x-1.0",
+                "shasum": "a5913a903eb61760b177bf4037d7716a4f4cf29e"
+            },
+            "require": {
+                "drupal/core": "~8.0"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0",
+                    "datestamp": "1515260884",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammad AlQanneh",
+                    "homepage": "https://www.drupal.org/u/mqanneh",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This module enables users to login by email address.",
+            "homepage": "https://www.drupal.org/project/mail_login",
+            "keywords": [
+                "drupal",
+                "php",
+                "user"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/mail_login",
+                "issues": "http://drupal.org/project/issues/mail_login",
+                "email": "mqanneh@gmail.com"
+            }
+        },
+        {
             "name": "drupal/mailchimp",
             "version": "1.8.0",
             "source": {
@@ -5737,7 +5789,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.8",
+                    "version": "8.x-1.7",
                     "datestamp": "1550692511",
                     "security-coverage": {
                         "status": "covered",
@@ -5920,8 +5972,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.8",
-                    "datestamp": "1553618281",
+                    "version": "8.x-1.5",
+                    "datestamp": "1550692525",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5985,7 +6037,7 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.4",
+                    "version": "8.x-1.3",
                     "datestamp": "1554239887",
                     "security-coverage": {
                         "status": "covered",
@@ -6420,8 +6472,8 @@
                     "dev-1.x": "1.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-1.13",
-                    "datestamp": "1557244685",
+                    "version": "8.x-1.11",
+                    "datestamp": "1552334285",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7032,7 +7084,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.x",
-                    "datestamp": "1557724385",
+                    "datestamp": "1523338084",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -7061,7 +7113,7 @@
             "description": "A pluggable field type for storing videos from external video hosts such as Vimeo and YouTube.",
             "homepage": "https://www.drupal.org/project/video_embed_field",
             "support": {
-                "source": "https://git.drupalcode.org/project/video_embed_field"
+                "source": "http://cgit.drupalcode.org/video_embed_field"
             }
         },
         {
@@ -8975,7 +9027,7 @@
                 "shasum": null
             },
             "type": "drupal-library",
-            "time": "2016-07-25T18:07:21+00:00"
+            "time": "2019-05-17T18:21:20+00:00"
         },
         {
             "name": "symfony-cmf/routing",
@@ -10852,19 +10904,19 @@
             "authors": [
                 {
                     "name": "Fabien Potencier",
-                    "role": "Lead Developer",
                     "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org"
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
                 },
                 {
                     "name": "Armin Ronacher",
-                    "role": "Project Founder",
-                    "email": "armin.ronacher@active-4.com"
+                    "email": "armin.ronacher@active-4.com",
+                    "role": "Project Founder"
                 },
                 {
                     "name": "Twig Team",
-                    "role": "Contributors",
-                    "homepage": "https://twig.symfony.com/contributors"
+                    "homepage": "https://twig.symfony.com/contributors",
+                    "role": "Contributors"
                 }
             ],
             "description": "Twig, the flexible, fast, and secure template language for PHP",
@@ -11706,7 +11758,7 @@
             "version": "8.3.3",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/coder.git",
+                "url": "https://git.drupal.org/project/coder.git",
                 "reference": "a33d3388fb2e1d94bd2aee36a8ff79186e9d8f43"
             },
             "require": {
@@ -11850,7 +11902,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0-alpha3",
-                    "datestamp": "1555407785",
+                    "datestamp": "1513265285",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Project has not opted into security advisory coverage!"
@@ -11967,7 +12019,7 @@
             "description": "Provide a framework for various different types of embeds in WYSIWYG editors, common functionality, interfaces, and standards.",
             "homepage": "https://www.drupal.org/project/embed",
             "support": {
-                "source": "https://git.drupalcode.org/project/embed",
+                "source": "http://cgit.drupalcode.org/embed",
                 "issues": "https://www.drupal.org/project/issues/embed",
                 "irc": "irc://irc.freenode.org/drupal-media"
             }
@@ -12003,7 +12055,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0",
-                    "datestamp": "1550236984",
+                    "datestamp": "1536328684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12031,20 +12083,12 @@
                     "role": "contributor"
                 },
                 {
-                    "name": "Drupal Media Team",
-                    "homepage": "https://www.drupal.org/user/3260690"
-                },
-                {
                     "name": "Primsi",
                     "homepage": "https://www.drupal.org/user/282629"
                 },
                 {
                     "name": "marcingy",
                     "homepage": "https://www.drupal.org/user/77320"
-                },
-                {
-                    "name": "oknate",
-                    "homepage": "https://www.drupal.org/user/471638"
                 },
                 {
                     "name": "samuel.mortenson",
@@ -12078,7 +12122,7 @@
                 },
                 "drupal": {
                     "version": "8.x-2.0",
-                    "datestamp": "1550236984",
+                    "datestamp": "1536328684",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -12090,10 +12134,6 @@
                 "GPL-2.0-or-later"
             ],
             "authors": [
-                {
-                    "name": "Berdir",
-                    "homepage": "https://www.drupal.org/user/214652"
-                },
                 {
                     "name": "Dave Reid",
                     "homepage": "https://www.drupal.org/user/53892"
@@ -12115,10 +12155,6 @@
                     "homepage": "https://www.drupal.org/user/77320"
                 },
                 {
-                    "name": "oknate",
-                    "homepage": "https://www.drupal.org/user/471638"
-                },
-                {
                     "name": "samuel.mortenson",
                     "homepage": "https://www.drupal.org/user/2582268"
                 },
@@ -12130,7 +12166,7 @@
             "description": "Entity browser inline entity form integration.",
             "homepage": "https://www.drupal.org/project/entity_browser",
             "support": {
-                "source": "https://git.drupalcode.org/project/entity_browser"
+                "source": "http://cgit.drupalcode.org/entity_browser"
             }
         },
         {
@@ -12161,7 +12197,7 @@
                 },
                 "drupal": {
                     "version": "8.x-1.0-beta2",
-                    "datestamp": "1556906881",
+                    "datestamp": "1476698339",
                     "security-coverage": {
                         "status": "not-covered",
                         "message": "Beta releases are not covered by Drupal security advisories."
@@ -12205,7 +12241,7 @@
             "description": "Allows any entity to be embedded within a text area using a WYSIWYG editor.",
             "homepage": "https://www.drupal.org/project/entity_embed",
             "support": {
-                "source": "https://git.drupalcode.org/project/entity_embed",
+                "source": "http://cgit.drupalcode.org/entity_embed",
                 "issues": "https://www.drupal.org/project/issues/entity_embed",
                 "irc": "irc://irc.freenode.org/drupal-media"
             }
@@ -12339,14 +12375,6 @@
                     "homepage": "https://www.drupal.org/user/99340"
                 },
                 {
-                    "name": "joachim",
-                    "homepage": "https://www.drupal.org/user/107701"
-                },
-                {
-                    "name": "kaythay",
-                    "homepage": "https://www.drupal.org/user/2182186"
-                },
-                {
                     "name": "rszrama",
                     "homepage": "https://www.drupal.org/user/49344"
                 },
@@ -12362,7 +12390,7 @@
             "description": "Provides a widget for inline management (creation, modification, removal) of referenced entities.",
             "homepage": "https://www.drupal.org/project/inline_entity_form",
             "support": {
-                "source": "https://git.drupalcode.org/project/inline_entity_form"
+                "source": "http://cgit.drupalcode.org/inline_entity_form"
             }
         },
         {
@@ -12950,18 +12978,18 @@
             "authors": [
                 {
                     "name": "Greg Beaver",
-                    "role": "Helper",
-                    "email": "cellog@php.net"
+                    "email": "cellog@php.net",
+                    "role": "Helper"
                 },
                 {
                     "name": "Andrei Zmievski",
-                    "role": "Lead",
-                    "email": "andrei@php.net"
+                    "email": "andrei@php.net",
+                    "role": "Lead"
                 },
                 {
                     "name": "Stig Bakken",
-                    "role": "Developer",
-                    "email": "stig@php.net"
+                    "email": "stig@php.net",
+                    "role": "Developer"
                 }
             ],
             "description": "More info available on: http://pear.php.net/package/Console_Getopt",

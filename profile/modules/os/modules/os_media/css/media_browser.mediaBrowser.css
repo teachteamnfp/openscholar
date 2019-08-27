@@ -638,19 +638,6 @@ div[file-edit] .control button,
   width: 16px;
 }
 
-.form-item .file-list-single ul {
-  display: inline-block;
-  width: 34%;
-  margin: 0;
-}
-
-.form-item .file-list-single ul li {
-  display: inline-block;
-  width: 32%;
-  text-align: center;
-  white-space: nowrap;
-}
-
 @keyframes highlight {
   0% {
     margin-left: 0px;
@@ -704,7 +691,7 @@ div[file-edit] .control button,
   margin: 0;
   padding: 0;
   display: flex;
-  width: 250px;
+  width: 235px;
   text-align: center;
 }
 
@@ -715,7 +702,6 @@ div[file-edit] .control button,
     flex-wrap: wrap;
     text-align: left;
   }
-
   .media-actions li {
     border-bottom: 1px solid #ccc;
     border-left: 0 none;
@@ -727,6 +713,7 @@ div[file-edit] .control button,
   border: 1px solid #ccc;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 5px;
 }
 
 .file-list-single span {
@@ -735,4 +722,11 @@ div[file-edit] .control button,
   overflow: hidden;
   font-size: 14px;
   width: 70%;
+}
+
+/**** ckeditor media icon ****/
+.cke_button_icon.cke_button__mediabrowser_icon {
+  background-size: 20px !important;
+  height: 20px !important;
+  width: 20px !important;
 }

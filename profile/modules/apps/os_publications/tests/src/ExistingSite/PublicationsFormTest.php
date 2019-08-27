@@ -185,4 +185,45 @@ class PublicationsFormTest extends TestBase {
     $this->assertContains('<h3>In Press</h3>', $page);
   }
 
+  /**
+   * Tests publisher version link field.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Behat\Mink\Exception\ExpectationException
+   */
+  public function testPublicationPublisherVersionField() : void {
+    // Test fields on data publication type.
+    $this->visitViaVsite('bibcite/reference/add/data', $this->group);
+    $this->assertSession()->elementExists('css', '#edit-publishers-version-0-title');
+    $this->assertSession()->elementExists('css', '#edit-publishers-version-0-uri');
+
+    // Test fields on journal article publication type.
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $this->assertSession()->elementExists('css', '#edit-publishers-version-0-title');
+    $this->assertSession()->elementExists('css', '#edit-publishers-version-0-uri');
+
+    // Test form submission and visibility of field on node page.
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'JournalTitle',
+      'publishers_version[0][uri]' => 'https://theopenscholar.com/',
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->assertSession()->linkExists("Publisher's Version");
+    // Test link appears on publication view page.
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->linkExists("Publisher's Version");
+
+    // Test no form validation error occurs when no uri entered and no
+    // link exists.
+    $this->visitViaVsite('bibcite/reference/add/journal_article', $this->group);
+    $edit = [
+      'bibcite_year[0][value]' => '2019',
+      'bibcite_secondary_title[0][value]' => 'JournalTitle',
+    ];
+    $this->submitForm($edit, 'edit-submit');
+    $this->assertSession()->linkNotExists("Publisher's Version");
+
+  }
+
 }

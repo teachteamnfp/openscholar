@@ -21,3 +21,8 @@ textarea.form-textarea {
 .cp-settings-form #edit-default-image {
   max-width: 900px;
 }
+
+/**** error msg color ****/
+.form-item--error-message {
+  color: $color-red;
+}
