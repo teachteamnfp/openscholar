@@ -61,6 +61,7 @@ fields:
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -81,6 +82,8 @@ fields:
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
     required: false

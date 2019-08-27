@@ -31,9 +31,10 @@ fields:
     visible: false
     required: false
   bibcite_custom2:
-    visible: false
+    visible: true
     required: false
-    label: 'Issue Date'
+    label: 'Date Published'
+    hint: 'e.g. 12 Jan, 2015 or Jan 2015'
   bibcite_custom3:
     visible: false
     required: false
@@ -72,13 +73,13 @@ fields:
     required: false
     label: 'International Patent Classification'
   bibcite_section:
-    visible: false
+    visible: true
     required: false
-    label: 'International Patent Number'
+    label: 'Patent Issuing Country'
   bibcite_issue:
     visible: true
     required: false
-    label: 'Published Source'
+    label: 'Patent Source'
     hint: 'Source of patent, e.g. U.S Patent and Trademark Office.'
   bibcite_number_of_volumes:
     visible: false

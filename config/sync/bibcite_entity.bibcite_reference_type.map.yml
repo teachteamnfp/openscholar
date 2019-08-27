@@ -59,9 +59,11 @@ fields:
     visible: true
     required: false
     label: 'Web Site Title'
+    hint: 'e.g. Unctuous Psychology Online'
   bibcite_volume:
-    visible: false
+    visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -71,6 +73,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -81,6 +84,7 @@ fields:
     visible: true
     required: false
     label: Description
+    hint: 'Media, size, etc. e.g. Oil on canvas, 38\" x 17.5\"'
   bibcite_date:
     visible: false
     required: false

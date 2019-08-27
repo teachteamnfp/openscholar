@@ -71,8 +71,9 @@ fields:
     required: false
     label: 'Code Section'
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -84,6 +85,7 @@ fields:
     visible: true
     required: false
     label: 'Code Pages'
+    hint: ''
   bibcite_date:
     visible: false
     required: false
@@ -99,9 +101,11 @@ fields:
   bibcite_publisher:
     visible: true
     required: false
+    hint: 'Company or organization that issued the work'
   bibcite_place_published:
     visible: true
     required: false
+    hint: 'Location (usually city name)'
   bibcite_issn:
     visible: false
     required: false

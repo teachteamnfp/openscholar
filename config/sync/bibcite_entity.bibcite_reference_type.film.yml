@@ -65,9 +65,11 @@ fields:
     visible: true
     required: false
     label: 'Web Site Title'
+    hint: 'e.g. Unctuous Psychology Online'
   bibcite_volume:
     visible: false
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -77,6 +79,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false

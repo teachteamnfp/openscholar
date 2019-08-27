@@ -71,6 +71,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -82,6 +83,8 @@ fields:
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
     required: false

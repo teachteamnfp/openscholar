@@ -58,6 +58,7 @@ fields:
   bibcite_volume:
     visible: false
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -67,6 +68,7 @@ fields:
   bibcite_issue:
     visible: false
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -97,8 +99,10 @@ fields:
     visible: false
     required: false
   bibcite_issn:
-    visible: false
+    visible: true
     required: false
+    label: 'hdl'
+    hint: 'The international HANDLE.NET address (persistent URL).'
   bibcite_isbn:
     visible: false
     required: false
@@ -118,8 +122,10 @@ fields:
     visible: false
     required: false
   bibcite_doi:
-    visible: false
+    visible: true
     required: false
+    label: 'UNF'
+    hint: 'The universal numerical fingerprint for this data. See thedata.org for more information.'
   bibcite_research_notes:
     visible: false
     required: false

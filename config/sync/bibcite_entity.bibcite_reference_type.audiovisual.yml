@@ -42,7 +42,7 @@ fields:
     visible: false
     required: false
   bibcite_custom5:
-    visible: false
+    visible: true
     required: false
     label: Format
   bibcite_custom6:
@@ -58,12 +58,14 @@ fields:
     visible: true
     required: true
   bibcite_secondary_title:
-    visible: false
+    visible: true
     required: false
-    label: 'Series Title'
+    label: 'Web Site Title'
+    hint: 'e.g. Unctuous Psychology Online'
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -73,6 +75,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -98,12 +101,14 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: false
+    visible: true
     required: false
+    hint: 'Company or organization that issued the work'
   bibcite_place_published:
     visible: true
     required: false
     label: City
+    hint: 'e.g. London'
   bibcite_issn:
     visible: false
     required: false
@@ -163,5 +168,8 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
+    visible: false
+    required: false
+  bibcite_pmid:
     visible: false
     required: false

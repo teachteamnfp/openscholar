@@ -59,9 +59,11 @@ fields:
     visible: true
     required: true
     label: Journal
+    hint: 'Title of the Journal, e.g. Nature'
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -72,6 +74,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -81,6 +84,8 @@ fields:
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
     required: false

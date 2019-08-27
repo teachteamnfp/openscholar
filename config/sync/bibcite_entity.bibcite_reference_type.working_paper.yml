@@ -67,6 +67,7 @@ fields:
   bibcite_issue:
     visible: false
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false

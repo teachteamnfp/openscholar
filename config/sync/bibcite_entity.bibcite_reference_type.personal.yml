@@ -60,6 +60,7 @@ fields:
   bibcite_volume:
     visible: false
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -70,6 +71,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: true
     required: false
@@ -81,11 +83,13 @@ fields:
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
     required: false
   bibcite_type_of_work:
-    visible: false
+    visible: true
     required: false
     label: Type
     hint: ''
@@ -124,7 +128,7 @@ fields:
     visible: false
     required: false
   bibcite_doi:
-    visible: false
+    visible: true
     required: false
   bibcite_research_notes:
     visible: false
@@ -161,5 +165,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: false
+    visible: true
     required: false

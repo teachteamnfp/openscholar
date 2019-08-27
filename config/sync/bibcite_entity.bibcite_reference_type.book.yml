@@ -96,10 +96,12 @@ fields:
   bibcite_publisher:
     visible: true
     required: true
+    hint: 'Company or organization that issued the work'
   bibcite_place_published:
     visible: true
     required: false
     label: City
+    hint: 'e.g. London'
   bibcite_issn:
     visible: false
     required: false

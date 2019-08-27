@@ -56,11 +56,12 @@ fields:
     visible: true
     required: true
   bibcite_secondary_title:
-    visible: false
+    visible: true
     required: false
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -70,6 +71,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -80,6 +82,7 @@ fields:
     label: Description
     visible: false
     required: false
+    hint: 'Media, size, etc. e.g. Oil on canvas, 38\" x 17.5\"'
   bibcite_date:
     hint: 'Format: mm/yyyy'
     visible: false
@@ -95,12 +98,15 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: false
+    visible: true
     required: false
+    label: 'Museum, Collection'
+    hint: 'e.g. National Gallery of Art, Cornelius van S. Roosevelt Collection'
   bibcite_place_published:
     label: City
     visible: true
     required: false
+    hint: 'e.g. London'
   bibcite_issn:
     visible: false
     required: false
@@ -135,7 +141,7 @@ fields:
     visible: false
     required: false
   bibcite_alternate_title:
-    visible: true
+    visible: false
     required: false
   bibcite_translated_title:
     visible: false
@@ -162,7 +168,7 @@ fields:
     visible: false
     required: false
   bibcite_pmid:
-    visible: true
+    visible: false
     required: false
   moderation_state:
     visible: true

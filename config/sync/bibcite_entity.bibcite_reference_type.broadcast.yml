@@ -55,11 +55,13 @@ fields:
     visible: true
     required: true
   bibcite_secondary_title:
-    visible: false
+    visible: true
     required: false
+    label: 'Series'
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume Number'
   bibcite_edition:
     visible: false
     required: false
@@ -69,6 +71,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -78,6 +81,8 @@ fields:
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
     required: false
@@ -91,8 +96,9 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: false
+    visible: true
     required: false
+    label: 'Produced By'
   bibcite_place_published:
     visible: false
     required: false

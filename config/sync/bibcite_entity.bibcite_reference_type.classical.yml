@@ -58,9 +58,11 @@ fields:
     visible: true
     required: false
     label: 'Web Site Title'
+    hint: 'e.g. Unctuous Psychology Online'
   bibcite_volume:
     visible: true
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -70,6 +72,7 @@ fields:
   bibcite_issue:
     visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: true
     required: false
@@ -102,10 +105,10 @@ fields:
     required: false
     label: City
   bibcite_issn:
-    visible: false
+    visible: true
     required: false
   bibcite_isbn:
-    visible: false
+    visible: true
     required: false
   bibcite_accession_number:
     visible: false
@@ -123,7 +126,7 @@ fields:
     visible: false
     required: false
   bibcite_doi:
-    visible: false
+    visible: true
     required: false
   bibcite_research_notes:
     visible: false
@@ -159,5 +162,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: false
+    visible: true
     required: false

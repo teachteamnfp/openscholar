@@ -594,7 +594,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     '#title' => $form['bibcite_year']['widget']['#title'] . ' <span class="form-required" title="' . t('This field is required.') . '"></span>',
     '#collapsible' => FALSE,
     '#weight' => $form['bibcite_year']['#weight'],
-    '#group' => $form['bibcite_year']['#group'],
+    '#group' => 'content',
     '#attributes' => [
       'class' => ['bibcite-year-coded-publication'],
     ],
@@ -714,10 +714,22 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // We are setting default value so this is necessary to avoid field widget
   // validation errors.
   array_unshift($form['publishers_version']['widget'][0]['#element_validate'], 'os_publication_empty_uri_validation');
+  if ($form['bibcite_type_of_work']['widget'][0]['value']['#description'] == 'Masters Thesis') {
+    $form['bibcite_type_of_work']['widget'][0]['value']['#description'] = '';
+  }
 
-  // Pages field changes.
-  $form['bibcite_pages']['widget'][0]['value']['#title'] = t('Pages');
-  $form['bibcite_pages']['widget'][0]['value']['#description'] = t('e.g. 12-25');
+  // For working paper publication remove empty details tab.
+  if ($reference->bundle() === 'working_paper') {
+    unset($form['publication']);
+  }
+
+  // Unset empty publication details tab.
+  os_publications_unset_empty_tab($form, 'publication');
+
+  // Unset pmid field and identifier details tab if no other field exists in the
+  // identifier group.
+  unset($form['bibcite_pmid']);
+  os_publications_unset_empty_tab($form, 'identifiers');
 }
 
 /**
@@ -1118,5 +1130,25 @@ function os_publications_preprocess_field(&$variables) {
     $field = $variables['items'];
     $field = array_shift($field);
     $field['attributes']->setAttribute('class', 'visually-hidden');
+  }
+}
+
+/**
+ * Unset empty details tab from bibcite forms.
+ *
+ * @param array $form
+ *   Form itself.
+ * @param string $group_name
+ *   The form tab to check and unset.
+ */
+function os_publications_unset_empty_tab(array &$form, $group_name) {
+  $keep_group = FALSE;
+  foreach ($form as $element) {
+    if (is_array($element) && isset($element['#group']) && $element['#group'] === $group_name) {
+      $keep_group = TRUE;
+    }
+  }
+  if (!$keep_group) {
+    unset($form[$group_name]);
   }
 }
