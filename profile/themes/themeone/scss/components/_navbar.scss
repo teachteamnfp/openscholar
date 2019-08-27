@@ -1,6 +1,6 @@
 /**** navbar background ****/
 .navbar-collapse {
-  @include nav(none,$color-text,none,$color-light-gray1,none,$color-text,$color-text,$color-link);
+  @include nav(none,$color-text,none,$color-link,$color-light-gray1,none,$color-text,$color-text,$color-link);
     .container {
       background: $color-white;
       @media #{$normal} {

@@ -1,13 +1,11 @@
 /**** navbar background ****/
 .navbar-collapse {
   border: 1px solid $color-light-gray1;
-  @include nav($color-white,$color-green,$color-light-gray,$color-green,$color-gray1,$color-white,$color-green,$color-green);
+  @include nav($color-white,$color-green,$color-light-gray,$color-green,$color-green,$color-gray1,$color-white,$color-green,$color-green,12px,700,16px,700);
   /***** navbar nav *****/
   .navbar-nav {
     > li {
       > a {
-        font-weight: 700;
-        font-size: 16px;
         transition: all .3s ease;
         padding: 16px 20px;
       }
@@ -17,15 +15,11 @@
   .dropdown-menu {
     > li {
       > a {
-        font-weight: 700;
         border-bottom: 1px solid rgba(0, 0, 0, 0.22);
-        font-size: 12px;
         padding: 8px 15px;
         transition: all .3s ease;
         @media #{$mobile} {
-          font-size: 19px;
           color: $color-green;
-          border: 0 none;
         }
       }
     }

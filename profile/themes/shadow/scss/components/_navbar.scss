@@ -1,14 +1,12 @@
 /**** navbar background ****/
 .navbar-collapse {
-  @include nav($color-white,$color-gray2,$color-light-gray,$color-gray2,$color-gray1,$color-white,$color-gray2,$color-gray2);
+  @include nav($color-white,$color-gray2,$color-light-gray,$color-gray2,$color-gray2,$color-gray1,$color-white,$color-gray2,$color-white,12px,700,16px,700);
   background: $color-white;
   border: 1px solid $color-light-gray1;
   /***** navbar nav *****/
   .navbar-nav {
     > li {
       > a {
-        font-weight: 700;
-        font-size: 16px;
         transition: all .3s ease;
         padding: 16px 20px;
       }
@@ -18,15 +16,13 @@
   .dropdown-menu {
     > li {
       > a {
-        font-weight: 700;
         border-bottom: 1px solid rgba(0, 0, 0, 0.22);
-        font-size: 12px;
         padding: 8px 15px;
         transition: all .3s ease;
         @media #{$mobile} {
-          font-size: 19px;
-          font-weight: 700;
-          border: 0 none;
+          &:hover {
+            color: $color-gray2;
+          }
         }
       }
     }

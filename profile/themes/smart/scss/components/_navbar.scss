@@ -1,21 +1,26 @@
 /**** navbar background ****/
 .navbar-collapse {
   background: $color-black;
-  @include nav($color-black,$color-text2,none,$color-white,$color-black,$color-text2,$color-text2,$color-text2);
+  @include nav($color-black,$color-text2,none,$color-text2,$color-white,$color-black,$color-text2,$color-text2,$color-text2);
   /***** navbar nav *****/
   .navbar-nav {
     > li {
       > a {
         border-bottom: 2px solid transparent;
         font-family: "Open Sans", Arial, sans-serif;
-        font-size: 16px;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
           border-bottom: 2px solid $color-pink;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
           border-bottom: 2px solid $color-pink;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
       }
     }
@@ -26,10 +31,8 @@
       > a {
         border-bottom: 1px solid $color-white;
         font-family: "Open Sans", Arial, sans-serif;
-        @media #{$mobile} {
-          font-size: 19px;
-          font-weight: normal;
-          border: 0 none;
+        &:last-child {
+          border-bottom: 0 none;
         }
       }
     }

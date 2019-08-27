@@ -1,6 +1,6 @@
 /**** navbar background ****/
 .navbar-collapse {
-  @include nav($color-white,$color-oxford-blue,none,$color-light-gray1,$color-black,$color-white,$color-oxford-blue,$color-white);
+  @include nav($color-white, $color-oxford-blue,none,$color-oxford-blue, $color-light-gray1, $color-black, $color-white, $color-oxford-blue, $color-white);
   /***** navbar nav *****/
   .navbar-nav {
     >li {
@@ -14,6 +14,9 @@
         &.is-active,
         &.is-active:hover {
           border-bottom: 2px solid $color-oxford-blue;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
       }
       &.open,
@@ -23,6 +26,9 @@
         >a:active,
         >a:focus {
           border-bottom: 2px solid $color-oxford-blue;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
       }
     }
@@ -31,10 +37,10 @@
   .dropdown-menu {
     >li {
       >a {
-        @media #{$mobile} {
-          font-size: 19px;
-          font-weight: normal;
-          color: $color-oxford-blue;
+        &:hover {
+          @media #{$mobile} {
+            color: $color-oxford-blue;
+          }
         }
       }
     }

@@ -90,13 +90,13 @@ nav {
 }
 @media #{$mobile} {
   .navbar-collapse {
-    .nav.navbar-nav {
+    ul.navbar-nav {
       margin-top: 0;
       margin-bottom: 0;
       > li {
         > a {
-          padding: 8px 16px;
           font-size: 20px;
+          padding: 8px 16px;
         }
         &.active {
           a {
@@ -118,6 +118,8 @@ nav {
         li {
           a {
             line-height: 20px;
+            border: 0 none;
+            font-size: 20px;
           }
         }
       }
