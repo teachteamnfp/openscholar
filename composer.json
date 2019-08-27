@@ -152,6 +152,18 @@
                     "type": "zip"
                 }
             }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "harvesthq/chosen",
+                "version": "1.8.7",
+                "type": "drupal-library",
+                "dist": {
+                    "url": "https://github.com/harvesthq/chosen-package/archive/v1.8.7.zip",
+                    "type": "zip"
+                }
+            }
         }
     ],
     "require": {
