@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
+use Drupal\taxonomy\Entity\Vocabulary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 
@@ -120,11 +121,6 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
     /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
       $filtered_items = $this->removeUnrelatedItems($items, $vid);
-      $field_name = $this->fieldDefinition->getName();
-      $parents = $form['#parents'];
-      $field_state = static::getWidgetState($parents, $field_name, $form_state);
-      $field_state['items_count'] = $filtered_items->count();
-      static::setWidgetState($parents, $field_name, $form_state, $field_state);
       $vocabulary = $this->entityTypeManager->getStorage('taxonomy_vocabulary')->load($vid);
       $this->saveVocabularyToFormState($form_state, $vocabulary);
       if ($fieldWidget->handlesMultipleValues()) {
@@ -137,8 +133,16 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
           ];
         }
         else {
+          $field_name = $this->fieldDefinition->getName();
+          $parents = $form['#parents'];
+          $field_state = static::getWidgetState($parents, $field_name, $form_state);
+          if (empty($field_state['original_deltas'])) {
+            $field_state['items_count'] = $filtered_items->count();
+          }
+          static::setWidgetState($parents, $field_name, $form_state, $field_state);
           $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
           $entity_reference_autocomplete_elements['add_more']['#name'] .= '_vid_' . $vid;
+          $entity_reference_autocomplete_elements['add_more']['#vocabulary_id'] = $vid;
           foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
             $element = &$entity_reference_autocomplete_elements[$delta];
             if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
@@ -197,11 +201,23 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   }
 
   /**
+   * Remove term items which not related to current vid.
    *
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   Array of default values for this field.
+   * @param string $vid
+   *   Vocabulary id.
+   *
+   * @return \Drupal\Core\Field\FieldItemListInterface
+   *   Array of filtered values.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function removeUnrelatedItems($items, $vid) {
+  protected function removeUnrelatedItems(FieldItemListInterface $items, string $vid) {
+    $filtered_items = clone $items;
     /** @var \Drupal\Core\Field\Plugin\Field\FieldType\EntityReferenceItem $item */
-    foreach ($items as $item) {
+    foreach ($filtered_items as $item) {
       $delta = $item->getName();
       $field_value = $item->getValue();
       if (empty($field_value)) {
@@ -209,17 +225,21 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       }
       $term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_value['target_id']);
       if ($term->bundle() != $vid) {
-        unset($items[$delta]);
+        unset($filtered_items[$delta]);
       }
     }
-    return $items;
+    return $filtered_items;
   }
 
   /**
+   * Save current vocabulary to form state.
+   *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
-   * @param $vocabulary
+   *   Form state.
+   * @param \Drupal\taxonomy\Entity\Vocabulary $vocabulary
+   *   Current vocabulary entity.
    */
-  protected function saveVocabularyToFormState(FormStateInterface $form_state, $vocabulary): void {
+  protected function saveVocabularyToFormState(FormStateInterface $form_state, Vocabulary $vocabulary): void {
     $form_state_storage = $form_state->getStorage();
     $form_state_storage['taxonomy_terms_widget_vocabulary'] = $vocabulary;
     $form_state->setStorage($form_state_storage);
