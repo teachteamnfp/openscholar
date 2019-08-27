@@ -723,7 +723,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
 
   // Unset pmid field and identifier details tab if no other field exists in the
   // identifier group.
-  unset($form['bibcite_pmid']);
+  $form['bibcite_pmid']['#access'] = FALSE;
   os_publications_unset_empty_tab($form, 'identifiers');
 }
 
@@ -1144,6 +1144,6 @@ function os_publications_unset_empty_tab(array &$form, $group_name) {
     }
   }
   if (!$keep_group) {
-    unset($form[$group_name]);
+    $form[$group_name]['#access'] = FALSE;
   }
 }
