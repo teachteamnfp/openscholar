@@ -9,8 +9,8 @@
    */
   function registerDrupalContextualLinkAddedEvent() {
     $(document).once().bind('drupalContextualLinkAdded', function (event, data) {
-      let $editOption = data.$el.find('li.entitynodeedit-form');
-      let $deleteOption = data.$el.find('li.entitynodedelete-form');
+      let $editOption = data.$el.find('li.entitynodeedit-form', 'li.entitybibcite-referencedelete-form');
+      let $deleteOption = data.$el.find('li.entitynodedelete-form', 'li.entitybibcite-referenceedit-form');
 
       [$editOption, $deleteOption].forEach(function ($element) {
         if ($element.length) {
