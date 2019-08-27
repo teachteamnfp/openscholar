@@ -1,0 +1,59 @@
+@mixin nav($bgcolor,$color,$bg-active,$border,$dbgcolor,$dcolor,$dmcolor,$dacolor) {
+  background: $bgcolor;
+  /***** navbar nav *****/
+  .navbar-nav {
+    >li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $border;
+      }
+      > a {
+        color: $color;
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
+          background: $bg-active;
+          color: $color;
+        }
+      }
+      &.open,
+      &.active {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
+          background: $bg-active;
+          color: $color;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $dbgcolor;
+    > li {
+      @media #{$mobile} {
+        border-top: 1px solid $border;
+      }
+      >a {
+        color: $dcolor;
+        @media #{$mobile} {
+          font-size: 19px;
+          font-weight: normal;
+          color: $dmcolor;
+        }
+        &:hover,
+        &:active {
+          color: $dacolor;
+        }
+        &.active {
+          a,
+          a:hover {
+            color: $dacolor;
+          }
+        }
+      }
+    }
+  }
+}
