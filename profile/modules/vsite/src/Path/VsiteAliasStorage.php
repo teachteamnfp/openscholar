@@ -128,7 +128,10 @@ class VsiteAliasStorage implements AliasStorageInterface {
     /** @var \Drupal\group\Entity\GroupInterface $group */
     $group = $this->vsiteContextManager->getActiveVsite();
     if ($group && !$is_group_source) {
-      $alias = '/[vsite:' . $group->id() . ']' . $alias;
+      $group_prefix = '/[vsite:' . $group->id() . ']';
+      if (strpos($alias, $group_prefix) === FALSE) {
+        $alias = $group_prefix . $alias;
+      }
     }
     $fields = $this->storage->save($source, $alias, $langcode, $pid);
     if (!empty($fields['alias'])) {
