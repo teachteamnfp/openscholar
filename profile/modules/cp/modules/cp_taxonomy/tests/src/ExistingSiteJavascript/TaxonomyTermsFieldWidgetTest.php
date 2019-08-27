@@ -25,7 +25,9 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    */
   public function setUp() {
     parent::setUp();
-    $this->drupalLogin($this->createAdminUser());
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
     $this->testVid = $this->randomMachineName();
     $this->createGroupVocabulary($this->group, $this->testVid, ['node:taxonomy_test_1']);
     $this->term = $this->createGroupTerm($this->group, $this->testVid, 'Term1');
@@ -86,7 +88,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
     $this->visitViaVsite('node/' . $this->node->id() . '/edit', $this->group);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
-    $web_assert->pageTextContains('Tag with Terms');
+    $web_assert->pageTextContains($this->testVid);
     $page = $this->getCurrentPage();
     $field_taxonomy_element = $page->find('css', '.field--name-field-taxonomy-terms');
     $this->assertContains($this->term->label(), $field_taxonomy_element->getHtml());

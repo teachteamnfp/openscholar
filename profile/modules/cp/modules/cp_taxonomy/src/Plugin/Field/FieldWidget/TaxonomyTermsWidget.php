@@ -34,7 +34,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
   const WIDGET_TYPE_AUTOCOMPLETE = 'cp_entity_reference_autocomplete';
   const WIDGET_TYPE_OPTIONS_SELECT = 'cp_options_select';
   const WIDGET_TYPE_OPTIONS_BUTTONS = 'cp_options_buttons';
-  const WIDGET_TYPE_TREE = 'term_reference_tree';
+  const WIDGET_TYPE_TREE = 'cp_term_reference_tree';
 
   /**
    * Cp taxonomy helper.
@@ -134,33 +134,26 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
         $main_element[$vid] = $fieldWidget->formElement($filtered_items, $delta, $element, $form, $form_state);
       }
       else {
-        if ($fieldWidget->getPluginId() == 'term_reference_tree') {
-          $main_element[$vid]['#vocabularies'] = [
-            $vid => $main_element[$vid]['#vocabularies'][$vid],
-          ];
+        $field_name = $this->fieldDefinition->getName();
+        $parents = $form['#parents'];
+        $field_state = static::getWidgetState($parents, $field_name, $form_state);
+        if (empty($field_state['original_deltas'])) {
+          $field_state['items_count'] = $filtered_items->count();
         }
-        else {
-          $field_name = $this->fieldDefinition->getName();
-          $parents = $form['#parents'];
-          $field_state = static::getWidgetState($parents, $field_name, $form_state);
-          if (empty($field_state['original_deltas'])) {
-            $field_state['items_count'] = $filtered_items->count();
+        static::setWidgetState($parents, $field_name, $form_state, $field_state);
+        $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
+        $entity_reference_autocomplete_elements['add_more']['#name'] .= '_vid_' . $vid;
+        $entity_reference_autocomplete_elements['add_more']['#vocabulary_id'] = $vid;
+        foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
+          $element = &$entity_reference_autocomplete_elements[$delta];
+          if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
+            continue;
           }
-          static::setWidgetState($parents, $field_name, $form_state, $field_state);
-          $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
-          $entity_reference_autocomplete_elements['add_more']['#name'] .= '_vid_' . $vid;
-          $entity_reference_autocomplete_elements['add_more']['#vocabulary_id'] = $vid;
-          foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
-            $element = &$entity_reference_autocomplete_elements[$delta];
-            if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
-              continue;
-            }
-            $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
-          }
-          $main_element[$vid] = $entity_reference_autocomplete_elements;
-          $main_element[$vid]['#title'] = $vocabulary->label();
+          $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
         }
+        $main_element[$vid] = $entity_reference_autocomplete_elements;
       }
+      $main_element[$vid]['#title'] = $vocabulary->label();
     }
     return $main_element;
   }
