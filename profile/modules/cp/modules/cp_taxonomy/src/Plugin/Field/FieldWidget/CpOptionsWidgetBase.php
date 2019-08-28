@@ -2,15 +2,56 @@
 
 namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase;
 use Drupal\Core\Form\OptGroup;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Base class for the 'cp_options_*' widgets.
  */
-abstract class CpOptionsWidgetBase extends OptionsWidgetBase {
+abstract class CpOptionsWidgetBase extends OptionsWidgetBase implements ContainerFactoryPluginInterface {
+
+  protected $selectionPluginManager;
+
+  /**
+   * TaxonomyTermsWidget constructor.
+   *
+   * @param string $plugin_id
+   *   The plugin_id for the widget.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   The definition of the field to which the widget is associated.
+   * @param array $settings
+   *   The widget settings.
+   * @param array $third_party_settings
+   *   Any third party settings.
+   * @param \Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface $selection_plugin_manager
+   *   Selection Plugin Manager.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, SelectionPluginManagerInterface $selection_plugin_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
+    $this->selectionPluginManager = $selection_plugin_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['third_party_settings'],
+      $container->get('plugin.manager.entity_reference_selection')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -21,7 +62,7 @@ abstract class CpOptionsWidgetBase extends OptionsWidgetBase {
         ->getFieldStorageDefinition()
         ->getOptionsProvider('target_id', $entity);
       $field_definition = $options_provider->getFieldDefinition();
-      $options = \Drupal::service('plugin.manager.entity_reference_selection')->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
+      $options = $this->selectionPluginManager->getSelectionHandler($field_definition, $entity)->getReferenceableEntities();
 
       $options = ['_none' => $this->t('- None -')] + $options;
 
