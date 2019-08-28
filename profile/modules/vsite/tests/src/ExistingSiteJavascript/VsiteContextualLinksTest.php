@@ -134,51 +134,16 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
-   * Tests Preview works if coming via contextual edit link for publication.
+   * Tests Preview works with destination param in the url for node.
    *
-   * @throws \Behat\Mink\Exception\ElementNotFoundException
-   * @throws \Drupal\Core\Entity\EntityStorageException
-   */
-  public function testExistingBibciteReferenceContextualPreview(): void {
-    $group_admin = $this->createUser();
-    $this->addGroupAdmin($group_admin, $this->group);
-    $reference = $this->createReference();
-    $this->group->addContent($reference, 'group_entity:bibcite_reference');
-    $this->drupalLogin($group_admin);
-
-    // Test Preview from full view.
-    $this->visitViaVsite('bibcite/reference/' . $reference->id(), $this->group);
-    $this->assertSession()->waitForElement('css', '.contextual-links .entitybibcite-referenceedit-form');
-    $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitybibcite-referenceedit-form a');
-    $edit_contextual_link->click();
-    $this->getSession()->wait(500);
-    $this->getSession()->getPage()->pressButton('Preview');
-    $current_url = $this->getSession()->getCurrentUrl();
-    $this->assertContains('preview', $current_url);
-    $this->assertContains('citation', $current_url);
-
-    // Test preview from publication listing view page.
-    $this->visitViaVsite('publications', $this->group);
-    $this->assertSession()->waitForElement('css', '.contextual-links .entitybibcite-referenceedit-form');
-    $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitybibcite-referenceedit-form a');
-    $edit_contextual_link->click();
-    $this->getSession()->wait(500);
-    $this->getSession()->getPage()->pressButton('Preview');
-    $current_url = $this->getSession()->getCurrentUrl();
-    $this->assertContains('preview', $current_url);
-    $this->assertContains('citation', $current_url);
-
-  }
-
-  /**
-   * Tests Preview works if coming via contextual edit link for node.
+   * As if coming from contextual link.
    *
    * @covers ::vsite_node_preview_submit
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function testExistingNodeContextualPreview(): void {
+  public function testNodePreviewWithDestination(): void {
 
     $blog = $this->createNode([
       'type' => 'blog',
@@ -188,23 +153,8 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
     $this->addGroupAdmin($group_admin, $this->group);
     $this->drupalLogin($group_admin);
 
-    // Test Preview from full view.
-    $this->visitViaVsite("node/{$blog->id()}", $this->group);
-    $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
-    $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
-    $edit_contextual_link->click();
-    $this->getSession()->wait(500);
-    $this->getSession()->getPage()->pressButton('Preview');
-    $current_url = $this->getSession()->getCurrentUrl();
-    $this->assertContains('preview', $current_url);
-    $this->assertContains('full', $current_url);
-
-    // Test preview from blog listing view page.
-    $this->visitViaVsite('blog', $this->group);
-    $this->assertSession()->waitForElement('css', '.contextual-links .entitynodeedit-form');
-    $edit_contextual_link = $this->getSession()->getPage()->find('css', '.contextual-links .entitynodeedit-form a');
-    $edit_contextual_link->click();
-    $this->getSession()->wait(500);
+    $destination = '/edit?destination=' . $this->group->get('path')->getValue()[0]['alias'];
+    $this->visitViaVsite("node/{$blog->id()}" . $destination, $this->group);
     $this->getSession()->getPage()->pressButton('Preview');
     $current_url = $this->getSession()->getCurrentUrl();
     $this->assertContains('preview', $current_url);
