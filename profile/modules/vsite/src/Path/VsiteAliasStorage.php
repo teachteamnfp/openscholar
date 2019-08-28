@@ -121,8 +121,17 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function save($source, $alias, $langcode = LanguageInterface::LANGCODE_NOT_SPECIFIED, $pid = NULL) {
-    if (!preg_match('|^\/group\/[\d]*$|', $source)) {
+    $is_group_source = preg_match('|^\/group\/[\d]*$|', $source);
+    if (!$is_group_source) {
       $alias = $this->pathToToken($alias);
+    }
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if ($group && !$is_group_source) {
+      $group_prefix = '/[vsite:' . $group->id() . ']';
+      if (strpos($alias, $group_prefix) === FALSE) {
+        $alias = $group_prefix . $alias;
+      }
     }
     $fields = $this->storage->save($source, $alias, $langcode, $pid);
     if (!empty($fields['alias'])) {
@@ -161,7 +170,7 @@ class VsiteAliasStorage implements AliasStorageInterface {
   public function preloadPathAlias($preloaded, $langcode) {
     $output = $this->storage->preloadPathAlias($preloaded, $langcode);
 
-    foreach ($output as $source => &$alias) {
+    foreach ($output as &$alias) {
       $alias = $this->tokenToPath($alias);
     }
 
@@ -201,8 +210,13 @@ class VsiteAliasStorage implements AliasStorageInterface {
    * {@inheritdoc}
    */
   public function aliasExists($alias, $langcode, $source = NULL) {
-    $alias = $this->pathToToken($alias);
-    return $this->storage->aliasExists($alias, $langcode, $source);
+    $alias_with_token = $this->pathToToken($alias);
+    /** @var \Drupal\group\Entity\GroupInterface $group */
+    $group = $this->vsiteContextManager->getActiveVsite();
+    if ($group && $alias_with_token == $alias) {
+      $alias_with_token = '/[vsite:' . $group->id() . ']' . $alias;
+    }
+    return $this->storage->aliasExists($alias_with_token, $langcode, $source);
   }
 
   /**

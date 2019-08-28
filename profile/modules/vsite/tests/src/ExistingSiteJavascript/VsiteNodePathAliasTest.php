@@ -62,6 +62,58 @@ class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Test node creation pathauto at vsite.
+   */
+  public function testNodeCreationPathautoPathIncremental() {
+    $web_assert = $this->assertSession();
+    $title = 'lorem-ipsum-title';
+
+    // Create first node.
+    $this->visitViaVsite('node/add/blog', $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    $page->fillField('title[0][value]', $title);
+    $page->findButton('Save')->press();
+    $web_assert->pageTextNotContains('error has been found');
+    $web_assert->pageTextContains($title);
+
+    // Create second node with same title.
+    $this->visitViaVsite('node/add/blog', $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    $page->fillField('title[0][value]', $title);
+    $page->findButton('Save')->press();
+    $web_assert->pageTextNotContains('error has been found');
+    $web_assert->pageTextContains($title);
+    $url = $this->getUrl();
+    $this->assertContains('/blog/' . $title . '-0', $url);
+  }
+
+  /**
+   * Test to create node with manual alias what is exists.
+   */
+  public function testNodeCreationWithManualExistsAlias() {
+    $web_assert = $this->assertSession();
+    /** @var \Drupal\Core\Path\AliasStorage $path_alias_storage */
+    $path_alias_storage = $this->container->get('path.alias_storage');
+    $path_alias_storage->save("/node/99", '/[vsite:' . $this->group->id() . ']/blog/existing-alias', "en");
+    $this->visitViaVsite('node/add/blog', $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    $page->fillField('title[0][value]', $this->randomMachineName());
+    $page->findButton('URL alias')->press();
+    $page->findField('path[0][pathauto]')->press();
+    $page->fillField('path[0][alias]', '/blog/existing-alias');
+    $page->findButton('Save')->press();
+
+    $web_assert->pageTextContains('error has been found');
+    $web_assert->pageTextContains('The alias is already in use.');
+    $html = $this->getCurrentPageContent();
+    // Check path field is printed without site url.
+    $this->assertContains('name="path[0][alias]" value="/blog/existing-alias"', $html);
+  }
+
+  /**
    * Test all path where should be visible the alias.
    *
    * @dataProvider collectionOfVisiblePath
