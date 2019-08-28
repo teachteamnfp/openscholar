@@ -1,3 +1,4 @@
+uuid: 1fa5915b-232f-4133-a94c-f2f1f011edd2
 langcode: en
 status: true
 dependencies:
@@ -5,6 +6,8 @@ dependencies:
     - content_moderation
     - node
     - user
+_core:
+  default_config_hash: 1UIjNd6iIhogbx50cJPDN7Me8cUQx2xCP2IBgrKG6Ms
 id: moderated_content
 label: 'Moderated content'
 module: views
@@ -815,5 +818,3 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-_core:
-  default_config_hash: 1UIjNd6iIhogbx50cJPDN7Me8cUQx2xCP2IBgrKG6Ms

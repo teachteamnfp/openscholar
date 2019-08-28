@@ -10,6 +10,7 @@ dependencies:
     - datetime
     - group
     - node
+    - os_app_access
     - vsite
     - vsite_infinite_scroll
 id: presentations
@@ -28,9 +29,9 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
+        type: app
         options:
-          group_permission: 'view group_node:presentation entity'
+          app: presentations
       cache:
         type: tag
         options: {  }
@@ -227,7 +228,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -325,7 +325,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
@@ -362,7 +361,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args

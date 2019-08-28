@@ -25,11 +25,13 @@ class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBas
     $this->projectNode = $this->createNode([
       'type' => 'software_project',
     ]);
+    $this->group->addContent($this->projectNode, 'group_node:software_project');
     $this->media = $this->createMedia([
       'bundle' => [
         'target_id' => 'executable',
       ],
     ], 'binary');
+    $this->group->addContent($this->media, 'group_entity:media');
   }
 
   /**
@@ -37,7 +39,7 @@ class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBas
    */
   public function testProjectNodeReleaseBlockRecommended() {
     $web_assert = $this->assertSession();
-    $this->createNode([
+    $node = $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
         $this->projectNode->id(),
@@ -48,6 +50,7 @@ class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBas
       ],
       'field_is_recommended_version' => TRUE,
     ]);
+    $this->group->addContent($node, 'group_node:software_release');
     $this->visitViaVsite('node/' . $this->projectNode->id(), $this->group);
     $web_assert->pageTextContains('Recommended Releases');
     $web_assert->pageTextContains('v1.1.2');
@@ -59,7 +62,7 @@ class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBas
    */
   public function testProjectNodeReleaseBlockRecent() {
     $web_assert = $this->assertSession();
-    $this->createNode([
+    $node = $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
         $this->projectNode->id(),
@@ -70,6 +73,7 @@ class OsSoftwareProjectReleaseBlocksFunctionalTest extends OsExistingSiteTestBas
       ],
       'field_is_recommended_version' => FALSE,
     ]);
+    $this->group->addContent($node, 'group_node:software_release');
     $this->visitViaVsite('node/' . $this->projectNode->id(), $this->group);
     $web_assert->pageTextContains('Recent Releases');
     $web_assert->pageTextContains('v1.1.1');
