@@ -1,3 +1,20 @@
+/**
+* $bgcolor = backgroind color of menu
+* $color = menu link color
+* $bg-active = background color on hover and active links
+* $color-active = color on hover and active links
+* $border = border color for mobile menu
+* $dbgcolor = dropdown menu background color
+* $dcolor = dropdown menu links color
+* $dmcolor = dropdown mennu mobile link color
+* $dacolor = dropdonw menu active links color
+* $dfs = dropdown font size
+* $dfw = dropdown font weight
+* $fs = menu font size
+* $fw = menu font weight
+**/
+
+
 @mixin nav($bgcolor,$color,$bg-active,$color-active,$border,$dbgcolor,$dcolor,$dmcolor,$dacolor,$dfs:null,$dfw:null,$fs:19px,$fw:normal) {
   background: $bgcolor;
   /***** navbar nav *****/

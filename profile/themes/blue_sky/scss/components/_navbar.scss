@@ -1,10 +1,7 @@
 .navbar-collapse {
+  @include  nav($color_steel_blue_approx,$white,$color_regent_gray_approx,$white,$white,$color_regent_gray_approx,$white,$white,$white,$dfs:null,$dfw:normal);
   color: $white;
-  background: $color_steel_blue_approx;
   border-top: 1px solid $gallery;
-  @media #{$mobile} {
-    padding: 0 !important;
-  }
   /***** navbar nav *****/
   .navbar-nav {
     > li {
@@ -14,7 +11,6 @@
       }
       > a {
         @extend %font-family;
-        color: $white;
         @media #{$mobile} {
           color: $white;
         }
@@ -41,34 +37,30 @@
         background: none;
         color: $white;
         font-weight: normal;
-        @media #{$mobile} {
-          font-size: 19px;
-          padding-left: 20px;
-        }
-        &:hover, &:active {
-          background: none;
-          color: $white;
-          @media #{$mobile} {
-            color: $white;
-          }
-        }
+        // &:hover, &:active {
+        //   background: none;
+        //   color: $white;
+        //   @media #{$mobile} {
+        //     color: $white;
+        //   }
+        // }
       }
-      &.active {
-        a {
-          color: $white;
-          background: none;
-          @media #{$mobile} {
-            color: $white;
-          }
-          &:hover {
-            background: none;
-            color: $white;
-            @media #{$mobile} {
-              color: $white;
-            }
-          }
-        }
-      }
+      // &.active {
+      //   a {
+      //     color: $white;
+      //     background: none;
+      //     @media #{$mobile} {
+      //       color: $white;
+      //     }
+      //     &:hover {
+      //       background: none;
+      //       color: $white;
+      //       @media #{$mobile} {
+      //         color: $white;
+      //       }
+      //     }
+      //   }
+      // }
     }
   }
 }
