@@ -141,17 +141,16 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
           $field_state['items_count'] = $filtered_items->count();
         }
         static::setWidgetState($parents, $field_name, $form_state, $field_state);
-        $entity_reference_autocomplete_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
-        $entity_reference_autocomplete_elements['add_more']['#name'] .= '_vid_' . $vid;
-        $entity_reference_autocomplete_elements['add_more']['#vocabulary_id'] = $vid;
-        foreach (Element::children($entity_reference_autocomplete_elements) as $delta) {
-          $element = &$entity_reference_autocomplete_elements[$delta];
-          if (empty($element['target_id']['#selection_settings']['view']['arguments'][0])) {
+        $multiple_elements = $fieldWidget->formMultipleElements($filtered_items, $form, $form_state);
+        $multiple_elements['add_more']['#name'] .= '_vid_' . $vid;
+        foreach (Element::children($multiple_elements) as $delta) {
+          $multiple_element = &$multiple_elements[$delta];
+          if (empty($multiple_element['target_id']['#selection_settings']['view']['arguments'][0])) {
             continue;
           }
-          $element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
+          $multiple_element['target_id']['#selection_settings']['view']['arguments'][0] .= '|' . $vid;
         }
-        $main_element[$vid] = $entity_reference_autocomplete_elements;
+        $main_element[$vid] = $multiple_elements;
       }
       $main_element[$vid]['#title'] = $vocabulary->label();
     }
