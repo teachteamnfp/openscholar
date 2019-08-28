@@ -185,7 +185,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
         'label' => $config_vocab->get('name'),
       ];
     }
-    // Check vid?
+
     if (empty($widgets) && !empty($vid)) {
       $widgets[$vid] = TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
     }
