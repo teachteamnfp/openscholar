@@ -3,7 +3,6 @@
 namespace Drupal\cp_taxonomy\Plugin\Field\FieldWidget;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
-use Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -15,7 +14,6 @@ use Drupal\Core\Render\Element;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\Validator\ConstraintViolationInterface;
 
 /**
  * Taxonomy terms widget for reference terms.
@@ -49,10 +47,9 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    * @var \Drupal\Core\Field\WidgetInterface
    */
   protected $fieldWidgets;
-  protected $widgetTypes;
   protected $pluginManager;
   protected $entityTypeManager;
-  protected $selectionPluginManager;
+  protected $widgetConfiguration;
 
   /**
    * TaxonomyTermsWidget constructor.
@@ -73,29 +70,20 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    *   Plugin manager.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   Entity Type Manager.
-   * @param \Drupal\Core\Entity\EntityReferenceSelection\SelectionPluginManagerInterface $selection_plugin_manager
-   *   Selection Plugin Manager.
    *
    * @throws \Drupal\Component\Plugin\Exception\PluginException
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager, EntityTypeManagerInterface $entity_type_manager, SelectionPluginManagerInterface $selection_plugin_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, array $third_party_settings, CpTaxonomyHelperInterface $taxonomy_helper, PluginManagerInterface $plugin_manager, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $third_party_settings);
     $this->taxonomyHelper = $taxonomy_helper;
-    $bundle = $field_definition->getTargetBundle();
-    if ($field_definition->getTargetEntityTypeId() != 'node') {
-      $bundle = '*';
-    }
-    $this->widgetTypes = $this->taxonomyHelper->getWidgetTypes($field_definition->getTargetEntityTypeId() . ':' . $bundle);
+
     $this->pluginManager = $plugin_manager;
     $this->entityTypeManager = $entity_type_manager;
-    $this->selectionPluginManager = $selection_plugin_manager;
 
     $configuration['field_definition'] = $field_definition;
     $configuration['settings'] = $settings;
     $configuration['third_party_settings'] = $third_party_settings;
-    foreach ($this->widgetTypes as $vid => $widgetInfo) {
-      $this->fieldWidgets[$vid] = $this->pluginManager->createInstance($widgetInfo['widget_type'], $configuration);
-    }
+    $this->widgetConfiguration = $configuration;
   }
 
   /**
@@ -110,8 +98,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       $configuration['third_party_settings'],
       $container->get('cp.taxonomy.helper'),
       $container->get('plugin.manager.field.widget'),
-      $container->get('entity_type.manager'),
-      $container->get('plugin.manager.entity_reference_selection')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -119,15 +106,17 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    * {@inheritdoc}
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+    $this->initFieldWidgets();
     $main_element = [
       '#tree' => TRUE,
     ];
     if (empty($this->fieldWidgets)) {
       return $element;
     }
-    /** @var \Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsWidgetBase $fieldWidget */
+    /** @var \Drupal\Core\Field\WidgetBase $fieldWidget */
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
       $filtered_items = $this->removeUnrelatedItems($items, $vid);
+      /** @var \Drupal\taxonomy\Entity\Vocabulary $vocabulary */
       $vocabulary = $this->entityTypeManager->getStorage('taxonomy_vocabulary')->load($vid);
       $this->saveVocabularyToFormState($form_state, $vocabulary);
       if ($fieldWidget->handlesMultipleValues()) {
@@ -155,13 +144,6 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
       $main_element[$vid]['#title'] = $vocabulary->label();
     }
     return $main_element;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function errorElement(array $element, ConstraintViolationInterface $error, array $form, FormStateInterface $form_state) {
-    return $this->fieldWidgets->errorElement($element, $error, $form, $form_state);
   }
 
   /**
@@ -242,6 +224,23 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
     $form_state_storage = $form_state->getStorage();
     $form_state_storage['taxonomy_terms_widget_vocabulary'] = $vocabulary;
     $form_state->setStorage($form_state_storage);
+  }
+
+  /**
+   * Init field widgets.
+   */
+  protected function initFieldWidgets() {
+    if (!empty($this->fieldWidgets)) {
+      return;
+    }
+    $bundle = $this->fieldDefinition->getTargetBundle();
+    if ($this->fieldDefinition->getTargetEntityTypeId() != 'node') {
+      $bundle = '*';
+    }
+    $widgetTypes = $this->taxonomyHelper->getWidgetTypes($this->fieldDefinition->getTargetEntityTypeId() . ':' . $bundle);
+    foreach ($widgetTypes as $vid => $widgetInfo) {
+      $this->fieldWidgets[$vid] = $this->pluginManager->createInstance($widgetInfo['widget_type'], $this->widgetConfiguration);
+    }
   }
 
 }
