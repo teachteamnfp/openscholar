@@ -175,3 +175,19 @@ function cp_users_group_type_insert(GroupTypeInterface $entity) {
     $group_role->save();
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for making sure user shows the updated items in control panel.
+ */
+function cp_users_group_role_update(GroupRoleInterface $group_role) {
+  /** @var \Drupal\group\Entity\GroupRoleInterface $original_group_role */
+  $original_group_role = $group_role->original;
+
+  // The ordering of permissions might vary, therefore, to be safe, check by
+  // the number of permissions - before and after.
+  if (count($original_group_role->getPermissions()) !== count($group_role->getPermissions())) {
+    /** @var \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator */
+    $cache_tags_invalidator = \Drupal::service('cache_tags.invalidator');
+    $cache_tags_invalidator->invalidateTags(['config:system.menu.control-panel']);
+  }
+}
