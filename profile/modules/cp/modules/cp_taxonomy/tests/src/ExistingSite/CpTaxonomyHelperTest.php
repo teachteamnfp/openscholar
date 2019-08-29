@@ -67,9 +67,9 @@ class CpTaxonomyHelperTest extends TestBase {
   }
 
   /**
-   * Test get widget type default value.
+   * Test get widget types default value.
    */
-  public function testGetWidgetTypeDefaultValue() {
+  public function testGetWidgetTypesDefaultValue() {
     $vid = 'test_vocab';
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
     // Test default widget type.
@@ -78,9 +78,9 @@ class CpTaxonomyHelperTest extends TestBase {
   }
 
   /**
-   * Test get widget type value.
+   * Test get widget types value.
    */
-  public function testGetWidgetTypeSetValue() {
+  public function testGetWidgetTypesSetValue() {
     $vid = 'test_vocab';
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1'], 'cp_options_select');
     // Test default widget type.
