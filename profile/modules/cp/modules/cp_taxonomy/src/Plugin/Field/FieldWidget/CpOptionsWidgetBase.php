@@ -17,6 +17,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class CpOptionsWidgetBase extends OptionsWidgetBase implements ContainerFactoryPluginInterface {
 
   protected $selectionPluginManager;
+  protected $options;
 
   /**
    * TaxonomyTermsWidget constructor.
