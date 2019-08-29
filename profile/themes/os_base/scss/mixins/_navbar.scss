@@ -66,6 +66,9 @@
         &:hover,
         &:active {
           color: $dacolor;
+          @media #{$mobile} {
+            background: $bg-active;
+          }
         }
         &.active {
           a,
