@@ -10,6 +10,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Mail\MailManager;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
 use Drupal\user\Entity\User;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
@@ -20,6 +22,11 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  * Controller for the add User to Site form.
  */
 class CpUsersAddForm extends FormBase {
+
+  /**
+   * Default role for members.
+   */
+  const DEFAULT_ROLE = 'personal-member';
 
   /**
    * Vsite Context Manager.
@@ -36,21 +43,39 @@ class CpUsersAddForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * Current User.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
+   * Mail manager service.
+   *
+   * @var \Drupal\Core\Mail\MailManager
+   */
+  protected $mailManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('current_user'),
+      $container->get('plugin.manager.mail')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, MailManager $mail_manager) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->currentUser = $current_user;
+    $this->mailManager = $mail_manager;
   }
 
   /**
@@ -106,6 +131,7 @@ class CpUsersAddForm extends FormBase {
         '#type' => 'radios',
         '#title' => $this->t('Role'),
         '#options' => $roleData,
+        '#default_value' => CpUsersAddForm::DEFAULT_ROLE,
       ],
     ];
 
@@ -144,6 +170,7 @@ class CpUsersAddForm extends FormBase {
         '#type' => 'radios',
         '#title' => $this->t('Role'),
         '#options' => $roleData,
+        '#default_value' => CpUsersAddForm::DEFAULT_ROLE,
       ],
     ];
 
@@ -264,12 +291,10 @@ class CpUsersAddForm extends FormBase {
         $params = [
           'user' => $account,
           'role' => $role,
-          'creator' => \Drupal::currentUser(),
+          'creator' => $this->currentUser,
           'group' => $group,
         ];
-        /** @var \Drupal\Core\Mail\MailManagerInterface $mailManager */
-        $mailManager = \Drupal::service('plugin.manager.mail');
-        $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
+        $this->mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
       }
     }
     return $response;
