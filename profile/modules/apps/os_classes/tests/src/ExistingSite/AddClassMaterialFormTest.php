@@ -37,6 +37,7 @@ class AddClassMaterialFormTest extends OsExistingSiteTestBase {
     $this->groupMember = $this->createUser();
     $this->addGroupAdmin($this->groupMember, $this->group);
 
+    $this->container->get('vsite.context_manager')->activateVsite($this->group);
     $this->class = $this->createNode([
       'type' => 'class',
       'title' => $this->randomString(),
