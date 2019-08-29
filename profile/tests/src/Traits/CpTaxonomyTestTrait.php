@@ -115,18 +115,16 @@ trait CpTaxonomyTestTrait {
    *   Group entity.
    * @param string $vid
    *   Vocabulary id.
-   * @param string $name
-   *   Taxonomy term name.
+   * @param array $settings
+   *   Taxonomy term settings.
    *
    * @return \Drupal\taxonomy\Entity\Term
    *   Created taxonomy term.
    */
-  protected function createGroupTerm(GroupInterface $group, string $vid, string $name) {
+  protected function createGroupTerm(GroupInterface $group, string $vid, array $settings) {
     $this->vsiteContextManager->activateVsite($group);
     $vocab = Vocabulary::load($vid);
-    $term = $this->createTerm($vocab, [
-      'name' => $name,
-    ]);
+    $term = $this->createTerm($vocab, $settings);
     $group->addContent($term, 'group_entity:taxonomy_term');
     return $term;
   }

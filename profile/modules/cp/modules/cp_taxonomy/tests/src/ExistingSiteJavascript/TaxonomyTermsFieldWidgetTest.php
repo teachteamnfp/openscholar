@@ -30,7 +30,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
     $this->drupalLogin($group_admin);
     $this->testVid = $this->randomMachineName();
     $this->createGroupVocabulary($this->group, $this->testVid, ['node:taxonomy_test_1']);
-    $this->term = $this->createGroupTerm($this->group, $this->testVid, 'Term1');
+    $this->term = $this->createGroupTerm($this->group, $this->testVid, ['name' => 'Term1']);
     $this->node = $this->createNode([
       'type' => 'taxonomy_test_1',
       'field_taxonomy_terms' => [
