@@ -21,6 +21,7 @@ filter_publication_types:
   classical: classical
   conference_paper: conference_paper
   conference_proceedings: conference_proceedings
+  data: data
   database: database
   film: film
   government_report: government_report
@@ -46,9 +47,61 @@ filter_publication_types:
   web_project_page: web_project_page
   web_service: web_service
   website: website
+  working_paper: working_paper
 _core:
   default_config_hash: KCwFYpsxpyK6P0j5BJMsNiSkSLHD6YXKKG78CGAFI5Y
 citation_distribute_autoflags:
   citation_distribute_repec: 0
   citation_distribute_googlescholar: 0
 citation_distribute_module_mode: per_submission
+pub_month_options:
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
+  6: 6
+  7: 7
+  8: 8
+  9: 9
+  10: 10
+  11: 11
+  12: 12
+pub_day_options:
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
+  6: 6
+  7: 7
+  8: 8
+  9: 9
+  10: 10
+  11: 11
+  12: 12
+  13: 13
+  14: 14
+  15: 15
+  16: 16
+  17: 17
+  18: 18
+  19: 19
+  20: 20
+  21: 21
+  22: 22
+  23: 23
+  24: 24
+  25: 25
+  26: 26
+  27: 27
+  28: 28
+  29: 29
+  30: 30
+  31: 31
+publications_years_text:
+  10000: Forthcoming
+  10010: Submitted
+  10020: 'In Preparation'
+  10030: 'In Press'
+  10040: 'Working Paper'

@@ -38,7 +38,7 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
    */
   public function testPreviewToggle(): void {
     $this->drupalLogin($this->groupAdmin);
-    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/publications");
+    $this->visit("{$this->group->get('path')->first()->getValue()['alias']}/cp/settings/apps-settings/publications");
 
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
@@ -55,9 +55,9 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     $web_assert->pageTextContains($value);
 
     // Test APA hover.
-    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-apa');
+    $format = $page->findField('edit-os-publications-preferred-bibliographic-format-ieee');
     $format->mouseOver();
-    $result = $web_assert->waitForElementVisible('css', '#apa');
+    $result = $web_assert->waitForElementVisible('css', '#ieee');
     $this->assertNotNull($result);
     $value = ucwords(str_replace('_', ' ', $result->getValue()));
     // Verify the text on the page.
@@ -100,6 +100,29 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
     $this->getCurrentPage()->clickLink('Revision Information');
     $this->getCurrentPage()->find('css', '#revisons-links')->click();
     $this->assertContains($reference->id() . '/revisions', $this->getSession()->getCurrentUrl());
+
+  }
+
+  /**
+   * Test various revision information changes/alteration.
+   */
+  public function testAbstractToggle(): void {
+    $this->drupalLogin($this->groupAdmin);
+
+    // Test link exists when abstract is entered entity.
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+      'bibcite_abst_e' => 'This is a test for abstract field.',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->linkExists('Abstract');
+
+    // Test links works fine and toggles data for the field.
+    $abst_field = $this->getCurrentPage()->find('css', '.field--abstract');
+    $abst_field->hasClass('visually-hidden');
+    $this->getCurrentPage()->clickLink('Abstract');
+    $this->assertSession()->pageTextContains('This is a test for abstract field.');
 
   }
 

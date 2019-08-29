@@ -8,3 +8,21 @@ manage vsite content:
   description: 'Manage vsite content'
   restrict access: 'TRUE'
   section: 'Permission'
+
+manage cp appearance:
+  title: 'Manage Appearance Settings'
+  description: 'Manage Appearance Settings'
+  restrict access: 'TRUE'
+  section: 'Permission'
+
+administer cp settings:
+  title: 'Administer Cp Settings'
+  description: 'Administer Cp Settings'
+  restrict access: 'TRUE'
+  section: 'Permission'
+
+administer apps settings:
+  title: 'Administer Apps Settings'
+  description: 'Administer Apps Settings'
+  restrict access: 'TRUE'
+  section: 'Permission'

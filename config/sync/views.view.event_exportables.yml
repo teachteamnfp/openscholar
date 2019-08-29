@@ -9,13 +9,12 @@ dependencies:
     - field.storage.node.field_location
     - field.storage.node.field_recurring_date
     - node.type.events
-    - system.menu.main
   module:
     - date_recur
-    - datetime
     - fullcalendar
     - group
     - node
+    - os_app_access
     - text
     - views_ical
     - vsite
@@ -35,9 +34,9 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
+        type: app
         options:
-          group_permission: 'view group_node:class entity'
+          app: event
       cache:
         type: none
         options: {  }
@@ -319,7 +318,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
@@ -354,7 +352,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
@@ -660,7 +657,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url

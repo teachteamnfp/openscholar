@@ -12,6 +12,7 @@ dependencies:
     - datetime
     - group
     - node
+    - os_app_access
     - text
     - vsite
     - vsite_infinite_scroll
@@ -31,9 +32,9 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
+        type: app
         options:
-          group_permission: 'view group_node:news entity'
+          app: news
       cache:
         type: tag
         options: {  }
@@ -257,7 +258,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -595,7 +595,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - 'user.node_grants:view'
@@ -654,7 +653,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
@@ -712,7 +710,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
@@ -739,7 +736,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -898,7 +894,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url

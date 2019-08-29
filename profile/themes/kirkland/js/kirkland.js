@@ -1,10 +1,9 @@
 (function ($, Drupal) {
   Drupal.behaviors.custom = {
     attach: function (context, settings) {
-      var classes = ["bg-one", "bg-two", "bg-three", "bg-four", "bg-five", "bg-six", "bg-seven", "bg-eight"];
-      $("body.not-front").each(function() {
-        $(this).addClass(classes[~~(Math.random() * classes.length)]);
-      });
+      let classes = ["bg-one", "bg-two", "bg-three", "bg-four", "bg-five", "bg-six", "bg-seven", "bg-eight"];
+      let body = $('body.not-front');
+      $(body, context).addClass(classes[~~(Math.random() * classes.length)]);
     }
   };
 })(jQuery, Drupal);

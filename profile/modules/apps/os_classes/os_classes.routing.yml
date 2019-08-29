@@ -18,7 +18,7 @@ os_classes.paragraph_add_form:
     _controller: '\Drupal\os_classes\Controller\ParagraphAddController::buildAddForm'
     _title: 'Add Class Material'
   requirements:
-    _permission: 'administer site configuration'
+    _group_permission: 'create group_node:class entity'
 os_classes.paragraphs_class_material:
   path: 'classes/{class}/materials/{material}'
   defaults:

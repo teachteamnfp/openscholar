@@ -65,7 +65,7 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
   public function testPublicationShortUrl(): void {
 
     // Test citations do not occur if short citations is off.
-    $this->visit("/test-shorturl/cp/settings/publications");
+    $this->visit('/test-shorturl/cp/settings/apps-settings/publications');
     $edit = [
       'os_publications_shorten_citations' => FALSE,
     ];
@@ -75,7 +75,7 @@ class PublicationShortUrlTest extends OsExistingSiteTestBase {
     $web_assert->elementNotExists('css', '.short-link');
 
     // Test citations occur when short url setting is on.
-    $this->drupalGet("/test-shorturl/cp/settings/publications");
+    $this->drupalGet('/test-shorturl/cp/settings/apps-settings/publications');
     $edit = [
       'os_publications_shorten_citations' => TRUE,
     ];

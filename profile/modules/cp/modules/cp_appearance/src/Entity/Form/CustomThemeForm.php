@@ -230,7 +230,7 @@ class CustomThemeForm extends EntityForm {
         $theme_setting_mut->set('default', $entity->id())->save();
       }
 
-      $form_state->setRedirect('cp.appearance');
+      $form_state->setRedirect('cp.appearance.themes');
     }
     else {
       $route_parameters = [

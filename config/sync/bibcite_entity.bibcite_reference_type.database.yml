@@ -16,7 +16,7 @@ fields:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: false
@@ -55,11 +55,12 @@ fields:
     visible: true
     required: true
   bibcite_secondary_title:
-    visible: false
+    visible: true
     required: false
   bibcite_volume:
     visible: false
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -67,8 +68,9 @@ fields:
     visible: false
     required: false
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -79,7 +81,7 @@ fields:
     visible: false
     required: false
   bibcite_date:
-    visible: true
+    visible: false
     required: false
     label: 'Date Accessed'
     hint: ''
@@ -93,7 +95,7 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
+    visible: false
     required: false
   bibcite_place_published:
     visible: false
@@ -102,22 +104,22 @@ fields:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
     visible: true
@@ -156,5 +158,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false

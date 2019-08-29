@@ -55,3 +55,21 @@
     margin: 0;
   }
 }
+/**** bibcite publication year ****/
+.bibcite-year-coded-publication {
+  .form-radios {
+    > div {
+      display: inline-block;
+      margin: 0;
+      vertical-align: middle;
+      font-size: 14px;
+      margin-right: 5px;
+      input {
+        vertical-align: middle;
+      }
+    }
+    b {
+      margin-right: 5px;
+    }
+  }
+}

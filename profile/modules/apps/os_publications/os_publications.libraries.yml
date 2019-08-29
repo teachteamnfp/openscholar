@@ -5,3 +5,8 @@ drupal.os_publications:
       css/os_publications-base.css: {}
   js:
     js/os_publications.citation_example.js: {}
+    js/os_publications.reference_form.js: {}
+drupal.os_publications.misc:
+  version: 1.x
+  js:
+    js/os_publications.toggle.js: {}

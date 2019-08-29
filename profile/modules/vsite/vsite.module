@@ -62,20 +62,6 @@ function vsite_views_data_alter(&$data) {
 }
 
 /**
- * Implements hook_pathauto_alias_alter().
- */
-function vsite_pathauto_alias_alter(&$alias, array &$context) {
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-  $vsiteContext = \Drupal::service('vsite.context_manager');
-
-  if ($vsiteContext->getActiveVsite()) {
-    $purl = $vsiteContext->getActivePurl();
-    $trimmed_alias = ltrim($alias, '/');
-    $alias = '/' . $purl . '/' . $trimmed_alias;
-  }
-}
-
-/**
  * Implements hook_form_node_form_alter().
  */
 function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
@@ -108,6 +94,14 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
       }
     }
   }
+  Drupal::service('vsite.form_delete_destination')->setDeleteButtonDestination($form, $form_state);
+}
+
+/**
+ * Implements hook_form_bibcite_reference_form_alter().
+ */
+function vsite_form_bibcite_reference_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  Drupal::service('vsite.form_delete_destination')->setDeleteButtonDestination($form, $form_state);
 }
 
 /**
@@ -158,9 +152,13 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
         $current_url = Url::fromRoute('<front>', [], ["absolute" => TRUE])->toString();
         $form['path']['widget'][0]['alias']['#field_prefix'] = $current_url;
         $alias = $form['path']['widget'][0]['alias']['#default_value'];
+        $user_input = $formState->getUserInput();
+        if (!empty($user_input['path'][0]['alias'])) {
+          $alias = $user_input['path'][0]['alias'];
+        }
         $alias_without_purl = preg_replace('$^/' . $purl . '$', '', $alias);
         $form['path']['widget'][0]['alias']['#default_value'] = $alias_without_purl;
-        array_unshift($form['path']['widget'][0]['#element_validate'], 'vsite_node_alias_purl_element_validate');
+        $form['#validate'][] = 'vsite_path_widget_check_empty_validate';
       }
     }
     $allowedSubSites = \Drupal::config('vsite.settings')->get('allowed_subsite_group_types');
@@ -186,12 +184,16 @@ function vsite_form_alter(&$form, FormStateInterface $formState, $form_id) {
 }
 
 /**
- * Put back vsite purl to alias value to handle right validate.
+ * Validate empty path alias.
  */
-function vsite_node_alias_purl_element_validate(array &$element, FormStateInterface $form_state) {
-  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsiteContext */
-  $vsiteContext = \Drupal::service('vsite.context_manager');
-  $element['alias']['#value'] = '/' . $vsiteContext->getActivePurl() . $element['alias']['#value'];
+function vsite_path_widget_check_empty_validate(&$form, FormStateInterface $form_state) {
+  $path_value = $form_state->getValue('path');
+  if (!empty($path_value[0]) && $path_value[0]['pathauto'] == 0) {
+    $alias = trim($path_value[0]['alias'], '/');
+    if (empty($alias)) {
+      $form_state->setErrorByName('path][0][alias', 'URL alias can not be empty.');
+    }
+  }
 }
 
 /**
@@ -360,6 +362,7 @@ function vsite_node_view_alter(array &$build, NodeInterface $entity, EntityViewD
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
+      'mapping' => Drupal::service('vsite.form_delete_destination')::REDIRECT_MAPPING,
     ];
   }
 }
@@ -377,6 +380,7 @@ function vsite_bibcite_reference_view_alter(array &$build, ReferenceInterface $e
     $build['#attached']['drupalSettings']['entitySetting'] = [
       'type' => $entity->getEntityTypeId(),
       'bundle' => $entity->bundle(),
+      'mapping' => Drupal::service('vsite.form_delete_destination')::REDIRECT_MAPPING,
     ];
   }
 }

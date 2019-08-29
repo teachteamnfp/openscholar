@@ -11,34 +11,10 @@ use Drupal\vsite\Plugin\AppPluginBase;
  *   title = @Translation("Blog"),
  *   canDisable = true,
  *   entityType = "node",
- *   bundle = "blog",
+ *   bundle = {
+ *    "blog"
+ *   },
  *   id = "blog"
  * )
  */
-class BlogApp extends AppPluginBase {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getGroupContentTypes() {
-    return [
-      'blog',
-    ];
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getCreateLinks() {
-    return [
-      'blog' => [
-        'menu_name' => 'control-panel',
-        'route_name' => 'node.add',
-        'route_parameters' => ['node_type' => 'blog'],
-        'parent' => 'cp.content.add',
-        'title' => $this->getTitle(),
-      ],
-    ];
-  }
-
-}
+class BlogApp extends AppPluginBase {}

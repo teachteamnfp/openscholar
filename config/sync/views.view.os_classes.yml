@@ -9,6 +9,7 @@ dependencies:
   module:
     - group
     - node
+    - os_app_access
     - vsite
     - vsite_infinite_scroll
 id: os_classes
@@ -27,9 +28,9 @@ display:
     position: 0
     display_options:
       access:
-        type: group_permission
+        type: app
         options:
-          group_permission: 'view group_node:class entity'
+          app: class
       cache:
         type: tag
         options: {  }
@@ -226,7 +227,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
@@ -253,7 +253,6 @@ display:
     cache_metadata:
       max-age: -1
       contexts:
-        - group_membership.roles.permissions
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args

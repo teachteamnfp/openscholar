@@ -65,6 +65,7 @@ final class CpRolesHelper implements CpRolesHelperInterface {
     foreach ($plugins as $plugin) {
       $plugin_id = $plugin->getPluginId();
 
+      $permissions[] = "view $plugin_id entity";
       $permissions[] = "view $plugin_id content";
       $permissions[] = "create $plugin_id content";
       $permissions[] = "update own $plugin_id content";
@@ -72,6 +73,10 @@ final class CpRolesHelper implements CpRolesHelperInterface {
       $permissions[] = "delete own $plugin_id content";
       $permissions[] = "delete any $plugin_id content";
     }
+
+    $permissions[] = 'access content overview';
+    $permissions[] = 'administer group';
+    $permissions[] = 'administer members';
 
     return $permissions;
   }

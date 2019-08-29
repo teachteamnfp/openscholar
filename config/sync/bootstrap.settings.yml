@@ -16,3 +16,6 @@ logo:
   path: ''
   url: ''
   use_default: true
+table_responsive: '-1'
+tooltip_enabled: 0
+table: ''

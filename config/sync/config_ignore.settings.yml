@@ -1,0 +1,5 @@
+ignored_config_entities: {  }
+ignored_config_collections:
+  - 'vsite:*'
+_core:
+  default_config_hash: Xnc-flZnyxwxyrDh5JJ1uGWfJT_BUrh82yUc5J-Cssk

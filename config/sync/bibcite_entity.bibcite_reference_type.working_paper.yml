@@ -1,0 +1,196 @@
+uuid: d9807c69-d5ee-4f15-8e2c-89c6672c7ae5
+langcode: en
+status: true
+dependencies: {  }
+id: working_paper
+label: 'Working Paper'
+description: 'Working paper publications'
+override: true
+fields:
+  title:
+    visible: true
+    required: false
+  uid:
+    visible: true
+    required: false
+  keywords:
+    visible: false
+    required: false
+  bibcite_abst_e:
+    visible: true
+    required: false
+  bibcite_abst_f:
+    visible: false
+    required: false
+  bibcite_notes:
+    visible: false
+    required: false
+  bibcite_custom1:
+    visible: false
+    required: false
+  bibcite_custom2:
+    visible: false
+    required: false
+  bibcite_custom3:
+    visible: false
+    required: false
+  bibcite_custom4:
+    visible: false
+    required: false
+  bibcite_custom5:
+    visible: false
+    required: false
+  bibcite_custom6:
+    visible: false
+    required: false
+  bibcite_custom7:
+    visible: false
+    required: false
+  bibcite_auth_address:
+    visible: false
+    required: false
+  bibcite_year:
+    visible: true
+    required: true
+  bibcite_secondary_title:
+    visible: false
+    required: false
+  bibcite_volume:
+    visible: false
+    required: false
+  bibcite_edition:
+    visible: false
+    required: false
+  bibcite_section:
+    visible: false
+    required: false
+  bibcite_issue:
+    visible: false
+    required: false
+    hint: 'Issue Number'
+  bibcite_number_of_volumes:
+    visible: false
+    required: false
+  bibcite_number:
+    visible: false
+    required: false
+  bibcite_pages:
+    visible: false
+    required: false
+  bibcite_date:
+    visible: false
+    required: false
+  bibcite_type_of_work:
+    visible: false
+    required: false
+  bibcite_lang:
+    visible: false
+    required: false
+  bibcite_reprint_edition:
+    visible: false
+    required: false
+  bibcite_publisher:
+    visible: false
+    required: false
+  bibcite_place_published:
+    visible: false
+    required: false
+  bibcite_issn:
+    visible: false
+    required: false
+  bibcite_isbn:
+    visible: false
+    required: false
+  bibcite_accession_number:
+    visible: false
+    required: false
+  bibcite_call_number:
+    visible: false
+    required: false
+  bibcite_other_number:
+    visible: false
+    required: false
+  bibcite_citekey:
+    visible: false
+    required: false
+  bibcite_url:
+    visible: false
+    required: false
+  bibcite_doi:
+    visible: false
+    required: false
+  bibcite_research_notes:
+    visible: false
+    required: false
+  bibcite_tertiary_title:
+    visible: false
+    required: false
+  bibcite_short_title:
+    visible: false
+    required: false
+  bibcite_alternate_title:
+    visible: false
+    required: false
+  bibcite_translated_title:
+    visible: false
+    required: false
+  bibcite_original_publication:
+    visible: false
+    required: false
+  bibcite_other_author_affiliations:
+    visible: false
+    required: false
+  bibcite_remote_db_name:
+    visible: false
+    required: false
+  bibcite_remote_db_provider:
+    visible: false
+    required: false
+  bibcite_label:
+    visible: false
+    required: false
+  bibcite_access_date:
+    visible: false
+    required: false
+  bibcite_refereed:
+    visible: false
+    required: false
+  bibcite_pmid:
+    visible: false
+    required: false
+  moderation_state:
+    visible: true
+    required: false
+  metatag:
+    visible: true
+    required: false
+  distribution:
+    visible: true
+    required: false
+  is_sticky:
+    visible: true
+    required: false
+  title_first_char_excl_prep:
+    visible: true
+    required: false
+  full_text:
+    visible: true
+    required: false
+  notes:
+    visible: true
+    required: false
+  html_title:
+    visible: true
+    required: false
+  path:
+    visible: true
+    required: false
+  noindex:
+    visible: true
+    required: false
+  publication_month:
+    visible: true
+    required: false
+  publication_day:
+    visible: true
+    required: false

@@ -80,6 +80,13 @@ class PublicationSettingsForm extends CpSettingBase {
   protected $cacheTagsInvalidator;
 
   /**
+   * Config factory.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
+
+  /**
    * Creates a new PublicationSettingsForm object.
    *
    * @param array $configuration
@@ -104,8 +111,10 @@ class PublicationSettingsForm extends CpSettingBase {
    *   Citation distribution plugin manager.
    * @param \Drupal\Core\Cache\CacheTagsInvalidatorInterface $cache_tags_invalidator
    *   Cache tags invalidator service.
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   Config factory instance.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager, CacheTagsInvalidatorInterface $cache_tags_invalidator) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, VsiteContextManagerInterface $vsite_context_manager, CitationStylerInterface $styler, BibciteFormatManagerInterface $formatManager, EntityTypeManagerInterface $entityTypeManager, SampleCitations $citations, PublicationsListingHelperInterface $redirect_repository, CitationDistributePluginManager $pluginManager, CacheTagsInvalidatorInterface $cache_tags_invalidator, ConfigFactoryInterface $config_factory) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $vsite_context_manager);
     $this->styler = $styler;
     $this->formatManager = $formatManager;
@@ -114,6 +123,7 @@ class PublicationSettingsForm extends CpSettingBase {
     $this->publicationsListingHelper = $redirect_repository;
     $this->pluginManager = $pluginManager;
     $this->cacheTagsInvalidator = $cache_tags_invalidator;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -131,7 +141,8 @@ class PublicationSettingsForm extends CpSettingBase {
       $container->get('os_publications.citation_examples'),
       $container->get('os_publications.listing_helper'),
       $container->get('os_publications.manager_citation_distribute'),
-      $container->get('cache_tags.invalidator')
+      $container->get('cache_tags.invalidator'),
+      $container->get('config.factory')
     );
   }
 
@@ -262,7 +273,7 @@ class PublicationSettingsForm extends CpSettingBase {
     ];
 
     $form['#attached']['library'][] = 'os_publications/drupal.os_publications';
-    $form['#attached']['drupalSettings']['default_style'] = $this->styler->getStyle()->id();
+    $form['#attached']['drupalSettings']['default_style'] = $this->configFactory->get('os_publications.settings')->get('default_style');
   }
 
   /**

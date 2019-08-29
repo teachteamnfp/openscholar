@@ -4,18 +4,6 @@
  */
 
 (function ($, Drupal, drupalSettings) {
-  const nodeRedirectMapping = {
-    blog: 'blog',
-    events: 'calendar',
-    class: 'classes',
-    link: 'links',
-    news: 'news',
-    person: 'people',
-    presentation: 'presentations',
-    software_project: 'software',
-  };
-
-  const bibciteReferenceRedirect = 'publications';
 
   /**
    * Makes sure that after delete user is redirected to listing.
@@ -68,11 +56,13 @@
       let $deleteOption = data.$el.find('li.entitynodedelete-form, li.entitybibcite-referencedelete-form');
 
       if ($deleteOption.length) {
-        let redirectLocation = nodeRedirectMapping[drupalSettings.entitySetting.bundle];
+        let entityMapping = drupalSettings.entitySetting.mapping[drupalSettings.entitySetting.type];
+        let bundle = drupalSettings.entitySetting.bundle;
 
         if (drupalSettings.entitySetting.type === 'bibcite_reference') {
-          redirectLocation = bibciteReferenceRedirect;
+          bundle = '*';
         }
+        let redirectLocation = entityMapping[bundle];
 
         alterDeleteDestination($deleteOption, redirectLocation);
       }
