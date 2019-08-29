@@ -116,10 +116,12 @@ nav {
       .dropdown-menu {
         background: none;
         li {
+          padding-left: 0;
           a {
             line-height: 20px;
             border: 0 none;
             font-size: 20px;
+            padding-left: 30px;
           }
         }
       }
