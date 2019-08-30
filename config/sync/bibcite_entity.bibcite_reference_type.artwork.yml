@@ -80,7 +80,7 @@ fields:
     required: false
   bibcite_pages:
     label: Description
-    visible: false
+    visible: true
     required: false
     hint: 'Media, size, etc. e.g. Oil on canvas, 38\" x 17.5\"'
   bibcite_date:
