@@ -1,5 +1,5 @@
 (function () {
-  var rootPath, paths;
+  var rootPath, paths, defaultIndividualScholar, defaultProjectLabSmallGroup, defaultDepartmentSchool;
 
   var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser', 'DependencyManager', 'ngSanitize'])
   .config(function (){
