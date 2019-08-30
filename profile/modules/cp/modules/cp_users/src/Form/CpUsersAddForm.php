@@ -127,7 +127,7 @@ class CpUsersAddForm extends FormBase {
         ],
         '#title' => $this->t('Member'),
       ],
-      'role' => [
+      'role_existing' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
         '#options' => $roleData,
@@ -166,7 +166,7 @@ class CpUsersAddForm extends FormBase {
         '#maxlength' => 255,
         '#size' => 60,
       ],
-      'role' => [
+      'role_new' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
         '#options' => $roleData,
