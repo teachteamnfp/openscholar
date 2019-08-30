@@ -71,10 +71,9 @@ final class ChangeRoleForm extends FormBase {
     // Remove unwanted roles for vsites from the options.
     $options = [];
     foreach ($roles as $role) {
-      if ($role->id() === 'personal-anonymous' || $role->id() === 'personal-outsider') {
-        continue;
+      if (!$role->isAnonymous() && !$role->isOutsider()) {
+        $options[$role->id()] = $role->label();
       }
-      $options[$role->id()] = $role->label();
     }
 
     $form['roles'] = [
