@@ -60,6 +60,9 @@ function os_site_creation_library() {
             'tos_label' => variable_get('os_terms_of_use_label', t('Terms of Use')),
             'tos_url' => variable_get('os_terms_of_use', false),
             'presets' => $presets,
+            'default_individual_scholar' => variable_get('os_site_creation_default_individual_scholar', 'os_scholar'),
+            'default_project_lab_small_group' => variable_get('os_site_creation_default_project_lab_small_group', 'os_project'),
+            'default_department_school' => variable_get('os_site_creation_default_department_school', 'os_department_minimal'),
           )
         ),
         'type' => 'setting',
