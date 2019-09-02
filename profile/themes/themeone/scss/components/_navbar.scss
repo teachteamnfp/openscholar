@@ -1,11 +1,11 @@
 /**** navbar background ****/
 .navbar-collapse {
-  padding: 0 !important;
+  @include nav(none,$color-text,none,$color-link,$color-light-gray1,none,$color-text,$color-text,$color-link);
     .container {
       background: $color-white;
       @media #{$normal} {
         padding: 0;
-    }
+      }
     nav {
       box-shadow: 0 1px 3px 0 $color-gray3, 0 0 0 1px $color-gray3;
       @media #{$mobile} {
@@ -16,24 +16,9 @@
   /***** navbar nav *****/
   .navbar-nav {
     > li {
-      @media #{$mobile} {
-        border-bottom: 1px solid $color-light-gray1;
-      }
       > a {
-        color: $color-text;
         font-family: 'Montserrat', sans-serif;
         padding: 16px 20px;
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          color: $color-link;
-          background: none;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          color: $color-link;
-          background: none;
-
-        }
       }
     }
   }
@@ -48,27 +33,10 @@
     }
     > li {
       > a {
-        color: $color-text;
         font-family: 'Montserrat', sans-serif;
         @media #{$mobile} {
           font-size: 19px;
           font-weight: normal;
-        }
-        &:hover, &:active {
-          color: $color-link;
-          background: none;
-          @media #{$mobile} {
-            background: none;
-          }
-        }
-      }
-      &.active {
-        a, a:hover {
-          background: none;
-          color: $color-link;
-          @media #{$mobile} {
-            background: none;
-          }
         }
       }
     }

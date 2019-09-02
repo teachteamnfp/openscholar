@@ -1,0 +1,82 @@
+/**
+* $bgcolor = backgroind color of menu
+* $color = menu link color
+* $bg-active = background color on hover and active links
+* $color-active = color on hover and active links
+* $border = border color for mobile menu
+* $dbgcolor = dropdown menu background color
+* $dcolor = dropdown menu links color
+* $dmcolor = dropdown mennu mobile link color
+* $dacolor = dropdown menu active links color
+* $dfs = dropdown font size
+* $dfw = dropdown font weight
+* $fs = menu font size
+* $fw = menu font weight
+**/
+
+
+@mixin nav($bgcolor,$color,$bg-active,$color-active,$border,$dbgcolor,$dcolor,$dmcolor,$dacolor,$dfs:null,$dfw:null,$fs:19px,$fw:normal) {
+  background: $bgcolor;
+  /***** navbar nav *****/
+  .navbar-nav {
+    >li {
+      @media #{$mobile} {
+        border-bottom: 1px solid $border;
+      }
+      > a {
+        color: $color;
+        font-size: $fs;
+        font-weight: $fw;
+        &:hover,
+        &:active,
+        &:focus,
+        &.is-active,
+        &.is-active:hover {
+          background: $bg-active;
+          color: $color-active;
+        }
+      }
+      &.open,
+      &.active {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
+          background: $bg-active;
+          color: $color-active;
+        }
+      }
+    }
+  }
+  /**** dropdown menu ****/
+  .dropdown-menu {
+    background: $dbgcolor;
+    > li {
+      @media #{$mobile} {
+        border-top: 1px solid $border;
+      }
+      > a {
+        color: $dcolor;
+        font-size: $dfs;
+        font-weight: $dfw;
+        @media #{$mobile} {
+          font-size: 19px;
+          color: $dmcolor;
+        }
+        &:hover,
+        &:active {
+          color: $dacolor;
+          @media #{$mobile} {
+            background: $bg-active;
+          }
+        }
+        &.active {
+          a,
+          a:hover {
+            color: $dacolor;
+          }
+        }
+      }
+    }
+  }
+}

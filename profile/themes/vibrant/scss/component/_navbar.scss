@@ -1,13 +1,15 @@
 /**** navbar background ****/
 .navbar-collapse {
-  background: $color-light-gray2;
-  padding: 0 0 30px !important;
+  @include nav($color-light-gray2,$color-gray1,$color-gray1,$color-white,$color-light-gray8,
+  $color-gray2,$color-blue1,$color-gray1,$color-blue1,$fs:20px, $fw:normal);
+  padding: 0 0 30px;
   min-height: 39px;
   .region-navigation-collapsible {
     background: $color-white;
     border-radius: 2px;
     box-shadow: 0px 1px 1px 1px $color-light-gray1;
-    &:after, &:before {
+    &:after,
+    &:before {
       content: "";
       display: table;
       width: 100%;
@@ -15,13 +17,10 @@
   }
   /***** navbar nav *****/
   .navbar-nav {
-    > li {
-      @media #{$mobile} {
-        border-bottom: 1px solid $color-light-gray8;
-      }
-      > a {
+    >li {
+      >a {
         color: $color-gray1;
-        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
         font-weight: normal;
         padding: 12px 15px;
         background: $color-white;
@@ -38,10 +37,10 @@
       }
       &.open,
       &.active {
-        > a,
-        > a:hover,
-        > a:active,
-        > a:focus {
+        >a,
+        >a:hover,
+        >a:active,
+        >a:focus {
           background: $color-gray1;
           color: $color-white;
         }
@@ -50,45 +49,22 @@
   }
   /**** dropdown menu ****/
   .dropdown-menu {
-    background: $color-gray2;
     @media #{$mobile} {
       background: $color-white;
     }
-    >li {
-      >a {
-        color: $color-blue1;
+    > li {
+      > a {
         text-transform: capitalize;
         @media #{$mobile} {
+          background: $color-white;
           color: $color-gray1;
           font-size: 20px;
-          font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+          font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
         }
         &:hover,
         &:active {
           color: $color-white;
           background: $color-gray2;
-          @media #{$mobile} {
-            color: $color-gray1;
-            background: $color-white;
-          }
-        }
-      }
-      &.active {
-        a {
-          color: $color-blue1;
-          background: $color-gray2;
-          @media #{$mobile} {
-            background: $color-white;
-            color: $color-gray1;
-          }
-          &:hover {
-            color: $color-white;
-            background: $color-gray2;
-            @media #{$mobile} {
-              background: $color-white;
-              color: $color-gray1;
-            }
-          }
         }
       }
     }
