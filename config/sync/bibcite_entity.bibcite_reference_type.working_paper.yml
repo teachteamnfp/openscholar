@@ -14,7 +14,7 @@ fields:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: true
@@ -67,6 +67,7 @@ fields:
   bibcite_issue:
     visible: false
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
@@ -74,13 +75,13 @@ fields:
     visible: false
     required: false
   bibcite_pages:
-    visible: true
+    visible: false
     required: false
   bibcite_date:
-    visible: true
+    visible: false
     required: false
   bibcite_type_of_work:
-    visible: true
+    visible: false
     required: false
   bibcite_lang:
     visible: false
@@ -89,34 +90,34 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
+    visible: false
     required: false
   bibcite_place_published:
-    visible: true
+    visible: false
     required: false
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
-    visible: true
+    visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -125,10 +126,10 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
-    visible: true
+    visible: false
     required: false
   bibcite_translated_title:
     visible: false
@@ -152,10 +153,10 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false
   bibcite_pmid:
-    visible: true
+    visible: false
     required: false
   moderation_state:
     visible: true

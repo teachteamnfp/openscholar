@@ -4,5 +4,5 @@ package: OpenScholar
 core: 8.x
 type: module
 dependencies:
-  - node
-  - vsite
+  - drupal:node
+  - drupal:vsite

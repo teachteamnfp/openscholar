@@ -8,6 +8,7 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\os_app_access\AppAccessLevels;
 use Drupal\views\Plugin\views\access\AccessPluginBase;
 use Drupal\vsite\Plugin\AppManangerInterface;
+use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
 
@@ -44,6 +45,13 @@ class AppAccess extends AccessPluginBase {
   protected $configFactory;
 
   /**
+   * Vsite context manager.
+   *
+   * @var \Drupal\vsite\Plugin\VsiteContextManagerInterface
+   */
+  protected $vsiteContextManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -52,7 +60,8 @@ class AppAccess extends AccessPluginBase {
       $plugin_id,
       $plugin_definition,
       $container->get('vsite.app.manager'),
-      $container->get('config.factory')
+      $container->get('config.factory'),
+      $container->get('vsite.context_manager')
     );
   }
 
@@ -69,11 +78,14 @@ class AppAccess extends AccessPluginBase {
    *   App manager.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   Config factory.
+   * @param \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager
+   *   Vsite context manager.
    */
-  public function __construct(array $configuration, string $plugin_id, $plugin_definition, AppManangerInterface $app_manager, ConfigFactoryInterface $config_factory) {
+  public function __construct(array $configuration, string $plugin_id, $plugin_definition, AppManangerInterface $app_manager, ConfigFactoryInterface $config_factory, VsiteContextManagerInterface $vsite_context_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->appManager = $app_manager;
     $this->configFactory = $config_factory;
+    $this->vsiteContextManager = $vsite_context_manager;
   }
 
   /**
@@ -119,22 +131,43 @@ class AppAccess extends AccessPluginBase {
    * {@inheritdoc}
    */
   public function access(AccountInterface $account) {
+    /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+    $active_vsite = $this->vsiteContextManager->getActiveVsite();
+
+    if (!$active_vsite) {
+      return FALSE;
+    }
+
     $app_levels = $this->configFactory->get('os_app_access.access');
     $app = $this->options['app'];
-    $level = $app_levels->get($app);
+    $level = (int) $app_levels->get($app);
     if (!isset($level)) {
       $level = AppAccessLevels::PUBLIC;
     }
 
-    if ($level == AppAccessLevels::DISABLED) {
+    if ($level === AppAccessLevels::DISABLED) {
       return FALSE;
     }
-    elseif ($level == AppAccessLevels::PUBLIC) {
-      return TRUE;
+
+    /** @var array $group_permissions */
+    $group_permissions = $this->appManager->getViewContentGroupPermissionsForApp($this->options['app']);
+    $default_access = FALSE;
+
+    if ($level === AppAccessLevels::PUBLIC || $level === AppAccessLevels::PRIVATE) {
+      foreach ($group_permissions as $group_permission) {
+        $default_access = $active_vsite->hasPermission($group_permission, $account);
+      }
     }
-    elseif ($level == AppAccessLevels::PRIVATE) {
-      return $account->hasPermission('access private apps');
+
+    if ($level === AppAccessLevels::PUBLIC) {
+      return $default_access;
     }
+
+    if ($level === AppAccessLevels::PRIVATE) {
+      return ($default_access && $active_vsite->hasPermission('access private apps', $account));
+    }
+
+    return FALSE;
   }
 
   /**
@@ -142,6 +175,7 @@ class AppAccess extends AccessPluginBase {
    */
   public function alterRouteDefinition(Route $route) {
     $route->setRequirement('_custom_access', '\Drupal\os_app_access\Access\AppAccess::accessFromRouteMatch');
+    $route->setDefault('app_name', $this->options['app']);
   }
 
 }

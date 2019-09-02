@@ -16,7 +16,7 @@ fields:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: false
@@ -25,8 +25,8 @@ fields:
     visible: false
     required: false
   bibcite_notes:
-    visible: true
-    required: true
+    visible: false
+    required: false
   bibcite_custom1:
     visible: false
     required: false
@@ -57,10 +57,12 @@ fields:
   bibcite_secondary_title:
     visible: true
     required: false
-    label: 'Series Title'
+    label: 'Web Site Title'
+    hint: 'e.g. Unctuous Psychology Online'
   bibcite_volume:
     visible: false
     required: false
+    hint: 'Volume number'
   bibcite_edition:
     visible: false
     required: false
@@ -68,23 +70,25 @@ fields:
     visible: false
     required: false
   bibcite_issue:
-    visible: false
+    visible: true
     required: false
+    hint: 'Issue Number'
   bibcite_number_of_volumes:
     visible: false
     required: false
   bibcite_number:
-    visible: true
+    visible: false
     required: false
   bibcite_pages:
-    visible: true
+    visible: false
     required: false
   bibcite_date:
-    visible: true
+    visible: false
     required: false
   bibcite_type_of_work:
     visible: true
     required: false
+    hint: 'e.g. Telephone interview'
   bibcite_lang:
     visible: false
     required: false
@@ -92,36 +96,36 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
+    visible: false
     required: false
     label: Institution
   bibcite_place_published:
-    visible: true
+    visible: false
     required: false
     label: City
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -130,10 +134,10 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
-    visible: true
+    visible: false
     required: false
     label: Abbreviation
   bibcite_translated_title:
@@ -158,5 +162,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false

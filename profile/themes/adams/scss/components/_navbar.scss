@@ -1,14 +1,13 @@
 .navbar-collapse {
-  background: $color_tundora_approx;
+  @include nav($color_tundora_approx,$white,$color_mexican_red_approx,$white,$color-light-gray,
+  $color_mexican_red_approx,$white,$white,$white);
   border-bottom: 8px solid $color_squirrel_approx;
   @media #{$mobile} {
-    padding: 0 !important;
     border: 0 none;
-  }
-  nav {
-    background: $color_chicago_approx;
-    @media #{$mobile} {
-      background: none;
+    background: none;
+    .row {
+      margin-right: -15px;
+      margin-left: -15px;
     }
   }
   /***** navbar nav *****/
@@ -17,10 +16,10 @@
     width: 100%;
     @media #{$mobile} {
       background: $color_merlot_approx;
+      margin: 0;
     }
     > li {
       @media #{$mobile} {
-        border-bottom: 1px solid $color-light-gray;
         border-top: 0 none;
       }
       > a {
@@ -29,51 +28,6 @@
         font-family: $font_0, $font_1;
         @media #{$mobile} {
           color: $white;
-        }
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background-color: $color_mexican_red_approx;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          background-color: $color_mexican_red_approx;
-        }
-
-      }
-    }
-  }
-  /**** dropdown menu ****/
-  .dropdown-menu {
-    background-color: $color_mexican_red_approx;
-    @media #{$mobile} {
-      background: none;
-    }
-    > li {
-      > a {
-        background: none;
-        color: $white;
-        @media #{$mobile} {
-          font-size: 19px;
-          padding-left: 20px;
-        }
-        &:hover, &:active {
-          background: none;
-          @media #{$mobile} {
-            color: $white;
-          }
-        }
-      }
-      &.active {
-        a {
-          color: $white;
-          @media #{$mobile} {
-            color: $white;
-          }
-          &:hover {
-            @media #{$mobile} {
-              color: $white;
-            }
-          }
         }
       }
     }

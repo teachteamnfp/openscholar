@@ -95,8 +95,8 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
    */
   public function testMediaUpdate(): void {
     // Setup.
-    $member = $this->createUser();
-    $this->group->addMember($member);
+    $member = $this->createAdminUser();
+    $this->addGroupAdmin($member, $this->group);
     $media = $this->createMedia();
     $media->setOwner($member)->save();
     $this->group->addContent($media, 'group_entity:media');
@@ -104,10 +104,11 @@ class GlobalPathAccessTest extends OsExistingSiteTestBase {
     // Tests.
     $this->drupalLogin($member);
 
-    $this->visit("{$this->group->get('path')->getValue()[0]['alias']}/media/{$media->id()}/edit");
+    $this->visitViaVsite("media/{$media->id()}/edit", $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $this->drupalPostForm(NULL, [
       'name[0][value]' => 'Document media edited',
+      'path[0][alias]' => '/edited-media-path',
     ], 'Save');
 
     /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */

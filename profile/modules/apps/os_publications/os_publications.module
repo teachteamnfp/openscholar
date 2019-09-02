@@ -594,7 +594,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     '#title' => $form['bibcite_year']['widget']['#title'] . ' <span class="form-required" title="' . t('This field is required.') . '"></span>',
     '#collapsible' => FALSE,
     '#weight' => $form['bibcite_year']['#weight'],
-    '#group' => $form['bibcite_year']['#group'],
+    '#group' => 'content',
     '#attributes' => [
       'class' => ['bibcite-year-coded-publication'],
     ],
@@ -714,10 +714,17 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // We are setting default value so this is necessary to avoid field widget
   // validation errors.
   array_unshift($form['publishers_version']['widget'][0]['#element_validate'], 'os_publication_empty_uri_validation');
+  if ($form['bibcite_type_of_work']['widget'][0]['value']['#description'] == 'Masters Thesis') {
+    $form['bibcite_type_of_work']['widget'][0]['value']['#description'] = '';
+  }
 
-  // Pages field changes.
-  $form['bibcite_pages']['widget'][0]['value']['#title'] = t('Pages');
-  $form['bibcite_pages']['widget'][0]['value']['#description'] = t('e.g. 12-25');
+  // Hide empty publication details tab.
+  os_publications_hide_empty_tab($form, 'publication');
+
+  // Hide pmid field and identifier details tab if no other field exists in the
+  // identifier group.
+  $form['bibcite_pmid']['#access'] = FALSE;
+  os_publications_hide_empty_tab($form, 'identifiers');
 }
 
 /**
@@ -1117,6 +1124,26 @@ function os_publications_preprocess_field(&$variables) {
   if ((strpos($route_name, 'view.publications') !== FALSE) && $variables['field_name'] == 'bibcite_abst_e') {
     $field = $variables['items'];
     $field = array_shift($field);
-    $field['attributes']->setAttribute('class', 'visually-hidden');
+    $field['attributes']->setAttribute('class', ['visually-hidden', 'abstract--content']);
+  }
+}
+
+/**
+ * Unset empty details tab from bibcite forms.
+ *
+ * @param array $form
+ *   Form itself.
+ * @param string $group_name
+ *   The form tab to check and unset.
+ */
+function os_publications_hide_empty_tab(array &$form, $group_name) {
+  $keep_group = FALSE;
+  foreach ($form as $element) {
+    if (is_array($element) && isset($element['#group']) && $element['#group'] === $group_name && $element['#access'] !== FALSE) {
+      $keep_group = TRUE;
+    }
+  }
+  if (!$keep_group) {
+    $form[$group_name]['#access'] = FALSE;
   }
 }

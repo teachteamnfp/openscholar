@@ -41,7 +41,7 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
     $defs = $this->getDefinitions();
     $app = '';
     foreach ($defs as $d) {
-      if (isset($d['bundle']) && $d['bundle'] == $bundle) {
+      if (isset($d['bundle']) && \in_array($bundle, $d['bundle'], TRUE)) {
         $app = $d['id'];
       }
     }
@@ -71,6 +71,26 @@ class AppManager extends DefaultPluginManager implements AppManangerInterface {
       }
     }
     return $definitions;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getViewContentGroupPermissionsForApp(string $app_id): array {
+    $group_permissions = [];
+
+    if ($app_id === 'publications') {
+      $group_permissions[] = 'view group_entity:bibcite_reference entity';
+    }
+    else {
+      $definition = $this->getDefinition($app_id);
+
+      foreach ($definition['bundle'] as $bundle) {
+        $group_permissions[] = "view group_node:$bundle entity";
+      }
+    }
+
+    return $group_permissions;
   }
 
 }

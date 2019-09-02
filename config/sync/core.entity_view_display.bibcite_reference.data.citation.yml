@@ -6,7 +6,6 @@ dependencies:
     - bibcite_entity.bibcite_reference_type.data
     - core.entity_view_mode.bibcite_reference.citation
     - field.field.bibcite_reference.data.field_attach_files
-    - field.field.bibcite_reference.data.field_distributor
     - field.field.bibcite_reference.data.field_extra_fields
     - field.field.bibcite_reference.data.field_publication_image
     - field.field.bibcite_reference.data.field_redirect_to_source
@@ -143,7 +142,6 @@ hidden:
   bibcite_year: true
   created: true
   field_attach_files: true
-  field_distributor: true
   field_redirect_to_source: true
   html_title: true
   keywords: true

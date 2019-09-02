@@ -4,16 +4,17 @@
  */
 
 (function ($, Drupal) {
-    "use strict";
+  "use strict";
 
-    Drupal.behaviors.publicationsToggle = {
-        attach: function (context, settings) {
-            // Toggle Abstract field body.
-            let abstractField = '.field--name-bibcite-abst-e';
-            $(abstractField + ' .field--label').on('click' , function(e){
-                $(this).siblings('.field--item').toggleClass('visually-hidden');
-            });
-        }
-    };
+  Drupal.behaviors.publicationsToggle = {
+    attach: function (context, settings) {
+      // Toggle Abstract field body.
+      let abstractField = '.field--abstract';
+      $(abstractField, context).on('click', function (e) {
+        $(this).toggleClass('active');
+        $(this).siblings('.abstract--content').toggleClass('visually-hidden');
+      });
+    }
+  };
 
 })(jQuery, Drupal);
