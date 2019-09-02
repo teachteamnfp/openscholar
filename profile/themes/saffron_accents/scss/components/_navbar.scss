@@ -1,73 +1,15 @@
 .navbar-collapse {
-  background: $color_red_stage_approx;
-  @media #{$mobile} {
-    padding: 0 !important;
-  }
+  @include nav($color_red_stage_approx,$white,$color_concrete_approx,$color_st_tropaz_approx,$white,
+  $color_concrete_approx,$color_st_tropaz_approx,$white,$color_st_tropaz_approx);
   /***** navbar nav *****/
   .navbar-nav {
     > li {
       @media #{$mobile} {
-        border-bottom: 1px solid $white;
         border-top: 0 none;
       }
       > a {
         @media #{$mobile} {
           color: $white;
-        }
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background: $color_concrete_approx;
-          color: $color_st_tropaz_approx;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          background: $color_concrete_approx;
-          color: $color_st_tropaz_approx;
-          @media #{$mobile} {
-            margin: 0 !important;
-          }
-        }
-
-      }
-    }
-  }
-  /**** dropdown menu ****/
-  ul.dropdown-menu {
-    background: $color_concrete_approx;
-    @media #{$mobile} {
-      background: none;
-    }
-    > li {
-      > a {
-        color: $color_st_tropaz_approx;
-        background: none;
-        @media #{$mobile} {
-          font-size: 19px;
-          padding-left: 20px;
-          color: $white;
-        }
-        &:hover, &:active {
-          color: $color_st_tropaz_approx !important;
-          background: none !important;
-          @media #{$mobile} {
-            color: $white;
-          }
-        }
-      }
-      &.active {
-        a {
-          color: $color_st_tropaz_approx;
-          background: none;
-          @media #{$mobile} {
-            color: $white;
-          }
-          &:hover {
-            color: $color_st_tropaz_approx;
-            background: none;
-            @media #{$mobile} {
-              color: $white;
-            }
-          }
         }
       }
     }

@@ -1,4 +1,6 @@
 @import '../../os_base/scss/base/breakpoints';
+@import '../../os_base/scss/mixins/navbar';
+
 @import './base/variables';
 @import './base/base';
 @import './components/footer';
@@ -6,43 +8,3 @@
 @import './components/navbar';
 @import './components/sidebar';
 @import './global/global';
-
-
-// .page-header {
-//   @extend %font;
-// }
-// .node--title {
-//   @extend %font;
-// }
-// .more-link {
-//   @extend %font;
-// }
-// .content-inner {
-//   h2 {
-//     @extend %font;
-//   }
-//   h3 {
-//     @extend %font;
-//   }
-//   h4 {
-//     @extend %font;
-//   }
-// }
-
-
-
-
-
-// .path-search .title a {
-//   @extend %font;
-// }
-// .links a {
-//   @extend %font;
-// }
-// .section-nav a {
-//   @extend %font;
-// }
-// h2.block-title {
-//   @extend %font;
-// }
-
