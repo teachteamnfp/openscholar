@@ -6,3 +6,4 @@ type: module
 dependencies:
   - drupal:node
   - drupal:image_widget_crop
+  - drupal:vsite

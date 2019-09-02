@@ -1,8 +1,5 @@
 .navbar-collapse {
   background: $color_concrete_approx;
-  @media #{$mobile} {
-    padding: 0 !important;
-  }
   /***** navbar nav *****/
   .nav.navbar-nav {
     >li {

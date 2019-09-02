@@ -18,7 +18,9 @@ class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
    */
   public function setUp() {
     parent::setUp();
-    $this->drupalLogin($this->createAdminUser());
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
   }
 
   /**
@@ -129,23 +131,52 @@ class VsiteNodePathAliasTest extends OsExistingSiteJavascriptTestBase {
   }
 
   /**
+   * Test all path where alias can not be empty.
+   *
+   * @dataProvider collectionOfAliasEmptyValues
+   */
+  public function testEmptyAliasValues($alias) {
+    $web_assert = $this->assertSession();
+    $this->visitViaVsite('node/add/blog', $this->group);
+    $web_assert->statusCodeEquals(200);
+    $page = $this->getSession()->getPage();
+    $page->fillField('title[0][value]', $this->randomMachineName());
+    $page->findButton('URL alias')->press();
+    $page->findField('path[0][pathauto]')->press();
+    $page->fillField('path[0][alias]', $alias);
+    $page->findButton('Save')->press();
+    $web_assert->pageTextContains('error has been found');
+    $web_assert->pageTextContains('URL alias can not be empty.');
+  }
+
+  /**
    * Collection of available field prefix value.
    */
   public function collectionOfVisiblePath() {
     return [
-      [
-        'node/add/blog',
-        'node/add/class',
-        'node/add/events',
-        'node/add/faq',
-        'node/add/link',
-        'node/add/news',
-        'node/add/page',
-        'node/add/person',
-        'node/add/presentation',
-        'node/add/software_project',
-        'node/add/software_release',
-      ],
+      ['node/add/blog'],
+      ['node/add/class'],
+      ['node/add/events'],
+      ['node/add/faq'],
+      ['node/add/link'],
+      ['node/add/news'],
+      ['node/add/page'],
+      ['node/add/person'],
+      ['node/add/presentation'],
+      ['node/add/software_project'],
+      ['node/add/software_release'],
+      ['bibcite/reference/add/artwork'],
+    ];
+  }
+
+  /**
+   * Collection alias empty values.
+   */
+  public function collectionOfAliasEmptyValues() {
+    return [
+      [''],
+      ['/'],
+      ['//'],
     ];
   }
 

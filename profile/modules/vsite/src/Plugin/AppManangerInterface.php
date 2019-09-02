@@ -20,4 +20,15 @@ interface AppManangerInterface extends PluginManagerInterface {
    */
   public function getAppForBundle(string $bundle) : string;
 
+  /**
+   * Get group permissions for an app.
+   *
+   * @param string $app_id
+   *   The app id.
+   *
+   * @return array
+   *   The group permissions.
+   */
+  public function getViewContentGroupPermissionsForApp(string $app_id): array;
+
 }

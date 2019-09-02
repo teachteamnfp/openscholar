@@ -117,7 +117,7 @@ class AppAccessForm extends ConfigFormBase {
             AppAccessLevels::PUBLIC => $this->t('Everyone'),
             AppAccessLevels::PRIVATE => $this->t('Site Members Only'),
           ],
-          '#default_value' => $app_access->get($name),
+          '#default_value' => $app_access->get($k),
         ],
         'disable' => [
           '#type' => 'checkbox',
@@ -156,7 +156,7 @@ class AppAccessForm extends ConfigFormBase {
           $app_access->set($app, AppAccessLevels::DISABLED);
         }
         else {
-          $app_access->set($app, $v['privacy']);
+          $app_access->set($app, (int) $v['privacy']);
         }
       }
     }

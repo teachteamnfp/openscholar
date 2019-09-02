@@ -74,6 +74,10 @@ final class CpRolesHelper implements CpRolesHelperInterface {
       $permissions[] = "delete any $plugin_id content";
     }
 
+    $permissions[] = 'access content overview';
+    $permissions[] = 'administer group';
+    $permissions[] = 'administer members';
+
     return $permissions;
   }
 
