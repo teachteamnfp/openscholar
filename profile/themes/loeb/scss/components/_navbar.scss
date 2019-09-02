@@ -1,10 +1,6 @@
 .navbar-collapse {
   background-color: $seashell;
-  border-top: none;
-  border-bottom: none;
-  @media #{$mobile} {
-    padding: 0 !important;
-  }
+  border: 0;
   /***** navbar nav *****/
   .navbar-nav {
     > li {
@@ -29,23 +25,20 @@
   /**** dropdown menu ****/
   .dropdown-menu {
     @extend %extend_1;
-    @media #{$mobile} {
-      background: none;
-    }
     > li {
       > a {
         background: none;
         color: $white;
-        padding: 8px;
         font-family: Arial;
         @media #{$mobile} {
-          font-size: 19px;
-          padding-left: 20px;
           color: $color_log_cabin_approx;
         }
         &:hover, &:active {
           background: none;
           color: $white;
+          @media #{$mobile} {
+            background: $color_fern_green_approx;
+          }
         }
       }
       &.active {
