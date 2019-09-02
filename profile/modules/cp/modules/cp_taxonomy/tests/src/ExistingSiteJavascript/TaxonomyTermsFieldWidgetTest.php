@@ -175,7 +175,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
     $page->pressButton('Save');
     $nodes = $this->entityTypeManager->getStorage('node')
       ->loadByProperties(['title' => $title]);
-    $this->assertNotEmpty($nodes, 'Autocomplete test node is not created.');
+    $this->assertNotEmpty($nodes, 'Test node is not created.');
     foreach ($nodes as $node) {
       /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $terms_values */
       $terms_values = $node->get('field_taxonomy_terms');
