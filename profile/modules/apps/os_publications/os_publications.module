@@ -1139,7 +1139,7 @@ function os_publications_preprocess_field(&$variables) {
 function os_publications_hide_empty_tab(array &$form, $group_name) {
   $keep_group = FALSE;
   foreach ($form as $element) {
-    if (is_array($element) && isset($element['#group']) && $element['#group'] === $group_name) {
+    if (is_array($element) && isset($element['#group']) && $element['#group'] === $group_name && $element['#access'] !== FALSE) {
       $keep_group = TRUE;
     }
   }
