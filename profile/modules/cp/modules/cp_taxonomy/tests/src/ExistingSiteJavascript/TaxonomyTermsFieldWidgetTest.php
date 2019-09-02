@@ -109,6 +109,16 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    */
   public function testNodeTaxonomyTermsFieldSettingsCheckboxesRadio() {
     $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS, 'class="form-checkbox"');
+
+    // Test add new node page.
+    $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
+    $web_assert = $this->assertSession();
+    $web_assert->statusCodeEquals(200);
+
+    $page = $this->getCurrentPage();
+    $page->findField('field_taxonomy_terms[' . $this->testVid . '][' . $this->term1->id() . ']')->check();
+    $page->findField('field_taxonomy_terms[' . $this->testVid . '][' . $this->term2->id() . ']')->check();
+    $this->saveNodeAndAssertTerms($page);
   }
 
   /**
@@ -116,6 +126,16 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    */
   public function testNodeTaxonomyTermsFieldSettingsTree() {
     $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_TREE, '<ul class="term-reference-tree-level ">');
+
+    // Test add new node page.
+    $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
+    $web_assert = $this->assertSession();
+    $web_assert->statusCodeEquals(200);
+
+    $page = $this->getCurrentPage();
+    $page->findField('field_taxonomy_terms[' . $this->testVid . '][0][' . $this->term1->id() . '][' . $this->term1->id() . ']')->check();
+    $page->findField('field_taxonomy_terms[' . $this->testVid . '][0][' . $this->term2->id() . '][' . $this->term2->id() . ']')->check();
+    $this->saveNodeAndAssertTerms($page);
   }
 
   /**
