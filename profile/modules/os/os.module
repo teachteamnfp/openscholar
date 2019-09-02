@@ -293,8 +293,7 @@ function os_page_attachments(array &$attachments) {
   $node = $current_route->getParameter('node');
   if ($node && strpos($current_route->getRouteName(), 'canonical')) {
     // If noindex is on then add required tags.
-    $noindex = $node ? $node->noindex->value : NULL;
-    if ($noindex) {
+    if ($node->noindex->value) {
       $noindex_tag = [
         '#tag' => 'meta',
         '#attributes' => [
