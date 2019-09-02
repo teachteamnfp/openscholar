@@ -94,7 +94,7 @@ class CpTaxonomyVocabResetFormTest extends TestBase {
     // Test Cancel button.
     $url = $this->getSession()->getCurrentUrl();
     $this->submitForm([], 'edit-reset-alphabetical');
-    $this->submitForm([], 'edit-cancel');
+    $this->getCurrentPage()->clickLink('#edit-cancel');
     $current_url = $this->getSession()->getCurrentUrl();
     $this->assertEquals($url, $current_url);
 
