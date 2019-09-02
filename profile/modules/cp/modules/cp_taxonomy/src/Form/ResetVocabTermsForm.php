@@ -47,6 +47,7 @@ class ResetVocabTermsForm extends ConfirmFormBase {
    * Constructs a new VocabularyResetForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
+   *   Entity type manager instance.
    *
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
