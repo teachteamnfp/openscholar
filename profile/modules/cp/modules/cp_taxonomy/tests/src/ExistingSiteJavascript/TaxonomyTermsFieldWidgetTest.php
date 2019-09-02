@@ -47,7 +47,8 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: autocomplete.
    */
   public function testNodeTaxonomyTermsFieldSettingsAutocomplete() {
-    $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE, 'data-autocomplete-path');
+    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE);
+    $this->assertTaxonomyTermsFieldVisible('data-autocomplete-path');
 
     // Test add new node page.
     $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
@@ -79,7 +80,8 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: select list.
    */
   public function testNodeTaxonomyTermsFieldSettingsSelectList() {
-    $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT, 'form-select chosen-enable');
+    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT);
+    $this->assertTaxonomyTermsFieldVisible('form-select chosen-enable');
 
     // Test add new node page.
     $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
@@ -108,7 +110,8 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: checkboxes / radio buttons.
    */
   public function testNodeTaxonomyTermsFieldSettingsCheckboxesRadio() {
-    $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS, 'class="form-checkbox"');
+    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS);
+    $this->assertTaxonomyTermsFieldVisible('class="form-checkbox"');
 
     // Test add new node page.
     $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
@@ -125,7 +128,8 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: tree.
    */
   public function testNodeTaxonomyTermsFieldSettingsTree() {
-    $this->assertTaxonomyTermsFieldByWidgetType(TaxonomyTermsWidget::WIDGET_TYPE_TREE, '<ul class="term-reference-tree-level ">');
+    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_TREE);
+    $this->assertTaxonomyTermsFieldVisible('<ul class="term-reference-tree-level ">');
 
     // Test add new node page.
     $this->visitViaVsite('node/add/taxonomy_test_1', $this->group);
@@ -139,21 +143,15 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
   }
 
   /**
-   * Assert function to check field markup depend on widget type settings.
+   * Assert function to check field markup.
    *
-   * @param string $widget_type
-   *   Vocabulary widget type settings.
    * @param string $assert_markup
    *   Expected html markup for field.
    *
    * @throws \Behat\Mink\Exception\ExpectationException
    * @throws \Behat\Mink\Exception\ResponseTextException
    */
-  protected function assertTaxonomyTermsFieldByWidgetType(string $widget_type, string $assert_markup): void {
-    $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $this->testVid);
-    $config_vocab
-      ->set('widget_type', $widget_type)
-      ->save(TRUE);
+  protected function assertTaxonomyTermsFieldVisible(string $assert_markup): void {
     $this->visitViaVsite('node/' . $this->node->id() . '/edit', $this->group);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
@@ -186,6 +184,19 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
       $this->assertEquals($this->term2->id(), $item_value['target_id']);
       $this->markEntityForCleanup($node);
     }
+  }
+
+  /**
+   * Set test vocabulary widget settings.
+   *
+   * @param string $widget_type
+   *   Widget type.
+   */
+  protected function setTestVocabularyWidget(string $widget_type): void {
+    $config_vocab = $this->configFactory->getEditable('taxonomy.vocabulary.' . $this->testVid);
+    $config_vocab
+      ->set('widget_type', $widget_type)
+      ->save(TRUE);
   }
 
 }
