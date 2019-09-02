@@ -78,7 +78,7 @@ fields:
     required: false
     label: 'Reporter Abbreviation'
   bibcite_number:
-    visible: false
+    visible: true
     required: false
   bibcite_pages:
     visible: true
