@@ -12,3 +12,4 @@ dependencies:
   - drupal:repec
   - drupal:shorten
   - drupal:key_value_field
+  - drupal:vsite

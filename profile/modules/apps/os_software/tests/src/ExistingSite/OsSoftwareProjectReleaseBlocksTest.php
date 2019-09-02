@@ -33,11 +33,13 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
     $this->projectNode = $this->createNode([
       'type' => 'software_project',
     ]);
+    $this->group->addContent($this->projectNode, 'group_node:software_project');
     $this->media = $this->createMedia([
       'bundle' => [
         'target_id' => 'executable',
       ],
     ], 'binary');
+    $this->group->addContent($this->media, 'group_entity:media');
     $this->renderer = $this->container->get('renderer');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
     $this->nodeViewBuilder = $this->entityTypeManager
@@ -48,7 +50,7 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
    * Test release block recommended on projects node.
    */
   public function testProjectNodeReleaseBlockRecommended() {
-    $this->createNode([
+    $node = $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
         $this->projectNode->id(),
@@ -59,6 +61,10 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
       ],
       'field_is_recommended_version' => TRUE,
     ]);
+    $this->group->addContent($node, 'group_node:software_release');
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
     $render = $this->nodeViewBuilder->view($this->projectNode, 'full');
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $this->renderer->renderRoot($render);
@@ -71,7 +77,7 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
    * Test release block recent on projects node.
    */
   public function testProjectNodeReleaseBlockRecent() {
-    $this->createNode([
+    $node = $this->createNode([
       'type' => 'software_release',
       'field_software_project' => [
         $this->projectNode->id(),
@@ -82,6 +88,10 @@ class OsSoftwareProjectReleaseBlocksTest extends OsExistingSiteTestBase {
       ],
       'field_is_recommended_version' => FALSE,
     ]);
+    $this->group->addContent($node, 'group_node:software_release');
+    /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+    $vsite_context_manager = $this->container->get('vsite.context_manager');
+    $vsite_context_manager->activateVsite($this->group);
     $render = $this->nodeViewBuilder->view($this->projectNode, 'full');
     /** @var \Drupal\Core\Render\Markup $markup_array */
     $markup = $this->renderer->renderRoot($render);

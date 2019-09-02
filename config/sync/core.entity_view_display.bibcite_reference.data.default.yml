@@ -5,7 +5,6 @@ dependencies:
   config:
     - bibcite_entity.bibcite_reference_type.data
     - field.field.bibcite_reference.data.field_attach_files
-    - field.field.bibcite_reference.data.field_distributor
     - field.field.bibcite_reference.data.field_extra_fields
     - field.field.bibcite_reference.data.field_publication_image
     - field.field.bibcite_reference.data.field_redirect_to_source
@@ -413,14 +412,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_distributor:
-    weight: 101
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   full_text:
     type: text_default
     weight: 5

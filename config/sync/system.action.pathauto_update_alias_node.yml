@@ -1,11 +1,13 @@
-id: pathauto_update_alias_node
-label: 'Update URL alias'
-status: true
+uuid: a0d8f8e8-d29f-4d4c-834b-f9f69279c54f
 langcode: en
-type: node
-plugin: pathauto_update_alias
+status: true
 dependencies:
   module:
     - node
 _core:
   default_config_hash: '-SdRoSbsl_FULjbX8mgESZdeoEOjgi7rDhHNdLOJ8n8'
+id: pathauto_update_alias_node
+label: 'Update URL alias'
+type: node
+plugin: pathauto_update_alias
+configuration: {  }

@@ -8,3 +8,4 @@ type: module
 dependencies:
   - drupal:rng
   - drupal:rng_date_scheduler
+  - drupal:vsite

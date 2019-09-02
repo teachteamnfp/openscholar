@@ -11,7 +11,7 @@ dependencies:
     - group
     - media
     - node
-    - user
+    - os_app_access
     - vsite
 id: os_software_releases
 label: 'OS Software releases'
@@ -29,9 +29,9 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
+        type: app
         options:
-          perm: 'access content'
+          app: software
       cache:
         type: tag
         options: {  }
@@ -578,7 +578,6 @@ display:
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
   page_1:
@@ -624,7 +623,6 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
   recent_block:
@@ -751,7 +749,6 @@ display:
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
   recommended_block:
@@ -874,7 +871,6 @@ display:
         - 'languages:language_interface'
         - url
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'
   widget:
@@ -1401,6 +1397,5 @@ display:
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags:
         - 'config:field.storage.node.field_software_version'

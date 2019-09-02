@@ -16,7 +16,7 @@ fields:
     visible: true
     required: false
   keywords:
-    visible: true
+    visible: false
     required: false
   bibcite_abst_e:
     visible: true
@@ -69,24 +69,27 @@ fields:
     visible: false
     required: false
   bibcite_issue:
-    visible: false
-    required: false
-  bibcite_number_of_volumes:
     visible: true
+    required: false
+    hint: 'Issue Number'
+  bibcite_number_of_volumes:
+    visible: false
     required: false
     label: 'Manuscript Number'
   bibcite_number:
-    visible: true
+    visible: false
     required: false
     label: 'Folio Number'
   bibcite_pages:
     visible: true
     required: false
+    label: 'Pages'
+    hint: 'e.g. 23-25'
   bibcite_date:
-    visible: true
+    visible: false
     required: false
   bibcite_type_of_work:
-    visible: true
+    visible: false
     required: false
   bibcite_lang:
     visible: false
@@ -95,36 +98,36 @@ fields:
     visible: false
     required: false
   bibcite_publisher:
-    visible: true
+    visible: false
     required: false
     label: Library/Archive
   bibcite_place_published:
-    visible: true
+    visible: false
     required: false
     label: City
   bibcite_issn:
     visible: false
     required: false
   bibcite_isbn:
-    visible: true
+    visible: false
     required: false
   bibcite_accession_number:
-    visible: true
+    visible: false
     required: false
   bibcite_call_number:
-    visible: true
+    visible: false
     required: false
   bibcite_other_number:
-    visible: true
+    visible: false
     required: false
   bibcite_citekey:
     visible: false
     required: false
   bibcite_url:
-    visible: true
+    visible: false
     required: false
   bibcite_doi:
-    visible: true
+    visible: false
     required: false
   bibcite_research_notes:
     visible: false
@@ -133,10 +136,10 @@ fields:
     visible: false
     required: false
   bibcite_short_title:
-    visible: true
+    visible: false
     required: false
   bibcite_alternate_title:
-    visible: true
+    visible: false
     required: false
     label: Abbreviation
   bibcite_translated_title:
@@ -161,5 +164,5 @@ fields:
     visible: false
     required: false
   bibcite_refereed:
-    visible: true
+    visible: false
     required: false

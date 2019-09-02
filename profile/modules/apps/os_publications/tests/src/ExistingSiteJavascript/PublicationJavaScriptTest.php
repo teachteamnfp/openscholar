@@ -103,4 +103,27 @@ class PublicationJavaScriptTest extends OsExistingSiteJavascriptTestBase {
 
   }
 
+  /**
+   * Test various revision information changes/alteration.
+   */
+  public function testAbstractToggle(): void {
+    $this->drupalLogin($this->groupAdmin);
+
+    // Test link exists when abstract is entered entity.
+    $reference = $this->createReference([
+      'html_title' => 'Mona Lisa',
+      'bibcite_abst_e' => 'This is a test for abstract field.',
+    ]);
+    $this->group->addContent($reference, 'group_entity:bibcite_reference');
+    $this->visitViaVsite('publications', $this->group);
+    $this->assertSession()->linkExists('Abstract');
+
+    // Test links works fine and toggles data for the field.
+    $abst_field = $this->getCurrentPage()->find('css', '.field--abstract');
+    $abst_field->hasClass('visually-hidden');
+    $this->getCurrentPage()->clickLink('Abstract');
+    $this->assertSession()->pageTextContains('This is a test for abstract field.');
+
+  }
+
 }

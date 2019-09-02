@@ -2,13 +2,15 @@
   .view-filters {
     margin-bottom: 30px;
   }
-  h3 {
-    color: $color-black;
-    font-weight: bold;
-    border-bottom: 1px solid $color-gray2;
-    margin: 1em 0 1em 0;
-    padding-bottom: 5px;
-    font-size: 14px;
+  .view-content {
+      h3 {
+      color: $color-black;
+      font-weight: bold;
+      border-bottom: 1px solid $color-gray2;
+      margin: 1em 0 1em 0;
+      padding-bottom: 5px;
+      font-size: 14px;
+    }
   }
   .views-row {
     margin: 10px 0 20px 0;
@@ -17,9 +19,46 @@
   .field--name-field-publication-image {
     float: left;
     margin: .3em 1.5em 0.5em 0;
+    ~ .abstract--content {
+      margin-left: 68px;
+      @media #{$mobile} {
+        margin-left: 0;
+      }
+    }
   }
   .citeproc-title-plus-extra {
     font-weight: bold;
+  }
+  .bibcite-reference {
+    > div {
+    display: inline-block;
+    }
+    .abstract--content {
+      display: block;
+    }
+  }
+  /**** css for abstract ****/
+  .field--abstract {
+    margin: 0 4px;
+    &.field--label {
+      padding-left: 12px;
+      background: url(../../../themes/os_base/images/scholarbase-sprite.png) 0 -399px no-repeat;
+      text-decoration: none;
+      font-weight: normal;
+      display: inline;
+      &.active {
+        background-position: 0 -412px;
+      }
+    }
+  }
+  .abstract--content {
+    line-height: 1.5em;
+    background: $color-light-gray12;
+    padding: 8px;
+    border: 1px solid $color-gray2;
+    &.visually-hidden {
+      padding: 0;
+    }
   }
 }
 /** citation **/
@@ -52,8 +91,13 @@
       display: table;
       width: 100%;
     }
-    p {
+    p, .field {
       margin-bottom: 1.5em;
+    }
+    .field--abstract {
+      + .field--item {
+        margin-bottom: 1.5em;
+      }
     }
   }
 }

@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\os_classes\ExistingSite;
 
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Class AddClassMaterialFormTest.
@@ -12,7 +12,21 @@ use weitzman\DrupalTestTraits\ExistingSiteBase;
  *
  * @package Drupal\Tests\os_publications\ExistingSite
  */
-class AddClassMaterialFormTest extends ExistingSiteBase {
+class AddClassMaterialFormTest extends OsExistingSiteTestBase {
+
+  /**
+   * Group member.
+   *
+   * @var \Drupal\Core\Session\AccountInterface
+   */
+  protected $groupMember;
+
+  /**
+   * Test class.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $class;
 
   /**
    * {@inheritdoc}
@@ -20,9 +34,10 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
   public function setUp() {
     parent::setUp();
 
-    $this->adminUser = $this->createUser([], '', TRUE);
-    $this->simpleUser = $this->createUser();
+    $this->groupMember = $this->createUser();
+    $this->addGroupAdmin($this->groupMember, $this->group);
 
+    $this->container->get('vsite.context_manager')->activateVsite($this->group);
     $this->class = $this->createNode([
       'type' => 'class',
       'title' => $this->randomString(),
@@ -30,6 +45,7 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
       'field_class_materials[0][subform][field_title][0][value]' => $this->randomString(),
       'field_class_materials[0][subform][field_body][0][value]' => $this->randomString(),
     ]);
+    $this->group->addContent($this->class, 'group_node:class');
   }
 
   /**
@@ -38,9 +54,9 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
    * @throws \Behat\Mink\Exception\ExpectationException
    */
   public function testClassMaterialPage() {
-    $this->drupalLogin($this->adminUser);
+    $this->drupalLogin($this->groupMember);
 
-    $this->drupalGet('node/' . $this->class->id());
+    $this->visitViaVsite("node/{$this->class->id()}", $this->group);
     $this->assertSession()->statusCodeEquals(200);
     $this->clickLink('Add class material');
     $this->assertSession()->statusCodeEquals(200);
@@ -60,7 +76,6 @@ class AddClassMaterialFormTest extends ExistingSiteBase {
     $current_url = $this->getUrl();
 
     // Test the newly created paragraph as Anonymous user.
-    $this->drupalLogin($this->simpleUser);
     $this->drupalGet($current_url);
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains('This is a random test class material');

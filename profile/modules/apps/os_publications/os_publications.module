@@ -594,7 +594,7 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
     '#title' => $form['bibcite_year']['widget']['#title'] . ' <span class="form-required" title="' . t('This field is required.') . '"></span>',
     '#collapsible' => FALSE,
     '#weight' => $form['bibcite_year']['#weight'],
-    '#group' => $form['bibcite_year']['#group'],
+    '#group' => 'content',
     '#attributes' => [
       'class' => ['bibcite-year-coded-publication'],
     ],
@@ -714,10 +714,17 @@ function os_publications_form_bibcite_reference_form_alter(&$form, FormStateInte
   // We are setting default value so this is necessary to avoid field widget
   // validation errors.
   array_unshift($form['publishers_version']['widget'][0]['#element_validate'], 'os_publication_empty_uri_validation');
+  if ($form['bibcite_type_of_work']['widget'][0]['value']['#description'] == 'Masters Thesis') {
+    $form['bibcite_type_of_work']['widget'][0]['value']['#description'] = '';
+  }
 
-  // Pages field changes.
-  $form['bibcite_pages']['widget'][0]['value']['#title'] = t('Pages');
-  $form['bibcite_pages']['widget'][0]['value']['#description'] = t('e.g. 12-25');
+  // Hide empty publication details tab.
+  os_publications_hide_empty_tab($form, 'publication');
+
+  // Hide pmid field and identifier details tab if no other field exists in the
+  // identifier group.
+  $form['bibcite_pmid']['#access'] = FALSE;
+  os_publications_hide_empty_tab($form, 'identifiers');
 }
 
 /**
@@ -1063,12 +1070,21 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
     if (!$note_in_teaser) {
       unset($build['notes']);
     }
+    $build['bibcite_abst_e']['#title'] = Link::fromTextAndUrl('Abstract', Url::fromUri('internal:#'));
     // Do not remove, important for proper citation rendering.
     $build['citation']['#data']['entity'] = $entity;
+    $build['#attached']['library'][] = 'os_publications/drupal.os_publications.misc';
   }
 
   // If publication has pmid entered, show pubmed link.
   if ($display->getMode() === 'citation') {
+    // Last updated on information.
+    $changed = $entity->changed->value;
+    $build['changed'] = [
+      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span></br>',
+      '#weight' => 14,
+    ];
+
     if ($build['#bibcite_reference']->bibcite_pmid->value) {
       // Use bibcite module's bibcite link plugin to generate the pubmed link.
       $manager = \Drupal::service('plugin.manager.bibcite_link');
@@ -1076,15 +1092,10 @@ function os_publications_bibcite_reference_view_alter(array &$build, EntityInter
       if ($link = $instance->build($entity)) {
         $build['pubmed_link'] = [
           '#markup' => '<span class = "citation-links-pubmed">' . \Drupal::service('renderer')->render($link) . '</span>',
-          '#weight' => 50,
+          '#weight' => 15,
         ];
       }
     }
-    $changed = $entity->changed->value;
-    $build['changed'] = [
-      '#markup' => '<span class="last-updated"><i>' . t("Last updated on@sp", ['@sp' => ' ']) . \Drupal::service('date.formatter')->format($changed, 'custom', 'm/d/Y') . '</i></span>',
-      '#weight' => 49,
-    ];
     // Do not remove, important for proper citation rendering.
     $build['citation']['#data']['entity'] = $entity;
   }
@@ -1102,4 +1113,37 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
   $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function os_publications_preprocess_field(&$variables) {
+  // If abstract field hide the item at first on publication view page.
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ((strpos($route_name, 'view.publications') !== FALSE) && $variables['field_name'] == 'bibcite_abst_e') {
+    $field = $variables['items'];
+    $field = array_shift($field);
+    $field['attributes']->setAttribute('class', ['visually-hidden', 'abstract--content']);
+  }
+}
+
+/**
+ * Unset empty details tab from bibcite forms.
+ *
+ * @param array $form
+ *   Form itself.
+ * @param string $group_name
+ *   The form tab to check and unset.
+ */
+function os_publications_hide_empty_tab(array &$form, $group_name) {
+  $keep_group = FALSE;
+  foreach ($form as $element) {
+    if (is_array($element) && isset($element['#group']) && $element['#group'] === $group_name) {
+      $keep_group = TRUE;
+    }
+  }
+  if (!$keep_group) {
+    $form[$group_name]['#access'] = FALSE;
+  }
 }
