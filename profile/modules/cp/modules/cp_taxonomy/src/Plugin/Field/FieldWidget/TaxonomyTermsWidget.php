@@ -126,7 +126,8 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
         $field_name = $this->fieldDefinition->getName();
         $parents = $form['#parents'];
         $field_state = static::getWidgetState($parents, $field_name, $form_state);
-        if (empty($field_state['original_deltas'])) {
+        $button = $form_state->getTriggeringElement();
+        if (empty($button)) {
           $field_state['items_count'] = $filtered_items->count();
         }
         static::setWidgetState($parents, $field_name, $form_state, $field_state);
@@ -151,6 +152,7 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
     $merged_values = [];
+    $this->initFieldWidgets();
     foreach ($this->fieldWidgets as $vid => $fieldWidget) {
       if (isset($values[$vid]['add_more'])) {
         unset($values[$vid]['add_more']);
