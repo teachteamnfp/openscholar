@@ -143,6 +143,107 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
   }
 
   /**
+   * Test multiple vocabularies on same entity type.
+   */
+  public function testMultipleTaxonomyTermWidgetsWithExistsValues() {
+    // Create autocomplete vocab.
+    $vocab_autocomplete = $this->randomMachineName();
+    $this->createGroupVocabulary($this->group, $vocab_autocomplete, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE);
+    $autocomplete_term_1 = $this->createGroupTerm($this->group, $vocab_autocomplete, ['name' => 'Term autocomplete 1']);
+    $autocomplete_term_2 = $this->createGroupTerm($this->group, $vocab_autocomplete, ['name' => 'Term autocomplete 2']);
+    // Create select vocab.
+    $vocab_select = $this->randomMachineName();
+    $this->createGroupVocabulary($this->group, $vocab_select, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT);
+    $select_term_1 = $this->createGroupTerm($this->group, $vocab_select, ['name' => 'Term select 1']);
+    $select_term_2 = $this->createGroupTerm($this->group, $vocab_select, ['name' => 'Term select 2']);
+    // Create options vocab.
+    $vocab_options = $this->randomMachineName();
+    $this->createGroupVocabulary($this->group, $vocab_options, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS);
+    $options_term_1 = $this->createGroupTerm($this->group, $vocab_options, ['name' => 'Term options 1']);
+    $options_term_2 = $this->createGroupTerm($this->group, $vocab_options, ['name' => 'Term options 2']);
+    // Create tree vocab.
+    $vocab_tree = $this->randomMachineName();
+    $this->createGroupVocabulary($this->group, $vocab_tree, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_TREE);
+    $tree_term_1 = $this->createGroupTerm($this->group, $vocab_tree, ['name' => 'Term tree 1']);
+    $tree_term_2 = $this->createGroupTerm($this->group, $vocab_tree, ['name' => 'Term tree 2']);
+    $node = $this->createNode([
+      'type' => 'taxonomy_test_1',
+      'field_taxonomy_terms' => [
+        $autocomplete_term_1->id(),
+        $select_term_1->id(),
+        $options_term_2->id(),
+        $tree_term_2->id(),
+      ],
+    ]);
+    $this->group->addContent($node, 'group_node:taxonomy_test_1');
+
+    $this->visitViaVsite('node/' . $node->id() . '/edit', $this->group);
+    $web_assert = $this->assertSession();
+    $web_assert->statusCodeEquals(200);
+    $web_assert->pageTextContains($this->testVid);
+    $page = $this->getCurrentPage();
+    $field_taxonomy_element = $page->find('css', '.field--name-field-taxonomy-terms');
+    $this->assertContains($autocomplete_term_1->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($select_term_1->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($select_term_2->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($options_term_1->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($options_term_2->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($tree_term_1->label(), $field_taxonomy_element->getHtml());
+    $this->assertContains($tree_term_2->label(), $field_taxonomy_element->getHtml());
+
+    // Check autocomplete widget modify values.
+    $page = $this->getCurrentPage();
+    $terms = $page->findField('field_taxonomy_terms[' . $vocab_autocomplete . '][1][target_id]');
+    $terms->setValue($autocomplete_term_2->label());
+    $result = $web_assert->waitForElementVisible('css', '.ui-autocomplete li');
+    $this->assertNotNull($result);
+    // Click the autocomplete option.
+    $result->click();
+
+    // Check select widget modify values.
+    $chosen_wrapper = $page->findById('edit_field_taxonomy_terms_' . strtolower($vocab_select) . '_chosen');
+    $input = $chosen_wrapper->find('css', '.chosen-search-input');
+    $input->click();
+    // Select $select_term_2 in popup.
+    $page->find('css', '.active-result.highlighted')->click();
+    // Remove $select_term_1 from field.
+    $page->find('css', '.search-choice-close')->click();
+
+    // Check options widget modifies.
+    $page->findField('field_taxonomy_terms[' . $vocab_options . '][' . $options_term_1->id() . ']')->check();
+    $page->findField('field_taxonomy_terms[' . $vocab_options . '][' . $options_term_2->id() . ']')->uncheck();
+
+    // Check tree widget modifies.
+    $page->findField('field_taxonomy_terms[' . $vocab_tree . '][0][' . $tree_term_1->id() . '][' . $tree_term_1->id() . ']')->check();
+    $page->findField('field_taxonomy_terms[' . $vocab_tree . '][0][' . $tree_term_2->id() . '][' . $tree_term_2->id() . ']')->uncheck();
+
+    // Save node with modified values.
+    $page->findButton('URL alias')->press();
+    $page->fillField('path[0][alias]', '/' . $this->randomMachineName());
+    $page->pressButton('Save');
+    $nodes = $this->entityTypeManager->getStorage('node')
+      ->loadByProperties(['title' => $node->getTitle()]);
+    $this->assertNotEmpty($nodes, 'Test node is not saved.');
+    $saved_tids = [];
+    $node = array_shift($nodes);
+    /** @var \Drupal\Core\Field\EntityReferenceFieldItemList $terms_values */
+    $terms_values = $node->get('field_taxonomy_terms');
+    $this->assertCount(5, $terms_values);
+    $entities = $terms_values->referencedEntities();
+    foreach ($entities as $saved_term) {
+      $saved_tids[] = $saved_term->id();
+    }
+    $this->assertContains($autocomplete_term_1->id(), $saved_tids);
+    $this->assertContains($autocomplete_term_2->id(), $saved_tids);
+    $this->assertContains($select_term_2->id(), $saved_tids);
+    $this->assertContains($options_term_1->id(), $saved_tids);
+    $this->assertContains($tree_term_1->id(), $saved_tids);
+    $this->assertNotContains($select_term_1->id(), $saved_tids);
+    $this->assertNotContains($options_term_2->id(), $saved_tids);
+    $this->assertNotContains($tree_term_2->id(), $saved_tids);
+  }
+
+  /**
    * Assert function to check field markup.
    *
    * @param string $assert_markup
