@@ -13,6 +13,8 @@ use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Mail\MailManager;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
+use Drupal\cp_users\CpRolesHelperInterface;
+use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\user\Entity\User;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,11 +24,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  * Controller for the add User to Site form.
  */
 class CpUsersAddForm extends FormBase {
-
-  /**
-   * Default role for members.
-   */
-  const DEFAULT_ROLE = 'personal-member';
 
   /**
    * Vsite Context Manager.
@@ -57,6 +54,13 @@ class CpUsersAddForm extends FormBase {
   protected $mailManager;
 
   /**
+   * Cp Roles Helper service.
+   *
+   * @var \Drupal\cp_users\CpRolesHelperInterface
+   */
+  protected $cpRolesHelper;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
@@ -64,18 +68,20 @@ class CpUsersAddForm extends FormBase {
       $container->get('vsite.context_manager'),
       $container->get('entity_type.manager'),
       $container->get('current_user'),
-      $container->get('plugin.manager.mail')
+      $container->get('plugin.manager.mail'),
+      $container->get('cp_users.cp_roles_helper')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, MailManager $mail_manager) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, MailManager $mail_manager, CpRolesHelperInterface $cp_roles_helper) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentUser = $current_user;
     $this->mailManager = $mail_manager;
+    $this->cpRolesHelper = $cp_roles_helper;
   }
 
   /**
@@ -95,15 +101,19 @@ class CpUsersAddForm extends FormBase {
       throw new AccessDeniedHttpException();
     }
 
-    $roleData = [];
+    $options = [];
     /*@var \Drupal\group\Entity\GroupTypeInterface $group_type */
     $group_type = $group->getGroupType();
     $roles = $group_type->getRoles(TRUE);
-    /* @var \Drupal\group\Entity\GroupRoleInterface $role */
-    foreach ($roles as $rid => $role) {
-      if (!$role->isAnonymous() && !$role->isOutsider()) {
-        $roleData[$rid] = $role->label();
-      }
+    // Remove unwanted roles for vsites from the options.
+    /** @var string[] $non_configurable_roles */
+    $non_configurable_roles = $this->cpRolesHelper->getNonConfigurableGroupRoles($group);
+    /** @var \Drupal\group\Entity\GroupRoleInterface[] $allowed_roles */
+    $allowed_roles = array_filter($roles, static function (GroupRoleInterface $role) use ($non_configurable_roles) {
+      return !\in_array($role->id(), $non_configurable_roles, TRUE) && !$role->isInternal();
+    });
+    foreach ($allowed_roles as $role) {
+      $options[$role->id()] = $role->label();
     }
 
     $form['#prefix'] = '<div id="cp-user-add-form">';
@@ -130,8 +140,8 @@ class CpUsersAddForm extends FormBase {
       'role_existing' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
-        '#options' => $roleData,
-        '#default_value' => CpUsersAddForm::DEFAULT_ROLE,
+        '#options' => $options,
+        '#default_value' => "{$group->getGroupType()->id()}-member",
       ],
     ];
 
@@ -169,8 +179,8 @@ class CpUsersAddForm extends FormBase {
       'role_new' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
-        '#options' => $roleData,
-        '#default_value' => CpUsersAddForm::DEFAULT_ROLE,
+        '#options' => $options,
+        '#default_value' => "{$group->getGroupType()->id()}-member",
       ],
     ];
 
