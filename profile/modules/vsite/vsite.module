@@ -93,6 +93,7 @@ function vsite_form_node_form_alter(&$form, FormStateInterface $form_state, $for
         $form['actions'][$name]['#submit'][] = 'group_content_entity_submit';
       }
     }
+    $form['actions']['preview']['#submit'][] = 'vsite_node_preview_submit';
   }
   Drupal::service('vsite.form_delete_destination')->setDeleteButtonDestination($form, $form_state);
 }
@@ -392,4 +393,18 @@ function vsite_views_post_render(ViewExecutable $view, &$output, CachePluginBase
   // Makes sure that destination parameter in contextual links in listings are
   // correct. They should be directing to the listing itself.
   $view->element['#attached']['library'][] = 'vsite/contextualList';
+}
+
+/**
+ * Fixes breaking preview for all nodes/content types.
+ *
+ * @param array $form
+ *   Form itself.
+ * @param \Drupal\Core\Form\FormStateInterface $form_state
+ *   The form state.
+ */
+function vsite_node_preview_submit(array $form, FormStateInterface $form_state) {
+  // New method introduced in the patch.
+  // See https://www.drupal.org/project/drupal/issues/2950883
+  $form_state->ignoreDestination();
 }

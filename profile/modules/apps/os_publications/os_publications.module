@@ -324,8 +324,7 @@ function os_publications_entity_base_field_info(EntityTypeInterface $entity_type
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['noindex'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Prevent this page from'))
-      ->setDescription(t('appearing in search engine results'))
+      ->setLabel(t('Prevent this page from appearing in search engine results'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'settings' => [

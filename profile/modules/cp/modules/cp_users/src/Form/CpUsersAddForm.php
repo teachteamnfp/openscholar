@@ -10,7 +10,11 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageInterface;
+use Drupal\Core\Mail\MailManager;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
+use Drupal\cp_users\CpRolesHelperInterface;
+use Drupal\group\Entity\GroupRoleInterface;
 use Drupal\user\Entity\User;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -36,21 +40,48 @@ class CpUsersAddForm extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * Current User.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
+   * Mail manager service.
+   *
+   * @var \Drupal\Core\Mail\MailManager
+   */
+  protected $mailManager;
+
+  /**
+   * Cp Roles Helper service.
+   *
+   * @var \Drupal\cp_users\CpRolesHelperInterface
+   */
+  protected $cpRolesHelper;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('vsite.context_manager'),
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('current_user'),
+      $container->get('plugin.manager.mail'),
+      $container->get('cp_users.cp_roles_helper')
     );
   }
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager) {
+  public function __construct(VsiteContextManagerInterface $vsiteContextManager, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, MailManager $mail_manager, CpRolesHelperInterface $cp_roles_helper) {
     $this->vsiteContextManager = $vsiteContextManager;
     $this->entityTypeManager = $entityTypeManager;
+    $this->currentUser = $current_user;
+    $this->mailManager = $mail_manager;
+    $this->cpRolesHelper = $cp_roles_helper;
   }
 
   /**
@@ -70,15 +101,19 @@ class CpUsersAddForm extends FormBase {
       throw new AccessDeniedHttpException();
     }
 
-    $roleData = [];
+    $options = [];
     /*@var \Drupal\group\Entity\GroupTypeInterface $group_type */
     $group_type = $group->getGroupType();
     $roles = $group_type->getRoles(TRUE);
-    /* @var \Drupal\group\Entity\GroupRoleInterface $role */
-    foreach ($roles as $rid => $role) {
-      if (!$role->isAnonymous() && !$role->isOutsider()) {
-        $roleData[$rid] = $role->label();
-      }
+    // Remove unwanted roles for vsites from the options.
+    /** @var string[] $non_configurable_roles */
+    $non_configurable_roles = $this->cpRolesHelper->getNonConfigurableGroupRoles($group);
+    /** @var \Drupal\group\Entity\GroupRoleInterface[] $allowed_roles */
+    $allowed_roles = array_filter($roles, static function (GroupRoleInterface $role) use ($non_configurable_roles) {
+      return !\in_array($role->id(), $non_configurable_roles, TRUE) && !$role->isInternal();
+    });
+    foreach ($allowed_roles as $role) {
+      $options[$role->id()] = $role->label();
     }
 
     $form['#prefix'] = '<div id="cp-user-add-form">';
@@ -102,10 +137,11 @@ class CpUsersAddForm extends FormBase {
         ],
         '#title' => $this->t('Member'),
       ],
-      'role' => [
+      'role_existing' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
-        '#options' => $roleData,
+        '#options' => $options,
+        '#default_value' => "{$group->getGroupType()->id()}-member",
       ],
     ];
 
@@ -140,10 +176,11 @@ class CpUsersAddForm extends FormBase {
         '#maxlength' => 255,
         '#size' => 60,
       ],
-      'role' => [
+      'role_new' => [
         '#type' => 'radios',
         '#title' => $this->t('Role'),
-        '#options' => $roleData,
+        '#options' => $options,
+        '#default_value' => "{$group->getGroupType()->id()}-member",
       ],
     ];
 
@@ -264,12 +301,10 @@ class CpUsersAddForm extends FormBase {
         $params = [
           'user' => $account,
           'role' => $role,
-          'creator' => \Drupal::currentUser(),
+          'creator' => $this->currentUser,
           'group' => $group,
         ];
-        /** @var \Drupal\Core\Mail\MailManagerInterface $mailManager */
-        $mailManager = \Drupal::service('plugin.manager.mail');
-        $mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
+        $this->mailManager->mail('cp_users', $email_key, $form_state->getValue('email'), LanguageInterface::LANGCODE_DEFAULT, $params);
       }
     }
     return $response;

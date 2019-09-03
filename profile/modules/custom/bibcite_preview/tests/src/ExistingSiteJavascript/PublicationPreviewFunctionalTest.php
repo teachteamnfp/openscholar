@@ -81,4 +81,22 @@ class PublicationPreviewFunctionalTest extends OsExistingSiteJavascriptTestBase 
     $this->assertContains('1990', $page->getHtml());
   }
 
+  /**
+   * Tests Preview works with destination parameter in url for publications.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPublicationPreviewWithDestination(): void {
+    $group_admin = $this->createUser();
+    $this->addGroupAdmin($group_admin, $this->group);
+    $this->drupalLogin($group_admin);
+    $destination = '/edit?destination=' . $this->group->get('path')->getValue()[0]['alias'];
+    $this->visitViaVsite('bibcite/reference/' . $this->reference->id() . $destination, $this->group);
+    $this->getSession()->getPage()->pressButton('Preview');
+    $current_url = $this->getSession()->getCurrentUrl();
+    $this->assertContains('preview', $current_url);
+    $this->assertContains('citation', $current_url);
+  }
+
 }
