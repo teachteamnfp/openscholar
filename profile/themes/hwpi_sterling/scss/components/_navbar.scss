@@ -1,61 +1,39 @@
 /**** navbar background ****/
 .navbar-collapse {
+  @include nav($color-white,$color-gray,$color-light-gray1,$color-gray,$color-light-gray2,
+  $color-light-gray1,$color-gray,$color-gray,$color-gray1,$fs:18px,$fw:normal);
   border-top: 1px solid $color-light-gray1;
   border-bottom: 1px solid $color-light-gray1;
-  padding: 8px 0 !important;
+  padding: 8px 0;
+  @media #{$mobile} {
+    padding: 0;
+  }
   /***** navbar nav *****/
   .navbar-nav {
     > li {
       margin-right: 20px;
       @media #{$mobile} {
-        border-bottom: 1px solid $color-light-gray2;
         margin-right: 0;
         &.last {
           border: 0;
         }
       }
       > a {
-        color: $color-gray;
         padding: 8px;
-        font-size: 18px;
+      }
+      a {
         text-transform: uppercase;
         font-family: 'Lora';
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background: $color-light-gray1;
-          color: $color-link;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          background: $color-light-gray1;
-          color: $color-link;
-        }
       }
     }
   }
   /**** dropdown menu ****/
   .dropdown-menu {
-    background: $color-light-gray1;
-    @media #{$mobile} {
-      background: none;
-    }
     > li {
       > a {
-        color: $color-gray;
-        text-transform: uppercase;
-        font-family: 'Lora';
         &:hover, &:active {
-          color: $color-gray1;
-          background: $color-light-gray1;
-        }
-      }
-      &.active {
-        a {
-          color: $color-gray1;
-          background: $color-light-gray1;
-          &:hover {
-            color: $color-gray1;
-            background: $color-light-gray1;
+          @media #{$mobile} {
+            color: $color-gray;
           }
         }
       }
