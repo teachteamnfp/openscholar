@@ -7,6 +7,8 @@
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
@@ -248,6 +250,7 @@ function os_form_node_form_alter(&$form, FormStateInterface $form_state, $form_i
   $form['uid']['#access'] = $has_administer_content_access;
   $form['sticky']['#access'] = $has_administer_content_access;
   $form['created']['#access'] = $has_administer_content_access;
+  $form['noindex']['#group'] = 'options';
 }
 
 /**
@@ -258,4 +261,46 @@ function os_form_user_login_form_alter(&$form, FormStateInterface $form_state, $
   $form['#title'] = t('@site_name Login', ['@site_name' => $config->get('name')]);
   $form['name']['#title'] = t('@site_name Username or E-Mail', ['@site_name' => $config->get('name')]);
   $form['pass']['#title'] = t('@site_name Password', ['@site_name' => $config->get('name')]);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function os_entity_base_field_info(EntityTypeInterface $entity_type) {
+  if ($entity_type->id() === 'node') {
+
+    $fields['noindex'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Prevent this page from appearing in search engine results'))
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+      ])
+      ->setRevisionable(TRUE)
+      ->setDisplayConfigurable('form', TRUE);
+
+    return $fields;
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function os_page_attachments(array &$attachments) {
+  $current_route = \Drupal::routeMatch();
+  $node = $current_route->getParameter('node');
+  if ($node && strpos($current_route->getRouteName(), 'canonical')) {
+    // If noindex is on then add required tags.
+    if ($node->noindex->value) {
+      $noindex_tag = [
+        '#tag' => 'meta',
+        '#attributes' => [
+          'name' => 'robots',
+          'content' => 'NOINDEX, NOFOLLOW',
+        ],
+      ];
+      $attachments['#attached']['html_head'][] = [$noindex_tag, 'robots'];
+    }
+  }
 }
