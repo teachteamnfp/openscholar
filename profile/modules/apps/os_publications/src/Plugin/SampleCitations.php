@@ -217,11 +217,11 @@ class SampleCitations extends PluginBase {
     $date->{'date-parts'} = [['2013']];
 
     // Book Chapter.
-    $book_title                = Link::fromTextAndUrl('A Book Chapter', Url::fromUri('internal:#'))->toString();
+    $book_chapter_title        = Link::fromTextAndUrl('A Book Chapter', Url::fromUri('internal:#'))->toString();
     $node                      = new \stdClass();
     $node->id                  = -1;
     $node->example_type        = 'Book Chapter';
-    $node->title               = $book_title;
+    $node->title               = $book_chapter_title;
     $node->author              = $contributors;
     $node->type                = 'chapter';
     $node->issued              = $date;
@@ -260,6 +260,7 @@ class SampleCitations extends PluginBase {
     $node2->edition             = 5;
     $node2->page                = '800';
     $node2->publisher           = 'Oxford University Press';
+    $node2->{'container-title'} = 'The Book Title';
     $node2->{'publisher-place'} = 'Boston, MA';
     $node2->bibcite_coins       = '';
 
@@ -308,8 +309,9 @@ class SampleCitations extends PluginBase {
       $data['volume'] = $value->volume ?? NULL;
       $data['edition'] = $value->edition ?? NULL;
       $data['issue'] = $value->issue ?? NULL;
-      $data['container-tilte'] = $value->{'container-title'} ?? NULL;
+      $data['container-title'] = $value->{'container-title'} ?? NULL;
       $data['publisher-place'] = $value->{'publisher-place'} ?? NULL;
+      $data['page'] = $value->page ?? NULL;
 
       // If hca alter author/editor names.
       if ($style == 'harvard_chicago_author_date') {

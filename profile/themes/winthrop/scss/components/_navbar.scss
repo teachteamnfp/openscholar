@@ -1,30 +1,30 @@
 .navbar-collapse {
-  background: $color_concrete_approx;
-  @media #{$mobile} {
-    padding: 0 !important;
-  }
+  @include nav($color_concrete_approx,$color_mexican_red_approx,$white,$color_mexican_red_approx,$white,
+  $white,$color_mexican_red_approx,$color_mexican_red_approx,$color_mexican_red_approx,1em,bold,1.125em,bold);
   /***** navbar nav *****/
   .nav.navbar-nav {
     > li {
-      @media #{$mobile} {
-        border-bottom: 1px solid $white;
-        border-top: 0 none;
-      }
       > a {
         @extend %font;
         padding: 16px 15px;
-        @extend %extend_1;
-        @media #{$mobile} {
-        }
+        text-transform: none;
         &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          @extend %extend_1;
-          @extend %extend_2;
+          text-transform: none;
+          border-top: 4px solid $color_mexican_red_approx;
+          padding: 12px 15px 16px;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
       }
       &.open, &.active {
         > a, > a:hover, > a:active, > a:focus {
-          @extend %extend_1;
-          @extend %extend_2;
+          text-transform: none;
+          border-top: 4px solid $color_mexican_red_approx;
+          padding: 12px 15px 16px;
+          @media #{$mobile} {
+            border: 0 none;
+          }
         }
 
       }
@@ -36,42 +36,14 @@
     border-left: 1px solid $color_concrete_approx;
     border-right: 1px solid $color_concrete_approx;
     border-bottom: 1px solid $color_concrete_approx;
-    @media #{$mobile} {
-      background: none;
-    }
     > li {
       > a {
         @extend %font;
-        @extend %extend_1;
-        font-size: 1em;
-        background: none;
         padding: 10px 15px;
-        @media #{$mobile} {
-          font-size: 19px;
-          font-weight: normal;
-        }
         &:hover, &:active {
           color: $color_mexican_red_approx;
           padding: 10px 15px;
           background: none;
-          @media #{$mobile} {
-          }
-        }
-      }
-      &.active {
-        a {
-          @extend %extend_1;
-          font-size: 1em;
-          background: none;
-          @media #{$mobile} {
-            font-size: 19px;
-          }
-          &:hover {
-            background: none;
-            @media #{$mobile} {
-              font-size: 19px;
-            }
-          }
         }
       }
     }

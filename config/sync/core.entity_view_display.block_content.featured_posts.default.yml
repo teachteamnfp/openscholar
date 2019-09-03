@@ -22,7 +22,7 @@ mode: default
 content:
   field_featured_posts:
     weight: 1
-    label: above
+    label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
