@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
-use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
-
 /**
  * Class CpTaxonomyVocabResetFormTest.
  *
@@ -13,7 +11,6 @@ use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
  * @group cp
  */
 class CpTaxonomyVocabResetFormTest extends TestBase {
-  use CpTaxonomyTestTrait;
 
   /**
    * The Group object for the site.
@@ -50,7 +47,7 @@ class CpTaxonomyVocabResetFormTest extends TestBase {
     parent::setUp();
 
     $this->group = $this->createGroup();
-    $this->groupAdmin = $this->createUser([], NULL, TRUE);
+    $this->groupAdmin = $this->createUser();
     $this->addGroupAdmin($this->groupAdmin, $this->group);
     $this->drupalLogin($this->groupAdmin);
     $this->entityTypeManager = $this->container->get('entity_type.manager');
