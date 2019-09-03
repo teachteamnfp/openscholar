@@ -82,6 +82,9 @@ function bibcite_preview_entity_preview(array &$form, FormStateInterface $form_s
     $options['query']['destination'] = $query->get('destination');
     $query->remove('destination');
   }
+  // New method introduced in the patch.
+  // See https://www.drupal.org/project/drupal/issues/2950883
+  $form_state->ignoreDestination();
   $form_state->setRedirect('entity.bibcite_reference.preview', $route_parameters, $options);
 }
 
