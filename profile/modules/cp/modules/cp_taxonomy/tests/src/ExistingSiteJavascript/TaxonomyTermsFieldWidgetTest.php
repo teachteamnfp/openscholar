@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
+use Behat\Mink\Element\DocumentElement;
 use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
@@ -263,8 +264,15 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
 
   /**
    * Save node and assert terms are saved properly.
+   *
+   * @param \Behat\Mink\Element\DocumentElement $page
+   *   Current document page element.
+   *
+   * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  protected function saveNodeAndAssertTerms($page): void {
+  protected function saveNodeAndAssertTerms(DocumentElement $page): void {
     $title = $this->randomMachineName();
     $page->fillField('title[0][value]', $title);
     $page->findButton('URL alias')->press();
