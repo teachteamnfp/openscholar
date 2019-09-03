@@ -178,6 +178,10 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       }
       $widget_type = $config_vocab->get('widget_type');
       if (empty($widget_type)) {
+        $widgets[$vid] = [
+          'widget_type' => TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE,
+          'label' => $config_vocab->get('name'),
+        ];
         continue;
       }
       $widgets[$vid] = [
@@ -186,9 +190,6 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       ];
     }
 
-    if (empty($widgets) && !empty($vid)) {
-      $widgets[$vid] = TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE;
-    }
     return $widgets;
   }
 
