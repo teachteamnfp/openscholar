@@ -93,7 +93,6 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
     $input = $chosen_wrapper->find('css', '.chosen-search-input');
     $input->click();
     $result = $web_assert->waitForElementVisible('css', '.active-result.highlighted');
-    file_put_contents('public://testNodeTaxonomyTermsFieldSettingsSelectList.png', $this->getSession()->getScreenshot());
     $this->assertNotEmpty($result, 'Chosen popup is not visible.');
     $web_assert->pageTextContains('Term1');
     $web_assert->pageTextContains('Term2');
@@ -102,7 +101,6 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
     $input = $chosen_wrapper->find('css', '.chosen-search-input');
     $input->click();
     $page->find('css', '.active-result.highlighted')->click();
-    file_put_contents('public://testNodeTaxonomyTermsFieldSettingsSelectList_selected.png', $this->getSession()->getScreenshot());
     $this->saveNodeAndAssertTerms($page);
   }
 
