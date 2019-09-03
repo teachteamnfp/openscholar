@@ -3,7 +3,7 @@
 namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
 use Behat\Mink\Element\DocumentElement;
-use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
+use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
@@ -48,7 +48,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: autocomplete.
    */
   public function testNodeTaxonomyTermsFieldSettingsAutocomplete() {
-    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE);
+    $this->setTestVocabularyWidget(CpTaxonomyHelper::WIDGET_TYPE_AUTOCOMPLETE);
     $this->assertTaxonomyTermsFieldVisible('data-autocomplete-path');
 
     // Test add new node page.
@@ -81,7 +81,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: select list.
    */
   public function testNodeTaxonomyTermsFieldSettingsSelectList() {
-    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT);
+    $this->setTestVocabularyWidget(CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_SELECT);
     $this->assertTaxonomyTermsFieldVisible('form-select chosen-enable');
 
     // Test add new node page.
@@ -109,7 +109,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: checkboxes / radio buttons.
    */
   public function testNodeTaxonomyTermsFieldSettingsCheckboxesRadio() {
-    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS);
+    $this->setTestVocabularyWidget(CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_BUTTONS);
     $this->assertTaxonomyTermsFieldVisible('class="form-checkbox"');
 
     // Test add new node page.
@@ -127,7 +127,7 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
    * Test node taxonomy terms field settings: tree.
    */
   public function testNodeTaxonomyTermsFieldSettingsTree() {
-    $this->setTestVocabularyWidget(TaxonomyTermsWidget::WIDGET_TYPE_TREE);
+    $this->setTestVocabularyWidget(CpTaxonomyHelper::WIDGET_TYPE_TREE);
     $this->assertTaxonomyTermsFieldVisible('<ul class="term-reference-tree-level ">');
 
     // Test add new node page.
@@ -147,22 +147,22 @@ class TaxonomyTermsFieldWidgetTest extends CpTaxonomyExistingSiteJavascriptTestB
   public function testMultipleTaxonomyTermWidgetsWithExistsValues() {
     // Create autocomplete vocab.
     $vocab_autocomplete = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vocab_autocomplete, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE);
+    $this->createGroupVocabulary($this->group, $vocab_autocomplete, ['node:taxonomy_test_1'], CpTaxonomyHelper::WIDGET_TYPE_AUTOCOMPLETE);
     $autocomplete_term_1 = $this->createGroupTerm($this->group, $vocab_autocomplete, ['name' => 'Term autocomplete 1']);
     $autocomplete_term_2 = $this->createGroupTerm($this->group, $vocab_autocomplete, ['name' => 'Term autocomplete 2']);
     // Create select vocab.
     $vocab_select = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vocab_select, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT);
+    $this->createGroupVocabulary($this->group, $vocab_select, ['node:taxonomy_test_1'], CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_SELECT);
     $select_term_1 = $this->createGroupTerm($this->group, $vocab_select, ['name' => 'Term select 1']);
     $select_term_2 = $this->createGroupTerm($this->group, $vocab_select, ['name' => 'Term select 2']);
     // Create options vocab.
     $vocab_options = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vocab_options, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS);
+    $this->createGroupVocabulary($this->group, $vocab_options, ['node:taxonomy_test_1'], CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_BUTTONS);
     $options_term_1 = $this->createGroupTerm($this->group, $vocab_options, ['name' => 'Term options 1']);
     $options_term_2 = $this->createGroupTerm($this->group, $vocab_options, ['name' => 'Term options 2']);
     // Create tree vocab.
     $vocab_tree = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vocab_tree, ['node:taxonomy_test_1'], TaxonomyTermsWidget::WIDGET_TYPE_TREE);
+    $this->createGroupVocabulary($this->group, $vocab_tree, ['node:taxonomy_test_1'], CpTaxonomyHelper::WIDGET_TYPE_TREE);
     $tree_term_1 = $this->createGroupTerm($this->group, $vocab_tree, ['name' => 'Term tree 1']);
     $tree_term_2 = $this->createGroupTerm($this->group, $vocab_tree, ['name' => 'Term tree 2']);
     $node = $this->createNode([

@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\views\ViewExecutable;
 use Drupal\vsite\Config\HierarchicalStorage;
@@ -109,7 +110,7 @@ function cp_taxonomy_form_taxonomy_vocabulary_form_alter(array &$form, FormState
     $form['widget_type']['#default_value'] = $vocabulary_settings['widget_type'];
   }
   else {
-    $form['widget_type']['#default_value'] = TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT;
+    $form['widget_type']['#default_value'] = CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_SELECT;
   }
   $form['actions']['submit']['#submit'][] = 'cp_taxonomy_form_save_vocabulary_settings_submit';
 }

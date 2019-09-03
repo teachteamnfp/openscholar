@@ -3,7 +3,7 @@
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
+use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\node\Entity\Node;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
@@ -36,7 +36,7 @@ class TaxonomyTermsWidgetHelperTest extends TestBase {
    */
   public function testTaxonomyTermWidgetAutocompleteForm() {
     $vid = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vid, ['node:class'], TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE);
+    $this->createGroupVocabulary($this->group, $vid, ['node:class'], CpTaxonomyHelper::WIDGET_TYPE_AUTOCOMPLETE);
 
     $form = $this->buildNodeForm($this->unSavedNode);
     $this->assertNotEmpty($form['field_taxonomy_terms']['widget'][$vid], 'Autocomplete widget is not exists.');
@@ -52,7 +52,7 @@ class TaxonomyTermsWidgetHelperTest extends TestBase {
    */
   public function testTaxonomyTermWidgetSelectForm() {
     $vid = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vid, ['node:class'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_SELECT);
+    $this->createGroupVocabulary($this->group, $vid, ['node:class'], CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_SELECT);
     $this->createGroupTerm($this->group, $vid, ['name' => 'Select term 1']);
     $this->createGroupTerm($this->group, $vid, ['name' => 'Select term 2']);
     $this->createGroupTerm($this->group, $vid, ['name' => 'Select term 3']);
@@ -70,7 +70,7 @@ class TaxonomyTermsWidgetHelperTest extends TestBase {
    */
   public function testTaxonomyTermWidgetCheckboxesForm() {
     $vid = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vid, ['node:class'], TaxonomyTermsWidget::WIDGET_TYPE_OPTIONS_BUTTONS);
+    $this->createGroupVocabulary($this->group, $vid, ['node:class'], CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_BUTTONS);
     $term1 = $this->createGroupTerm($this->group, $vid, ['name' => 'Buttons term 1']);
     $this->createGroupTerm($this->group, $vid, ['name' => 'Buttons term 2']);
     $subterm = $this->createGroupTerm($this->group, $vid, ['name' => 'Buttons term 1-2', 'parent' => $term1->id()]);
@@ -90,7 +90,7 @@ class TaxonomyTermsWidgetHelperTest extends TestBase {
    */
   public function testTaxonomyTermWidgetTreeForm() {
     $vid = $this->randomMachineName();
-    $this->createGroupVocabulary($this->group, $vid, ['node:class'], TaxonomyTermsWidget::WIDGET_TYPE_TREE);
+    $this->createGroupVocabulary($this->group, $vid, ['node:class'], CpTaxonomyHelper::WIDGET_TYPE_TREE);
     $term1 = $this->createGroupTerm($this->group, $vid, ['name' => 'Tree term 1']);
     $this->createGroupTerm($this->group, $vid, ['name' => 'Tree term 2']);
     $subterm = $this->createGroupTerm($this->group, $vid, ['name' => 'Tree term 1-2', 'parent' => $term1->id()]);

@@ -6,7 +6,6 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 
@@ -16,6 +15,11 @@ use Drupal\vsite\Plugin\VsiteContextManagerInterface;
 class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
 
   use StringTranslationTrait;
+
+  const WIDGET_TYPE_AUTOCOMPLETE = 'cp_entity_reference_autocomplete';
+  const WIDGET_TYPE_OPTIONS_SELECT = 'cp_options_select';
+  const WIDGET_TYPE_OPTIONS_BUTTONS = 'cp_options_buttons';
+  const WIDGET_TYPE_TREE = 'cp_term_reference_tree';
 
   private $configFactory;
   private $entityTypeManager;
@@ -69,7 +73,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
     if (!empty($config_vocab)) {
       $settings['allowed_vocabulary_reference_types'] = $config_vocab->get('allowed_vocabulary_reference_types');
       $widget_type = $config_vocab->get('widget_type');
-      $settings['widget_type'] = is_null($widget_type) ? TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE : $widget_type;
+      $settings['widget_type'] = is_null($widget_type) ? self::WIDGET_TYPE_AUTOCOMPLETE : $widget_type;
     }
     return $settings;
   }
@@ -179,7 +183,7 @@ class CpTaxonomyHelper implements CpTaxonomyHelperInterface {
       $widget_type = $config_vocab->get('widget_type');
       if (empty($widget_type)) {
         $widgets[$vid] = [
-          'widget_type' => TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE,
+          'widget_type' => self::WIDGET_TYPE_AUTOCOMPLETE,
           'label' => $config_vocab->get('name'),
         ];
         continue;

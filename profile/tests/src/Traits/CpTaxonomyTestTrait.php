@@ -2,7 +2,7 @@
 
 namespace Drupal\Tests\openscholar\Traits;
 
-use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
+use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\group\Entity\GroupInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 
@@ -25,7 +25,7 @@ trait CpTaxonomyTestTrait {
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = [], string $widget_type = TaxonomyTermsWidget::WIDGET_TYPE_AUTOCOMPLETE) {
+  protected function createGroupVocabulary(GroupInterface $group, string $vid, array $allowed_types = [], string $widget_type = CpTaxonomyHelper::WIDGET_TYPE_AUTOCOMPLETE) {
     $this->vsiteContextManager->activateVsite($group);
     $vocab = Vocabulary::create([
       'name' => $vid,

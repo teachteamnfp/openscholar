@@ -11,6 +11,7 @@ use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Render\Element;
+use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\cp_taxonomy\CpTaxonomyHelperInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -28,11 +29,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, ContainerFactoryPluginInterface {
-
-  const WIDGET_TYPE_AUTOCOMPLETE = 'cp_entity_reference_autocomplete';
-  const WIDGET_TYPE_OPTIONS_SELECT = 'cp_options_select';
-  const WIDGET_TYPE_OPTIONS_BUTTONS = 'cp_options_buttons';
-  const WIDGET_TYPE_TREE = 'cp_term_reference_tree';
 
   /**
    * Cp taxonomy helper.
@@ -176,10 +172,10 @@ class TaxonomyTermsWidget extends WidgetBase implements WidgetInterface, Contain
    */
   public static function getWidgetTypes() {
     return [
-      static::WIDGET_TYPE_AUTOCOMPLETE => t('Autocomplete'),
-      static::WIDGET_TYPE_OPTIONS_SELECT => t('Select list'),
-      static::WIDGET_TYPE_OPTIONS_BUTTONS => t('Check boxes / Radio buttons'),
-      static::WIDGET_TYPE_TREE => t('Tree'),
+      CpTaxonomyHelper::WIDGET_TYPE_AUTOCOMPLETE => t('Autocomplete'),
+      CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_SELECT => t('Select list'),
+      CpTaxonomyHelper::WIDGET_TYPE_OPTIONS_BUTTONS => t('Check boxes / Radio buttons'),
+      CpTaxonomyHelper::WIDGET_TYPE_TREE => t('Tree'),
     ];
   }
 
