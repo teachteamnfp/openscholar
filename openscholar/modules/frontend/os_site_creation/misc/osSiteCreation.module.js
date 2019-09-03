@@ -1,10 +1,13 @@
 (function () {
-  var rootPath, paths;
+  var rootPath, paths, defaultIndividualScholar, defaultProjectLabSmallGroup, defaultDepartmentSchool;
 
   var m = angular.module('SiteCreationForm', ['angularModalService', 'ngMessages', 'os-buttonSpinner', 'os-auth', 'ActiveUser', 'DependencyManager', 'ngSanitize'])
   .config(function (){
     rootPath = Drupal.settings.paths.siteCreationModuleRoot;
-    paths = Drupal.settings.paths
+    paths = Drupal.settings.paths;
+    defaultIndividualScholar = Drupal.settings.site_creation.default_individual_scholar;
+    defaultProjectLabSmallGroup = Drupal.settings.site_creation.default_project_lab_small_group;
+    defaultDepartmentSchool = Drupal.settings.site_creation.default_department_school;
   });
 
   m.run(['Dependencies', function (dm) {
@@ -136,15 +139,15 @@
     if (pagefrom == 'page1' && pageto == 'page2') {
       if ($scope.individualScholar != null) {
         $scope.contentOption = {
-          value: 'os_scholar'
+          value: defaultIndividualScholar
         };
       } else if ($scope.projectLabSmallGroup != null) {
          $scope.contentOption = {
-          value: 'os_project'
+          value: defaultProjectLabSmallGroup
         };
       } else {
         $scope.contentOption = {
-          value: 'os_department_minimal'
+          value: defaultDepartmentSchool
         };
       }
     } else if (pagefrom == 'page2' && pageto == 'page3') {
