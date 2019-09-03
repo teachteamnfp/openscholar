@@ -1,7 +1,8 @@
 /**** navbar background ****/
 .navbar-collapse {
+  @include nav($color-blue2,$color-white,$color-blue1,$color-white,$color-oxford-blue,
+  $color-blue1,$color-white,$color-white,$color-white,$fs:20px,$fw:normal);
   background: $color-blue2;
-  padding: 0;
   border-bottom: 9px solid $color-light-gray2;
   /***** navbar nav *****/
   .navbar-nav {
@@ -11,47 +12,21 @@
         border-top: 1px solid $color-blue1;
       }
       > a {
-        color: $color-white;
         padding: 16px 14px;
         font-size: 20px;
         text-transform: uppercase;
         font-family: 'Droid Sans',sans-serif;
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background: $color-blue1;
-          color: $color-white;
-        }
-      }
-      &.open, &.active {
-        > a, a:hover, a:active, a:focus {
-          background: $color-blue1;
-          color: $color-white;
-        }
       }
     }
   }
   /**** dropdown menu ****/
   .dropdown-menu {
-    background: $color-blue1;
-    @media #{$mobile} {
-      background: none;
-    }
     > li {
       > a {
-        color: $color-white;
         text-transform: uppercase;
         &:hover, &:active {
           color: $color-gray1;
           background: $color-blue1;
-        }
-      }
-      &.active {
-        a {
-          color: $color-white;
-          background: $color-blue1;
-          &:hover {
-            color: $color-gray1;
-            background: $color-blue1;
-          }
         }
       }
     }

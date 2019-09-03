@@ -14,25 +14,57 @@ use Drupal\group\Entity\GroupRole;
 class CpUsersChangeRoleFormTest extends CpUsersExistingSiteTestBase {
 
   /**
-   * Tests change role functionality.
+   * Cp Roles helper service.
    *
-   * @throws \Behat\Mink\Exception\ExpectationException
+   * @var \Drupal\cp_users\CpRolesHelperInterface
+   */
+  protected $cpRolesHelper;
+
+  /**
+   * Group member.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $member;
+
+  /**
+   * {@inheritdoc}
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
-  public function test(): void {
+  public function setUp() {
+    parent::setUp();
+
     $group_admin = $this->createUser();
     $this->addGroupAdmin($group_admin, $this->group);
     $this->createRoleForGroup($this->group, [
       'id' => 'cprolechange',
     ]);
-    $member = $this->createUser();
-    $this->group->addMember($member);
+    $this->member = $this->createUser();
+    $this->group->addMember($this->member);
 
     $this->drupalLogin($group_admin);
 
-    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/change-role/{$member->id()}");
+    $this->cpRolesHelper = $this->container->get('cp_users.cp_roles_helper');
+
+  }
+
+  /**
+   * Tests change role functionality.
+   *
+   * @throws \Behat\Mink\Exception\ResponseTextException
+   */
+  public function test(): void {
+
+    $this->visit("/{$this->group->get('path')->getValue()[0]['alias']}/cp/users/change-role/{$this->member->id()}");
 
     $this->assertSession()->statusCodeEquals(200);
+
+    // Test Non Configurable roles do not appear.
+    $non_configurable_roles = $this->cpRolesHelper->getNonConfigurableGroupRoles($this->group);
+    foreach ($non_configurable_roles as $role) {
+      $this->assertSession()->elementNotExists('css', '#edit-roles-' . $role);
+    }
 
     $this->assertTrue($this->getSession()->getPage()->find('css', '[value="personal-member"]')->isChecked());
 
@@ -41,7 +73,7 @@ class CpUsersChangeRoleFormTest extends CpUsersExistingSiteTestBase {
     ], 'Save');
 
     /** @var \Drupal\group\GroupMembership $group_membership */
-    $group_membership = $this->group->getMember($member);
+    $group_membership = $this->group->getMember($this->member);
     $updated_roles = $group_membership->getRoles();
     $this->assertInstanceOf(GroupRole::class, $updated_roles["personal-{$this->group->id()}_cprolechange"]);
   }

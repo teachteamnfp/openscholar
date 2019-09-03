@@ -116,7 +116,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $this->assertSession()->responseContains($username);
     $this->getSession()->getPage()->find('css', 'ul.ui-autocomplete li:first-child')->click();
 
-    $page->selectFieldOption('role', 'personal-member');
+    $page->selectFieldOption('role_existing', 'personal-member');
     $page->pressButton("Save");
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "Not on the correct page, on " . $this->getSession()->getCurrentUrl());
@@ -166,14 +166,14 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     // Negative tests.
     $page->fillField('Username', $existing_username);
     $page->fillField('E-mail Address', $this->randomMachineName() . '@mail.com');
-    $page->selectFieldOption('role', 'personal-member');
+    $page->selectFieldOption('role_new', 'personal-member');
     $page->pressButton('Save');
     $this->waitForAjaxToFinish();
     $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-username.form-item--error'));
 
     $page->fillField('Username', $this->randomMachineName());
     $page->fillField('E-mail Address', $existing_mail);
-    $page->selectFieldOption('role', 'personal-member');
+    $page->selectFieldOption('role_new', 'personal-member');
     $page->pressButton('Save');
     $this->waitForAjaxToFinish();
     $this->assertNotNull($this->getSession()->getPage()->find('css', '.form-item-email.form-item--error'));
@@ -183,7 +183,7 @@ class CpUsersMainTest extends OsExistingSiteJavascriptTestBase {
     $page->fillField('Last Name', 'user');
     $page->fillField('Username', 'test-user');
     $page->fillField('E-mail Address', 'test-user@localhost.com');
-    $page->selectFieldOption('role', 'personal-member');
+    $page->selectFieldOption('role_new', 'personal-member');
     $page->pressButton('Save');
     $this->assertSession()->assertWaitOnAjaxRequest();
     $this->assertContains('/' . $this->modifier . '/cp/users', $this->getSession()->getCurrentUrl(), "Not on correct page after redirect.");
