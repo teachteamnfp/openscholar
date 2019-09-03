@@ -101,7 +101,7 @@ fields:
   bibcite_issn:
     visible: true
     required: false
-    label: 'hdl'
+    label: hdl
     hint: 'The international HANDLE.NET address (persistent URL).'
   bibcite_isbn:
     visible: false
@@ -124,7 +124,7 @@ fields:
   bibcite_doi:
     visible: true
     required: false
-    label: 'UNF'
+    label: UNF
     hint: 'The universal numerical fingerprint for this data. See thedata.org for more information.'
   bibcite_research_notes:
     visible: false

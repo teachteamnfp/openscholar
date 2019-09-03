@@ -84,7 +84,7 @@ fields:
   bibcite_pages:
     visible: true
     required: false
-    label: 'Pages'
+    label: Pages
     hint: 'e.g. 23-25'
   bibcite_date:
     visible: false
