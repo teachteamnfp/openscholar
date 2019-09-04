@@ -102,7 +102,7 @@ class PublicationMenusTest extends OsExistingSiteTestBase {
     $values['menu']['description'] = 'Test desc';
 
     // Test new link creation.
-    $this->menuHelper->publicationInFormMenuAlterations($values, $this->reference, $this->group);
+    $this->menuHelper->contentInFormMenuAlterations($values, $this->reference, $this->group);
     $query = $this->database
       ->select('menu_link_content_data', 'mlcd')
       ->fields('mlcd', [
@@ -119,13 +119,13 @@ class PublicationMenusTest extends OsExistingSiteTestBase {
     $id = $query->execute()->fetchField(1);
     $pluginId = MenuLinkContent::load($id)->getPluginId();
     $values['menu']['id'] = $pluginId;
-    $this->menuHelper->publicationInFormMenuAlterations($values, $this->reference, $this->group);
+    $this->menuHelper->contentInFormMenuAlterations($values, $this->reference, $this->group);
     $changed_title = $this->menuLink->getDefinition($pluginId)['title']->__toString();
     $this->assertSame($values['menu']['title'], $changed_title);
 
     // Test existing link deletion.
     $values['menu']['enabled'] = FALSE;
-    $this->menuHelper->publicationInFormMenuAlterations($values, $this->reference, $this->group);
+    $this->menuHelper->contentInFormMenuAlterations($values, $this->reference, $this->group);
     $this->assertFalse($query->execute()->fetchAssoc());
   }
 

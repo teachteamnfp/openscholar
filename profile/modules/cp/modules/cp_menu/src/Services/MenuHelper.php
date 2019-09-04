@@ -5,6 +5,7 @@ namespace Drupal\cp_menu\Services;
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityRepositoryInterface;
@@ -245,7 +246,7 @@ class MenuHelper implements MenuHelperInterface {
   /**
    * {@inheritdoc}
    */
-  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference, GroupInterface $vsite) :void {
+  public function contentInFormMenuAlterations(array $values, ContentEntityInterface $entity, GroupInterface $vsite) :void {
     $menuId = $values['menu']['menu_parent'];
     $linkId = $values['menu']['id'];
     $enabled = $values['menu']['enabled'];
@@ -290,8 +291,8 @@ class MenuHelper implements MenuHelperInterface {
       }
       // Create a new menu_link_content entity.
       MenuLinkContent::create([
-        'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
-        'langcode' => $reference->language()->getId(),
+        'link' => ['uri' => "entity:{$entity->getEntityTypeId()}/{$entity->id()}"],
+        'langcode' => $entity->language()->getId(),
         'enabled' => TRUE,
         'title' => trim($values['menu']['title']),
         'description' => trim($values['menu']['description']),
