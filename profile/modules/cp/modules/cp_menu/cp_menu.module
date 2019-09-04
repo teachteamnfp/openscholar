@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\cp_menu\Services\MenuHelper;
 
 /**
  * Implements hook_form_BASE_FORM_ID_alter() for node menu create form element.
@@ -73,14 +74,13 @@ function cp_menu_form_alter(&$form, FormStateInterface $form_state, $form_id) {
 function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_state) {
   $menu_values = $form_state->getValue('menu');
 
-  // TODO: Remove everything and refer
-  // TODO \os_publications_bibcite_reference_form_submit.
   if ((bool) $menu_values['enabled']) {
     /** @var \Drupal\node\NodeInterface $node */
     $node = $form_state->getFormObject()->getEntity();
     /** @var \Drupal\Core\Entity\EntityStorageInterface $menu_link_content_storage */
     $menu_link_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
 
+    list($menu_name) = explode(':', $menu_values['menu_parent'], 2);
     $new_menu_link = $menu_link_content_storage->loadByProperties([
       'link__uri' => "entity:node/{$node->id()}",
     ]);
@@ -88,6 +88,8 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
     // If a menu link was created inside `menu_ui_form_node_form_alter`, only
     // then we proceed.
     if ($new_menu_link) {
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link_content */
+      $menu_link_content = reset($new_menu_link);
       /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
       $vsite_context_manager = \Drupal::service('vsite.context_manager');
       /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
@@ -96,6 +98,12 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
       $menu_helper_service = \Drupal::service('cp_menu.menu_helper');
 
       $menu_helper_service->createVsiteMenus($active_vsite);
+
+      // Since, this submit handler is only going to be invoked when there are
+      // no vsite menus, therefore, we can safely assume that the parent will
+      // stay the same.
+      $vsite_menu_name = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_name] . $active_vsite->id();
+      $menu_link_content->set('menu_name', $vsite_menu_name)->save();
     }
   }
 }
