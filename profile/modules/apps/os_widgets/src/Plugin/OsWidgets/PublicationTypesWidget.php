@@ -54,6 +54,7 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
    * {@inheritdoc}
    */
   public function buildBlock(&$build, $block_content) {
+    global $_os_widgets_publication_pager_element;
     $group = $this->vsiteContextManager->getActiveVsite();
     // Collect all reference types with original allowed values function.
     /** @var \Drupal\field\Entity\FieldConfig $field_types_whitelist_definition */
@@ -102,12 +103,19 @@ class PublicationTypesWidget extends OsWidgetsBase implements OsWidgetsInterface
     }
 
     $field_display_count_values = $block_content->get('field_display_count')->getValue();
+    if (!isset($_os_widgets_publication_pager_element)) {
+      $_os_widgets_publication_pager_element = 0;
+    }
+    else {
+      $_os_widgets_publication_pager_element++;
+    }
     $build['types_list'] = [
       '#theme' => 'os_widgets_publication_types',
       '#types' => $types_count_list,
       '#is_display_count' => !empty($field_display_count_values[0]['value']),
       '#pager' => [
         '#type' => 'pager',
+        '#element' => $_os_widgets_publication_pager_element,
       ],
     ];
   }

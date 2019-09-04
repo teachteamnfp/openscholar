@@ -50,7 +50,7 @@ display:
         options:
           items_per_page: 10
           offset: 0
-          id: 0
+          id: 2
           total_pages: null
           expose:
             items_per_page: false
