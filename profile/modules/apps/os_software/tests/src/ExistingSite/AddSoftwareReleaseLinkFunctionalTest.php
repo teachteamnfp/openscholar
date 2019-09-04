@@ -16,6 +16,7 @@ class AddSoftwareReleaseLinkFunctionalTest extends OsExistingSiteTestBase {
 
   protected $projectNode;
   protected $media;
+  protected $groupAdmin;
 
   /**
    * {@inheritdoc}
@@ -26,6 +27,8 @@ class AddSoftwareReleaseLinkFunctionalTest extends OsExistingSiteTestBase {
       'type' => 'software_project',
     ]);
     $this->group->addContent($this->projectNode, 'group_node:software_project');
+    $this->groupAdmin = $this->createUser();
+    $this->addGroupAdmin($this->groupAdmin, $this->group);
   }
 
   /**
@@ -55,6 +58,7 @@ class AddSoftwareReleaseLinkFunctionalTest extends OsExistingSiteTestBase {
    * Test add software release form page pre-populate valid id.
    */
   public function testAddSoftwareReleaseFormPageValidId() {
+    $this->drupalLogin($this->groupAdmin);
     $web_assert = $this->assertSession();
     $this->visitViaVsite('node/add/software_release?field_software_project=' . $this->projectNode->id(), $this->group);
     $web_assert->pageTextContains('Create Software Release');
@@ -66,6 +70,7 @@ class AddSoftwareReleaseLinkFunctionalTest extends OsExistingSiteTestBase {
    */
   public function testAddSoftwareReleaseFormPageInvalidId() {
     // Not exists project.
+    $this->drupalLogin($this->groupAdmin);
     $web_assert = $this->assertSession();
     $this->visitViaVsite('node/add/software_release?field_software_project=99999', $this->group);
     $web_assert->fieldValueEquals('field_software_project[0][target_id]', '');

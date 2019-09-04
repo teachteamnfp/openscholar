@@ -1,22 +1,21 @@
 .path-front {
   .content-inner {
-    .region-content-first {
+    .content-first {
       background: $white;
     }
-    .region-content-bottom {
+    .content-bottom {
       background: $color_indian_khaki_22_approx;
-      padding: 0 10px;
     }
   }
-  .region-content-second {
+  .content-second {
     background-color: $color_mountain_mist_approx;
     color: $white;
-    padding: 0 10px;
     span {
       background-color: $color_mountain_mist_approx;
       color: $white;
     }
     a {
+      background-color: $color_mountain_mist_approx;
       color: $white;
     }
   }
