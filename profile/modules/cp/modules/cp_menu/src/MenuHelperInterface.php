@@ -3,7 +3,6 @@
 namespace Drupal\cp_menu;
 
 use Drupal\bibcite_entity\Entity\ReferenceInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\group\Entity\GroupInterface;
 
 /**
@@ -58,15 +57,15 @@ interface MenuHelperInterface {
   public function getMenuLinkDefaults(ReferenceInterface $reference, GroupInterface $vsite): array;
 
   /**
-   * Performs alterations on menu link associated with a content.
+   * Performs alterations on menu link associated with a publication.
    *
    * @param array $values
    *   Reference submit form values.
-   * @param \Drupal\Core\Entity\ContentEntityInterface $entity
-   *   The content in context.
+   * @param \Drupal\bibcite_entity\Entity\ReferenceInterface $reference
+   *   The reference entity in context.
    * @param \Drupal\group\Entity\GroupInterface $vsite
    *   Current vsite.
    */
-  public function contentInFormMenuAlterations(array $values, ContentEntityInterface $entity, GroupInterface $vsite): void;
+  public function publicationInFormMenuAlterations(array $values, ReferenceInterface $reference, GroupInterface $vsite): void;
 
 }

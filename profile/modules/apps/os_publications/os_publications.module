@@ -1111,7 +1111,7 @@ function os_publications_bibcite_reference_form_submit(&$form, FormStateInterfac
   /** @var \Drupal\group\Entity\GroupInterface $vsite */
   $vsite = \Drupal::service('vsite.context_manager')->getActiveVsite();
 
-  $menu_helper->contentInFormMenuAlterations($values, $reference, $vsite);
+  $menu_helper->publicationInFormMenuAlterations($values, $reference, $vsite);
 }
 
 /**
