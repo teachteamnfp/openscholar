@@ -188,6 +188,8 @@ class ProfilesSetting extends CpSettingBase {
       $suffix .= $this->getExampleImage($default_mid, 'crop_photo_person_full') . '<br />';
     }
     $suffix .= $this->t('The default image will be used if a profile photo is not available. Instead, you can upload your own default image.<br/>Position the cropping tool over it if necessary. Allowed media types: <strong>image</strong>');
+    $suffix .= '<br>';
+    $suffix .= $this->t('<strong>IMPORTANT:</strong> You need to click Save configuration in order to display the uploaded profile image');
 
     $form['default_image']['default_image_mid'] = [
       '#type' => 'container',
