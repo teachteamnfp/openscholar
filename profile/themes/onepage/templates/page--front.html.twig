@@ -114,56 +114,79 @@
 
 {# Main #}
 {% block main %}
-  <main role="main" class="main-container {{ container }} js-quickedit-main-content">
-    <div class="row">
-      <section class="col-sm-12">
-        <div class="content-inner">
-        {# Content #}
-          {% block content %}
-            <a id="main-content"></a>
-            {{ page.content }}
-            {% if page.content_first or page.content_second%}
-              <div class="content-first">
-                {{ page.content_first }}
+  <main role="main" class="main-container js-quickedit-main-content">
+    <section>
+      <div class="content-inner">
+      {# Content #}
+        {% block content %}
+          <a id="main-content"></a>
+          {{ page.content }}
+          {% if page.content_first %}
+            <div class="content-first">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-12">
+                    {{ page.content_first }}
+                  </div>
+                </div>
               </div>
-              <div class="content-second">
+            </div>
+          {% endif %}
+          {% if page.content_second %}
+            <div class="content-second clearfix">
+              <div class="col-sm-12">
                 {{ page.content_second }}
               </div>
-            {% endif %}
-            {% if page.content_bottom %}
-              <div class="content-bottom">
-                {{ page.content_bottom }}
+            </div>
+          {% endif %}
+          {% if page.content_bottom %}
+            <div class="content-bottom">
+              <div class="container">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      {{ page.content_bottom }}
+                    </div>
+                  </div>
+                </div>
               </div>
-            {% endif %}
-            {% if page.content_bottom_first %}
-              <div class="content-bottom-first">
+            </div>
+          {% endif %}
+          {% if page.content_bottom_first %}
+            <div class="content-bottom-first clearfix">
+              <div class="col-sm-12">
                 {{ page.content_bottom_first }}
               </div>
-            {% endif %}
-            {% if page.content_bottom_second %}
-              <div class="content-bottom-second">
+            </div>
+          {% endif %}
+          {% if page.content_bottom_second %}
+            <div class="content-bottom-second clearfix">
+              <div class="col-sm-12">
                 {{ page.content_bottom_second }}
               </div>
-            {% endif %}
-            {% if page.sidebar_first %}
-              {% block sidebar_first %}
-                <aside class="sidebar-first" role="complementary">
+            </div>
+          {% endif %}
+          {% if page.sidebar_first %}
+            {% block sidebar_first %}
+              <aside class="sidebar-first clearfix" role="complementary">
+                <div class="col-sm-12">
                   {{ page.sidebar_first }}
-                </aside>
-              {% endblock %}
-            {% endif %}
-            {% if page.sidebar_second %}
-              {% block sidebar_second %}
-                <aside class="sidebar-second" role="complementary">
-                  {{ page.sidebar_second }}
-                </aside>
-              {% endblock %}
-            {% endif %}
+                </div>
+              </aside>
             {% endblock %}
-        </div>
-      </section>
-
-    </div>
+          {% endif %}
+          {% if page.sidebar_second %}
+            {% block sidebar_second %}
+              <aside class="sidebar-second clearfix" role="complementary">
+              <div class="col-sm-12">
+                {{ page.sidebar_second }}
+              </div>
+              </aside>
+            {% endblock %}
+          {% endif %}
+        {% endblock %}
+      </div>
+    </section>
   </main>
 {% endblock %}
 
