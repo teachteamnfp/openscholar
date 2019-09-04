@@ -19,3 +19,104 @@
     }
   }
 }
+/**** contextual link ****/
+.view-os-faq {
+  .views-row {
+    position: relative;
+    &:hover {
+      .views-field-dropbutton {
+        display: block;
+      }
+    }
+  }
+  .views-field-dropbutton {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 30px;
+    button {
+      &:first-child {
+        display: none;
+      }
+      &.dropdown-toggle {
+        background-image: url(../../../../../../core/misc/icons/bebebe/pencil.svg);
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: 16px 16px;
+        height: 26px !important;
+        width: 26px !important;
+        text-indent: -9999px;
+        background-attachment: scroll;
+        background-color: $color-white;
+        border: 1px solid $color-gray2;
+        border-radius: 13px;
+        float: right;
+        margin: 0;
+        overflow: hidden;
+        padding: 0 2px;
+        position: relative;
+        right: 6px;
+        cursor: pointer;
+        .caret {
+          display: none;
+        }
+        &[aria-expanded=true] {
+          border: 1px solid $color-gray2;
+          border-bottom-color: transparent;
+          border-radius: 13px 13px 0 0;
+          box-shadow: none;
+          z-index: 9999;
+        }
+        &:focus, &:hover {
+          background-color: $color-white;
+        }
+        &:hover {
+          background-image: url(../../../../../../core/misc/icons/787878/pencil.svg);
+        }
+        &:focus {
+          background-image: url(../../../../../../core/misc/icons/5181c6/pencil.svg);
+          outline: none;
+        }
+      }
+    }
+    .dropdown-menu {
+      background-color: $color-white;
+      border: 1px solid $color-gray2;
+      border-radius: 4px 0 4px 4px;
+      clear: both;
+      float: right;
+      margin: 0;
+      padding: 0.25em 0;
+      position: relative;
+      right: 6px;
+      text-align: left;
+      top: -1px;
+      white-space: nowrap;
+      box-shadow: none;
+      min-width: auto;
+      left: auto;
+      > li {
+        background-color: $color-white;
+        border: none;
+        list-style: none;
+        list-style-image: none;
+        margin: 0;
+        padding: 0;
+        line-height: 100%;
+        > a {
+          background-color: $color-white;
+          color: $color-gray4;
+          display: block;
+          font-family: sans-serif;
+          font-size: small;
+          line-height: 0.8em;
+          margin: 0.25em 0;
+          padding: 0.4em 0.6em;
+          &.hidden {
+            display: block !important;
+          }
+        }
+      }
+    }
+  }
+}

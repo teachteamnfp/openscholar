@@ -1,37 +1,28 @@
 /**** navbar background ****/
 .navbar-collapse {
-  background: $color-light-gray1;
-  padding: 8px 0 !important;
+  @include nav($color-light-gray1, $color-gray1, $color-gray2, $color-white, $color-blue2, $color-light-gray3, $color-gray1, $color-white, #666, 15px, normal, 20px, normal);
+  &.collapse {
+    padding: 8px 0;
+    @media #{$mobile} {
+      padding: 0;
+    }
+  }
   @media #{$mobile} {
     background: $color-blue1;
-    padding: 0 !important;
   }
   /***** navbar nav *****/
   .navbar-nav {
-    > li {
+    >li {
       margin-right: 20px;
       @media #{$mobile} {
         margin-right: 0;
-        border-bottom: 1px solid $color-blue2;
         border-top: 1px solid $color-blue3;
       }
-      > a {
-        color: $color-gray1;
+      >a {
         padding: 8px;
-        font-size: 20px;
-        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
         text-transform: capitalize;
         @media #{$mobile} {
-          color: $color-white
-        }
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background: $color-gray2;
-          color: $color-white;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          background: $color-gray2;
           color: $color-white;
         }
       }
@@ -39,38 +30,20 @@
   }
   /**** dropdown menu ****/
   .dropdown-menu {
-    background: $color-light-gray3;
-    @media #{$mobile} {
-      background: none;
-    }
-    > li {
-      > a {
-        color: $color-gray1;
+    >li {
+      >a {
+        // color: $color-gray1;
         text-transform: capitalize;
-        font-family: Georgia,Baskerville,Palatino,'Palatino Linotype','Book Antiqua','Times New Roman',serif;
+        font-family: Georgia, Baskerville, Palatino, 'Palatino Linotype', 'Book Antiqua', 'Times New Roman', serif;
         padding: 8px;
-        font-size: 15px;
         @media #{$mobile} {
-          color: $color-white
+          padding: 6px 20px;
         }
-        &:hover, &:active {
-          color: #666;
-          background: $color-light-gray3;
+        &:hover,
+        &:active {
           @media #{$mobile} {
-            color: $color-white
-          }
-        }
-      }
-      &.active {
-        a {
-          color: $color-gray1;
-          background: $color-light-gray3;
-          &:hover {
-            color: #666;
-            background: $color-light-gray3;
-            @media #{$mobile} {
-              color: $color-white
-            }
+            color: $color-white;
+            background: none;
           }
         }
       }

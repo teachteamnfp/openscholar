@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e68fbebf8f02ab104c5f0aa3545b1ce7",
+    "content-hash": "adfc2c53cbf2957c4b4a283190256445",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -4461,7 +4461,8 @@
                     "Add paging info to rest request": "https://www.drupal.org/files/issues/2018-06-30/2982729-viewsRestInfo.patch",
                     "Getlabel() on null layout builder.": "https://www.drupal.org/files/issues/2018-07-16/2985882-entityfield-2.patch",
                     "'view_path' is set to /views/ajax after second ajax request": "https://www.drupal.org/files/issues/2018-03-14/drupal-views_path_ajax-2866386-10.patch",
-                    "Image styles fails with absolute path": "https://www.drupal.org/files/issues/image_styles-2754273-7.patch"
+                    "Image styles fails with absolute path": "https://www.drupal.org/files/issues/image_styles-2754273-7.patch",
+                    "Allow Redirectresponse to override ?destination": "https://www.drupal.org/files/issues/2950883-2.patch"
                 }
             },
             "autoload": {

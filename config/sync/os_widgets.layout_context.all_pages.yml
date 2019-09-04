@@ -38,7 +38,7 @@ data:
     weight: '0'
   -
     id: os_base_powered
-    region: footer
+    region: footer_right
     weight: '1'
   -
     id: copyright

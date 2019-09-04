@@ -1,5 +1,6 @@
 .navbar-collapse {
-  background: $color_black_haze_approx;
+  @include nav($color_black_haze_approx,$white,$color_persian_plum_approx,$wild_sand,$white,
+  $color_rangoon_green_approx,$white,$white,$white,$fs:18px,$fw:normal);
   .region-navigation-collapsible {
     background: none repeat scroll 0 0 $color_mexican_red_approx;
     border-radius: 2px 2px 2px 2px;
@@ -13,24 +14,11 @@
   .navbar-nav {
     > li {
       @media #{$mobile} {
-        border-bottom: 1px solid $white;
         border-top: 0 none;
       }
       > a {
-        @extend %extend_1;
-        @media #{$mobile} {
-        }
-        &:hover, &:active, &:focus, &.is-active, &.is-active:hover {
-          background: $color_persian_plum_approx;
-          color: $wild_sand;
-        }
-      }
-      &.open, &.active {
-        > a, > a:hover, > a:active, > a:focus {
-          background: $color_persian_plum_approx;
-          color: $wild_sand;
-        }
-
+        font-family: $font_0, $font_1, $font_2;
+        background: $color_mexican_red_approx;
       }
     }
   }
@@ -38,45 +26,13 @@
   .dropdown-menu {
     background: $color_rangoon_green_approx;
     @media #{$mobile} {
-      background: none;
       padding: 0;
     }
     > li {
       > a {
-        background: $color_rangoon_green_approx;
         font-family: $font_0, $font_4, $font_5, $font_2;
-        font-weight: normal;
-        color: $white;
-        font-size: 15px;
         @media #{$mobile} {
           background: $color_mexican_red_approx;
-          padding: 8px 16px;
-          padding-left: 20px;
-          font-size: 19px;
-        }
-        &:hover, &:active {
-          background: $color_rangoon_green_approx;
-          @media #{$mobile} {
-            color: $white;
-            background: $color_mexican_red_approx;
-          }
-        }
-      }
-      &.active {
-        a {
-          background: $color_rangoon_green_approx;
-          color: $white;
-          @media #{$mobile} {
-            color: $white;
-            background: $color_mexican_red_approx;
-          }
-          &:hover {
-            background: $color_rangoon_green_approx;
-            @media #{$mobile} {
-              color: $white;
-              background: $color_mexican_red_approx;
-            }
-          }
         }
       }
     }
