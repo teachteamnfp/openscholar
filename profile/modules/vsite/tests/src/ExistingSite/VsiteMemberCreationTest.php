@@ -19,11 +19,11 @@ class VsiteMemberCreationTest extends VsiteExistingSiteTestBase {
   protected $admin;
 
   /**
-   * Vsite Manager service.
+   * Entity Type Manager service.
    *
-   * @var \Drupal\vsite\Plugin\VsiteContextManager
+   * @var \Drupal\Core\Entity\EntityTypeManager
    */
-  protected $vsiteManager;
+  protected $entityTypeManager;
 
   /**
    * {@inheritdoc}
@@ -33,7 +33,6 @@ class VsiteMemberCreationTest extends VsiteExistingSiteTestBase {
     $this->admin = $this->createUser([], [], TRUE);
     $this->drupalLogin($this->admin);
 
-    $this->vsiteManager = $this->container->get('vsite.context_manager');
     $this->entityTypeManager = $this->container->get('entity_type.manager');
   }
 
