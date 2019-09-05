@@ -26,6 +26,11 @@ use Drupal\vsite\Plugin\VsiteContextManager;
 class MenuHelper implements MenuHelperInterface {
   use StringTranslationTrait;
 
+  public const DEFAULT_VSITE_MENU_MAPPING = [
+    'main' => 'menu-primary-',
+    'footer' => 'menu-primary-',
+  ];
+
   /**
    * Config factory service.
    *

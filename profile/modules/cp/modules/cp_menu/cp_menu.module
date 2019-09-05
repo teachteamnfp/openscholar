@@ -39,6 +39,7 @@ function cp_menu_form_node_form_alter(&$form, FormStateInterface $form_state, $f
     return;
   }
 
+  // TODO: Check vsite access instead of giving access right away.
   $form['menu']['#access'] = TRUE;
   $form['actions']['submit']['#submit'][] = 'cp_menu_form_node_form_submit';
 }
@@ -79,8 +80,10 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
     $node = $form_state->getFormObject()->getEntity();
     /** @var \Drupal\Core\Entity\EntityStorageInterface $menu_link_content_storage */
     $menu_link_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
 
-    list($menu_name) = explode(':', $menu_values['menu_parent'], 2);
+    list($menu_name, $parent) = explode(':', $menu_values['menu_parent'], 2);
     $new_menu_link = $menu_link_content_storage->loadByProperties([
       'link__uri' => "entity:node/{$node->id()}",
     ]);
@@ -99,11 +102,19 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
 
       $menu_helper_service->createVsiteMenus($active_vsite);
 
-      // Since, this submit handler is only going to be invoked when there are
-      // no vsite menus, therefore, we can safely assume that the parent will
-      // stay the same.
       $vsite_menu_name = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_name] . $active_vsite->id();
-      $menu_link_content->set('menu_name', $vsite_menu_name)->save();
+
+      // Load the newly created parent menu, so that the node menu link's parent
+      // could be updated.
+      $parent_menu_link_definition = $menu_link_manager->getDefinition($parent);
+      $vsite_parent_menu = $menu_link_content_storage->loadByProperties([
+        'menu_name' => $vsite_menu_name,
+        'link__uri' => "route:{$parent_menu_link_definition['route_name']}",
+      ]);
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $vsite_parent_menu_link_content */
+      $vsite_parent_menu_link_content = reset($vsite_parent_menu);
+
+      $menu_link_content->set('parent', $vsite_parent_menu_link_content->getPluginId())->save();
     }
   }
 }
