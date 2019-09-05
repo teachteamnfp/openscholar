@@ -28,7 +28,7 @@ class MenuHelper implements MenuHelperInterface {
 
   public const DEFAULT_VSITE_MENU_MAPPING = [
     'main' => 'menu-primary-',
-    'footer' => 'menu-primary-',
+    'footer' => 'menu-secondary-',
   ];
 
   /**
