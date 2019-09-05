@@ -71,6 +71,7 @@ function cp_menu_form_alter(&$form, FormStateInterface $form_state, $form_id) {
  * Creates vsite menus if required.
  *
  * @see \menu_ui_form_node_form_alter
+ * @see \Drupal\cp_menu\Services\MenuHelper::createVsiteMenus
  */
 function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_state) {
   $menu_values = $form_state->getValue('menu');
@@ -102,11 +103,9 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
 
       $menu_helper_service->createVsiteMenus($active_vsite);
 
-      $vsite_menu_name = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_name] . $active_vsite->id();
-
-      $menu_link_content->set('menu_name', $vsite_menu_name);
-
       if ((bool) $parent) {
+        $vsite_menu_name = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_name] . $active_vsite->id();
+
         // Load the newly created parent menu, so that the node menu link's
         // parent could be updated.
         $parent_menu_link_definition = $menu_link_manager->getDefinition($parent);
@@ -117,10 +116,11 @@ function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_st
         /** @var \Drupal\menu_link_content\MenuLinkContentInterface $vsite_parent_menu_link_content */
         $vsite_parent_menu_link_content = reset($vsite_parent_menu);
 
-        $menu_link_content->set('parent', $vsite_parent_menu_link_content->getPluginId());
+        $menu_link_content
+          ->set('menu_name', $vsite_menu_name)
+          ->set('parent', $vsite_parent_menu_link_content->getPluginId())
+          ->save();
       }
-
-      $menu_link_content->save();
     }
   }
 }
