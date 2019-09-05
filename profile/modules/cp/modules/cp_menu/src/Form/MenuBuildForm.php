@@ -465,7 +465,7 @@ class MenuBuildForm extends FormBase {
           '#type' => 'link',
           '#url' => Url::fromRoute('cp.build.edit_menu_link', ['link_id' => $link->getPluginId()]),
           '#attributes' => [
-            'class' => ['use-ajax', 'fa', 'fa-edit'],
+            'class' => ['use-ajax', 'far', 'fa-edit'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'edit_menu_link',
@@ -480,7 +480,7 @@ class MenuBuildForm extends FormBase {
             'link_title' => $link->getTitle(),
           ]),
           '#attributes' => [
-            'class' => ['use-ajax', 'fa', 'fa-trash'],
+            'class' => ['use-ajax', 'far', 'fa-trash-alt'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'delete_menu_link',
