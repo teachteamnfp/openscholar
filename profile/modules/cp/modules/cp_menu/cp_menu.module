@@ -39,8 +39,10 @@ function cp_menu_form_node_form_alter(&$form, FormStateInterface $form_state, $f
     return;
   }
 
-  // TODO: Check vsite access instead of giving access right away.
-  $form['menu']['#access'] = TRUE;
+  /** @var \Drupal\Core\Session\AccountInterface $current_user */
+  $current_user = \Drupal::currentUser();
+
+  $form['menu']['#access'] = $active_vsite->hasPermission('manage_menu', $current_user);
   $form['actions']['submit']['#submit'][] = 'cp_menu_form_node_form_submit';
 }
 
