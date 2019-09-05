@@ -357,9 +357,19 @@ class MenuHelper implements MenuHelperInterface {
     foreach ($sharedMenuTree as $links) {
       $definition = $links->link->getPluginDefinition();
       $route_name = $definition['route_name'];
+
+      $link_uri = "route:$route_name";
+      // Make sure all necessary info is present for node routes.
+      // This method wouldn't be invoked if there are publication menus,
+      // because, that would be mean vsite menus are already present.
+      // See \os_publications_bibcite_reference_form_submit.
+      if ($route_name === 'entity.node.canonical') {
+        $link_uri = "entity:node/{$definition['route_parameters']['node']}";
+      }
+
       $this->storage->create([
         'title' => $this->t('@title', ['@title' => $definition['title']]),
-        'link' => ['uri' => "route:$route_name"],
+        'link' => ['uri' => $link_uri],
         'menu_name' => $group_menu->id(),
         'weight' => $definition['weight'],
         'expanded' => TRUE,
