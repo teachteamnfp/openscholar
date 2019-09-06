@@ -285,25 +285,21 @@ class MenuHelper implements MenuHelperInterface {
       if (!$menus) {
         // Create new menus.
         $this->createVsiteMenus($vsite);
-        // Map menu ids so that new links get saved in newly created menus.
-        if ($menuId == 'main') {
-          $menuId = 'menu-primary-' . $vsite->id();
-        }
-        elseif ($menuId == 'footer') {
-          $menuId = 'menu-secondary-' . $vsite->id();
-        }
+
+        $vsiteMenuId = self::DEFAULT_VSITE_MENU_MAPPING[$menuId] . $vsite->id();
+
+        // Create a new menu_link_content entity.
+        MenuLinkContent::create([
+          'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
+          'langcode' => $reference->language()->getId(),
+          'enabled' => TRUE,
+          'title' => trim($values['menu']['title']),
+          'description' => trim($values['menu']['description']),
+          'menu_name' => $vsiteMenuId,
+        ])->save();
+        // Call the block cache clear method as changes are made.
+        $this->invalidateBlockCache($vsite, $vsiteMenuId);
       }
-      // Create a new menu_link_content entity.
-      MenuLinkContent::create([
-        'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
-        'langcode' => $reference->language()->getId(),
-        'enabled' => TRUE,
-        'title' => trim($values['menu']['title']),
-        'description' => trim($values['menu']['description']),
-        'menu_name' => $menuId,
-      ])->save();
-      // Call the block cache clear method as changes are made.
-      $this->invalidateBlockCache($vsite, $menuId);
     }
   }
 
