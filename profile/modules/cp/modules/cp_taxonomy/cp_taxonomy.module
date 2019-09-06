@@ -375,7 +375,7 @@ function cp_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $operat
   /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
   $active_vsite = $vsite_manager->getActiveVsite();
 
-  // If no active vsite no opinion.
+  // If in vsite context then only alter access.
   if ($active_vsite) {
     // If no permission don't show operations buttons.
     if (!$active_vsite->hasPermission('manage taxonomy', $account)) {
@@ -383,6 +383,7 @@ function cp_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $operat
     }
     return AccessResult::allowed();
   }
+  // If no active vsite no opinion.
   return AccessResult::neutral();
 }
 
@@ -395,7 +396,7 @@ function cp_taxonomy_taxonomy_term_access(EntityInterface $entity, $operation, A
   /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
   $active_vsite = $vsite_manager->getActiveVsite();
 
-  // If no active vsite no opinion.
+  // If in vsite context then only alter access.
   if ($active_vsite) {
     // If no permission don't show operations buttons and other form buttons.
     if (!$active_vsite->hasPermission("$operation any {$entity->getEntityTypeId()} entities", $account)) {
@@ -403,5 +404,6 @@ function cp_taxonomy_taxonomy_term_access(EntityInterface $entity, $operation, A
     }
     return AccessResult::allowed();
   }
+  // If no active vsite no opinion.
   return AccessResult::neutral();
 }
