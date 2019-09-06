@@ -212,7 +212,7 @@ div.file-filters {
 #mb-library-header .mb-title,
 #mb-library-header .mb-filename,
 #mb-library-header .mb-created {
-  background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 75px -903px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 75px -903px;
 }
 
 #mb-library-header .mb-title {
@@ -705,6 +705,7 @@ div[file-edit] .control button,
     flex-wrap: wrap;
     text-align: left;
   }
+
   .media-actions li {
     border-bottom: 1px solid #ccc;
     border-left: 0 none;
