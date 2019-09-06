@@ -59,6 +59,8 @@ class CpTaxonomyAccessTest extends TestBase {
   /**
    * Tests all necessary operations and buttons are available to permitted role.
    *
+   * @covers ::cp_taxonomy_taxonomy_vocabulary_access
+   *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
    */
@@ -83,6 +85,8 @@ class CpTaxonomyAccessTest extends TestBase {
 
   /**
    * Tests all necessary operations and buttons are available to permitted role.
+   *
+   * @covers ::cp_taxonomy_taxonomy_term_access
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException
