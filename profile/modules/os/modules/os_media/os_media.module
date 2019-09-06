@@ -5,7 +5,9 @@
  * Hook implementations to support the media browser.
  */
 
+use Drupal\image\Entity\ImageStyle;
 use Drupal\media\MediaInterface;
+use Drupal\file\Entity\File;
 
 /**
  * Implements hook_library_info_alter().
@@ -27,6 +29,16 @@ function os_media_library_info_alter(&$libraries, $extension) {
       $libraries['mediaBrowser']['drupalSettings']['embedWhitelist'] = [];
       $libraries['mediaBrowser']['drupalSettings']['maximumFileSize'] = format_size(file_upload_max_size());
       $libraries['mediaBrowser']['drupalSettings']['maximumFileSizeRaw'] = file_upload_max_size();
+
+      // Need this provide media thumbnail style urls to media browser.
+      $media = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties(['bundle' => 'image']);
+      foreach ($media as $image) {
+        $id = $image->field_media_image->target_id;
+        $file = File::load($id);
+        $path = $file->getFileUri();
+        $thumbnail_uri[$id] = ImageStyle::load('media_thumbnail')->buildUrl($path);
+      }
+      $libraries['mediaBrowser']['drupalSettings']['filesPath'] = $thumbnail_uri;
     }
   }
 }
