@@ -16,7 +16,19 @@
       }
     }
   }
-  .main-container {
+  .content-first,
+  .content-bottom {
+    background: $color-light-gray;
+  }
+  .content-bottom,
+  .content-bottom-first,
+  .content-bottom-second,
+  .content-second,
+  .content-first {
+    margin-bottom: 0;
+    .region {
+      margin: 15px 0;
+    }
   }
 }
 /* Titles & Type */
@@ -41,7 +53,7 @@ h2.block-title {
   font-size: 1.3em;
   margin-bottom: 0;
   .content-inner & {
-    font-size: 12px;
+    text-align: left;
   }
 }
 .not-front.two-sidebars {

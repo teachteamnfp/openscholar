@@ -220,7 +220,8 @@ div.file-filters {
 }
 
 .mb-preview {
-  width: 60px;
+  width: 50px;
+  height: 50px;
 }
 
 .mb-title {
@@ -249,7 +250,7 @@ div.file-filters {
   display: none;
 }
 
-.mb-preview .media-item img {
+.mb-preview img {
   height: auto;
   width: 50px;
 }

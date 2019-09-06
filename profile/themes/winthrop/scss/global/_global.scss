@@ -2,24 +2,19 @@ html {
   color: $color_log_cabin_approx;
 }
 .path-front {
-  .region-content-first {
+  .content-first {
     background: $white;
   }
-  .region-content-second {
+  .content-second {
     background-color: $color_cloud_burst_approx;
-    padding: 0 10px;
     color: $white;
-    span {
-      background-color: $color_cloud_burst_approx;
-      color: $white;
-    }
     a {
       color: $white;
+      background-color: $color_cloud_burst_approx;
     }
   }
-  .region-content-bottom {
+  .content-bottom {
     background-color: $color_sprout_approx;
-    padding: 0 10px;
   }
 }
 .fc-header-toolbar h2 {
