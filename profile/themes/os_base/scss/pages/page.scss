@@ -1,0 +1,40 @@
+%icon-book {
+  display: inline-block;
+  font-family: "Glyphicons Halflings";
+  margin-right: 7px;
+}
+%book-btn {
+  border: 1px solid;
+  padding: 8px;
+}
+article {
+  &.page.full {
+    .book-add-child a {
+      @extend %book-btn;
+      &:before {
+        content: "\002b";
+        @extend %icon-book;
+      }
+    }
+    .book-printer a {
+      @extend %book-btn;
+      &:before {
+        content: "\e045";
+        @extend %icon-book;
+      }
+    }
+    .links {
+      margin-top: 1em;
+    }
+    nav {
+      h2 {
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        border-bottom: 2px solid;
+      }
+      ul {
+        margin-left: 0;
+      }
+    }
+  }
+}
