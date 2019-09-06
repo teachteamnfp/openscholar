@@ -144,14 +144,16 @@
     $scope.whitelist = settings.fetchSetting('embedWhitelist');
     $scope.maxFilesize = params.max_filesize || settings.fetchSetting('maximumFileSize');
 
-
     $scope.filteredTypes = [];
     $scope.isFiltered = function () {
-      return $scope.filteredTypes.length || $scope.search;
+      if ($scope.filteredTypes !== undefined) {
+        return $scope.filteredTypes.length;
+      }
+      return $scope.search;
     };
 
     $scope.clearFilters = function () {
-      $scope.filteredTypes = defaultFilteredTypes;
+      $scope.filteredTypes = undefined;
       $scope.search = '';
     };
 
@@ -235,6 +237,18 @@
 
     $scope.changePanes = function (pane, result) {
       if ($scope.activePanes[pane]) {
+        if (pane === 'library') {
+          // Need this logic to fix oversized thumbnail previews.
+          let uri = settings.fetchSetting('filesPath');
+          for (j in $scope.files) {
+            fid = $scope.files[j].fid;
+            for (id in uri) {
+              if (fid === id) {
+                $scope.files[j].thumbnail = uri[id];
+              }
+            }
+          }
+        }
         $scope.pane = pane;
         return true;
       }
