@@ -404,7 +404,7 @@ function cp_taxonomy_taxonomy_term_access(EntityInterface $entity, $operation, A
     if (!$active_vsite) {
       return AccessResult::neutral();
     }
-    // If no permission don't show operations buttons.
+    // If no permission don't show operations buttons and other form buttons.
     if (!$active_vsite->hasPermission("$operation any {$entity->getEntityTypeId()} entities", $account)) {
       return AccessResult::forbidden();
     }
