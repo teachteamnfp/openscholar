@@ -9,7 +9,6 @@ use Drupal\Tests\vsite\ExistingSite\VsiteExistingSiteTestBase;
  * TestBase for cp_taxonomy tests.
  */
 abstract class TestBase extends VsiteExistingSiteTestBase {
-  use CpTaxonomyTestTrait;
 
   use CpTaxonomyTestTrait;
 
