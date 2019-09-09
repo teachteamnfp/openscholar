@@ -229,3 +229,4 @@ permissions:
   411: 'update own group_node:blog content'
   412: 'view group_node:blog content'
   413: 'administer cp settings'
+  414: 'promote nodes'

@@ -40,11 +40,10 @@
 }
 
 .media-browser-button {
-  width: 175px;
   height: 20px;
   display: inline-block;
   text-align: center;
-  padding: 5px;
+  padding: 5px 10px;
   font-size: 14px;
   color: #215990;
 }
@@ -95,7 +94,7 @@
 }
 
 .media-browser-pane .embed-failure .error-icon {
-  background-image: url('../../../../themes/os_basetheme/images/scholarbase-sprite.png');
+  background-image: url('../../../../../themes/os_base/images/scholarbase-sprite.png');
   background-position: -72px -231px;
   width: 24px;
   height: 24px;
@@ -212,24 +211,35 @@ div.file-filters {
 #mb-library-header .mb-title,
 #mb-library-header .mb-filename,
 #mb-library-header .mb-created {
-  background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 75px -903px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 75px -903px;
 }
 
 #mb-library-header .mb-title {
   background-position: 45px -904px;
 }
 
+.media-browser-pane .media-row span.mb-preview {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+#mb-library-header span.mb-preview {
+  margin-left: 15px;
+}
+
 .mb-preview {
-  width: 60px;
+  width: 50px;
+  height: 50px;
 }
 
 .mb-title {
-  width: 250px;
+  width: 245px;
   word-wrap: break-word;
 }
 
 .mb-filename {
-  width: 250px;
+  width: 245px;
   word-wrap: break-word;
 }
 
@@ -249,7 +259,7 @@ div.file-filters {
   display: none;
 }
 
-.mb-preview .media-item img {
+.mb-preview img {
   height: auto;
   width: 50px;
 }
@@ -279,7 +289,7 @@ button[ng-disabled="!pager.canPage(-1)"] {
   background-color: #fff;
   font-weight: bold;
   font-size: 1.1em;
-  color: #4e84c4;
+  color: #215990;
 }
 
 .tw-widget button[ng-click="addMore(vocab.id)"] {
@@ -292,7 +302,7 @@ button[ng-disabled="!pager.canPage(-1)"] {
 
 .mb-actions-edit,
 .mb-actions-delete {
-  color: #4e84c4;
+  color: #215990;
 }
 
 .mb-actions-edit:hover,
@@ -404,6 +414,8 @@ div[file-edit] .control button,
   top: 40%;
   left: 37%;
   font-size: 1.2em;
+  display: flex;
+  align-items: flex-end;
 }
 
 .media-browser-drop-box #drag-text {
@@ -614,7 +626,7 @@ div[file-edit] .control button,
 }
 
 .help_icon {
-  background: url('../../../../themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 0 -150px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 0 -150px;
   width: 20px;
   height: 20px;
   text-indent: -10em;
@@ -661,6 +673,9 @@ div[file-edit] .control button,
 }
 
 /*Media browser position set to fixed to show media browser in same position inspite of page scrolling.*/
+.ui-dialog * {
+  font-size: 14px;
+}
 
 .ui-dialog.media-wrapper {
   position: fixed;
@@ -702,6 +717,7 @@ div[file-edit] .control button,
     flex-wrap: wrap;
     text-align: left;
   }
+
   .media-actions li {
     border-bottom: 1px solid #ccc;
     border-left: 0 none;
