@@ -2,12 +2,14 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
+use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 use Drupal\Tests\vsite\ExistingSite\VsiteExistingSiteTestBase;
 
 /**
  * TestBase for cp_taxonomy tests.
  */
 abstract class TestBase extends VsiteExistingSiteTestBase {
+  use CpTaxonomyTestTrait;
 
   /**
    * Config factory.

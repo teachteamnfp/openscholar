@@ -54,3 +54,11 @@ cp.taxonomy.term.add:
     _group_member: 'TRUE'
   options:
     _admin_route: 'TRUE'
+cp.taxonomy.reset.vocab:
+  path: '/cp/taxonomy/reset/{vid}'
+  defaults:
+    _form: '\Drupal\cp_taxonomy\Form\ResetVocabTermsForm'
+    _title: 'Reset Vocabulary'
+    requirements:
+      _group_permission: 'manage taxonomy'
+      _group_member: 'TRUE'
