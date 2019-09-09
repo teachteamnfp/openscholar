@@ -233,7 +233,8 @@
         "drupal/chosen": "^2.7",
         "harvesthq/chosen": "^1.8",
         "drupal/config_ignore": "^2.1",
-        "drupal/mail_login": "^1.0"
+        "drupal/mail_login": "^1.0",
+        "drupal/robotstxt": "^1.2"
     },
     "require-dev": {
         "drupal/features": "^3.7",
