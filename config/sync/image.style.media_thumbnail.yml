@@ -1,0 +1,14 @@
+uuid: 7bea6c99-bf86-4c40-b0c4-4efa3a0102a0
+langcode: en
+status: true
+dependencies: {  }
+name: media_thumbnail
+label: 'Media Thumbnail'
+effects:
+  cd41a78b-3507-4341-ad91-92330e6f4573:
+    uuid: cd41a78b-3507-4341-ad91-92330e6f4573
+    id: image_resize
+    weight: 1
+    data:
+      width: 180
+      height: 180

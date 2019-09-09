@@ -4,6 +4,11 @@ create url aliases:
 
 administer nodes:
   title: 'Administer content'
-  description: 'Promote, change ownership, edit revisions, and perform other tasks across all content types.'
+  description: 'Change ownership, edit revisions, and perform other tasks across all content types.'
   restrict access: true
+  section: 'Permission'
+
+promote nodes:
+  title: 'Promote content'
+  description: 'Promote content across all content types.'
   section: 'Permission'

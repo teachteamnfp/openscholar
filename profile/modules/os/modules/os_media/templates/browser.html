@@ -107,7 +107,7 @@
             </div>
             <div js-pager="file in files | mbFilename:$parent.search | mbType:availFilter | mbType:filteredTypes | mbExtensions:extensions | filter:{status:'!deleting'} | orderBy:sortType:sortReverse track by file.id" page-size="5">
                 <div class="media-row" data-fid="{{file.mid}}" ng-click="setSelection(file.mid)" ng-class="{selected : selection == file.mid, new : file.new}">
-                    <span class="mb-preview"><img ng-src="{{file.thumbnail + '?m=' + file.changed}}"></span>
+                    <span class="mb-preview"><img ng-src="{{file.thumbnail}}"></span>
                     <span class="mb-title">{{file.name}}</span>
                     <span class="mb-filename">{{file.filename}}</span>
                     <span class="mb-created">{{(file.created + '000') | date:'short'}}</span>
