@@ -137,3 +137,5 @@ permissions:
   150: 'access private apps'
   151: 'create url aliases'
   152: 'promote nodes'
+  153: 'access control panel'
+
