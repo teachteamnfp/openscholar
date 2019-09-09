@@ -81,3 +81,12 @@ cp.content.add.collection:
     parameters:
       node_type:
         with_config_overrides: TRUE
+
+cp.content.browse.collection:
+  path: '/cp/content/browse'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Browse Site Content'
+  requirements:
+    _group_permission: 'Manage vsite content'
+    _group_member: 'TRUE'

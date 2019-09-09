@@ -31,7 +31,7 @@ cp.content.import:
   parent: cp.content
 cp.content.browse:
   title: 'Browse'
-  url: 'internal:##'
+  route_name: cp.content.browse.collection
   parent: cp.content
 cp.content.browse.content:
   title: 'Content'

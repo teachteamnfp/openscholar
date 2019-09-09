@@ -38,7 +38,7 @@ display:
       access:
         type: group_permission
         options:
-          group_permission: 'update any group_entity:media entity'
+          group_permission: 'manage vsite content'
       cache:
         type: none
         options: {  }
@@ -320,7 +320,7 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      path: cp/content/media
+      path: cp/content/browse/media
       style:
         type: table
         options:
@@ -1310,6 +1310,7 @@ display:
         relationships: false
         filters: false
         filter_groups: false
+        access: false
       filters:
         status:
           value: '1'
@@ -1440,6 +1441,10 @@ display:
         operator: AND
         groups:
           1: AND
+      access:
+        type: group_permission
+        options:
+          group_permission: 'update any group_entity:media entity'
     cache_metadata:
       max-age: -1
       contexts:

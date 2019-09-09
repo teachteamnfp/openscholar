@@ -910,7 +910,7 @@ display:
     display_options:
       display_extenders:
         metatag_display_extender: {  }
-      path: cp/content/node
+      path: cp/content/browse/node
       menu:
         type: tab
         title: Content
