@@ -25,10 +25,6 @@ cp.content.add:
   title: 'Add'
   route_name: cp.content.add.collection
   parent: cp.content
-cp.content.import:
-  title: 'Import'
-  url: 'internal:##'
-  parent: cp.content
 cp.content.browse:
   title: 'Browse'
   route_name: cp.content.browse.collection
