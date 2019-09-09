@@ -2,8 +2,6 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 
-use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
-
 /**
  * Class CpTaxonomyHelperTest.
  *
@@ -13,8 +11,6 @@ use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
 class CpTaxonomyHelperTest extends TestBase {
-
-  use CpTaxonomyTestTrait;
 
   /**
    * Cp Taxonomy Helper.
