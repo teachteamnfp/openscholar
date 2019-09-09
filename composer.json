@@ -243,7 +243,6 @@
         "drupal/bibcite": "1.x-dev",
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
-        "harvesthq/chosen": "^1.8",
         "drupal/config_ignore": "^2.1",
         "drupal/mail_login": "^1.0"
     },
