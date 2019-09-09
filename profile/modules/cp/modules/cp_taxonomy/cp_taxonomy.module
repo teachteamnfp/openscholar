@@ -5,8 +5,10 @@
  * Hook implementations for the cp_taxonomy module.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\cp_taxonomy\Plugin\Field\FieldWidget\TaxonomyTermsWidget;
 use Drupal\views\ViewExecutable;
 use Drupal\vsite\Config\HierarchicalStorage;
@@ -147,7 +149,7 @@ function cp_taxonomy_form_taxonomy_overview_terms_alter(array &$form, FormStateI
 function cp_taxonomy_reset_redirect(array &$form, FormStateInterface &$form_state) {
   /** @var \Drupal\taxonomy\VocabularyInterface $vocab */
   $vocab = $form_state->getStorage()['taxonomy']['vocabulary'];
-  $form_state->setRedirect('cp.taxonomy.list', ['taxonomy_vocabulary' => $vocab->id()]);
+  $form_state->setRedirect('cp.taxonomy.reset.vocab', ['vid' => $vocab->id()]);
 }
 
 /**
@@ -361,4 +363,50 @@ function cp_taxonomy_views_post_build(ViewExecutable $view) {
   if ($view->id() == 'publications') {
     $view->storage->addCacheTags(['entity-with-taxonomy-terms:' . $group->id()]);
   }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function cp_taxonomy_taxonomy_vocabulary_access(EntityInterface $entity, $operation, AccountInterface $account) {
+
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager */
+  $vsite_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
+  $active_vsite = $vsite_manager->getActiveVsite();
+
+  // If in vsite context then only alter access.
+  if ($active_vsite) {
+    // If no permission don't show operations buttons.
+    if (!$active_vsite->hasPermission('manage taxonomy', $account)) {
+      return AccessResult::forbidden();
+    }
+    return AccessResult::allowed();
+  }
+  // If no active vsite no opinion.
+  return AccessResult::neutral();
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_access().
+ */
+function cp_taxonomy_taxonomy_term_access(EntityInterface $entity, $operation, AccountInterface $account) {
+
+  /** @var \Drupal\vsite\Plugin\VsiteContextManager $vsite_manager */
+  $vsite_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
+  $active_vsite = $vsite_manager->getActiveVsite();
+
+  $plugin_id = "group_entity:{$entity->getEntityTypeId()}";
+
+  // If in vsite context then only alter access.
+  if ($active_vsite) {
+    // If no permission don't show operations buttons and other form buttons.
+    if (!$active_vsite->hasPermission("$operation any $plugin_id entity", $account)) {
+      return AccessResult::forbidden();
+    }
+    return AccessResult::allowed();
+  }
+  // If no active vsite no opinion.
+  return AccessResult::neutral();
 }
