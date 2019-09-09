@@ -37,12 +37,15 @@
       <li{{ item.attributes.addClass(item_classes) }}>
         {% set link_title = item.title %}
         {% set link_attributes = item.link_attributes %}
-        {% if menu_level == 0 and item.is_expanded and item.below %}
+        {% if item.is_expanded and item.below %}
           {% set link_title %}{{ link_title }} <span class="caret"></span>{% endset %}
           {% set link_attributes = link_attributes.addClass('dropdown-toggle') %}
         {% endif %}
         {# Must use link() here so it triggers hook_link_alter(). #}
         {{ link(link_title, item.url, link_attributes.addClass(item.in_active_trail ? 'active-trail')) }}
+        {% if item.is_expanded and item.below %}
+          <a href="#" class="dropmenu-child glyphicon glyphicon-plus"></a>
+        {% endif %}
         {% if item.below %}
           {{ _self.menu_links(item.below, attributes.removeClass(classes), menu_level + 1, classes, dropdown_classes) }}
         {% endif %}
