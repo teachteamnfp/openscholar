@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "21f5ec548049c10a258f989c198c7709",
+    "content-hash": "11ef1e46e36066ce0c0def4541464b06",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -5310,7 +5310,7 @@
                     "New group content created when node edited": "https://www.drupal.org/files/issues/2019-06-04/3059300-3.patch",
                     "Prevent resaving of deleted entities": "https://raw.githubusercontent.com/openscholar/openscholar/ae879229e866cbc96d91d2b2a8273292fa26fd34/patches/group.fix_saving_deleted_entity.patch",
                     "Entities identified by strings as group content": "https://www.drupal.org/files/issues/2019-05-28/group-support_string_entity_ids-2797793-162.patch",
-                    "Group creator must complete their membership Wizard duplicates membership": "https://www.drupal.org/files/issues/2019-07-19/group_membership_duplication-3016197-12.patch"
+                    "Group creator must complete their membership Wizard duplicates membership": "https://www.drupal.org/files/issues/2019-07-09/group_membership_duplication-3016197-10.patch"
                 }
             },
             "notification-url": "https://packages.drupal.org/8/downloads",
