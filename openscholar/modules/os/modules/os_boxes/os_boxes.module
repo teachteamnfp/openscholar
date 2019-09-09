@@ -703,3 +703,19 @@ function _os_boxes_test_load_all_boxes_outside_vsite_context() {
   // Only gets to this point if all boxes displayed no content.
   return '';
 }
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function os_boxes_preprocess_node(&$vars) {
+  if ($vars['type'] == 'feed') {
+    $options = [
+      'feed' => $vars['nid'],
+    ];
+    /** @var \boxes_box $box */
+    $box = boxes_box::factory('os_boxes_feedreader', $options);
+
+    $render_output = $box->render();
+    $vars['content']['node_feedreader_widget']['#markup'] = $render_output['content'];
+  }
+}
