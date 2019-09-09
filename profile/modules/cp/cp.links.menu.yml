@@ -23,7 +23,7 @@ cp.content:
   weight: 0
 cp.content.add:
   title: 'Add'
-  url: 'internal:##'
+  route_name: cp.content.add.collection
   parent: cp.content
 cp.content.import:
   title: 'Import'

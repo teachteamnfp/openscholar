@@ -66,3 +66,18 @@ cp.content.collection:
   requirements:
     _group_permission: 'access control panel'
     _group_member: 'TRUE'
+
+cp.content.add.collection:
+  path: '/cp/content/add'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Add Site Content'
+  requirements:
+    _group_permission: 'access control panel'
+    _group_member: 'TRUE'
+    _node_add_access: 'node:{node_type}'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node_type:
+        with_config_overrides: TRUE
