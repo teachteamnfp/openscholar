@@ -319,12 +319,12 @@ class MenuLinkAddForm extends FormBase {
     }
 
     $type = $this->store->get('link_type');
-    $menu_id = $this->store->get('menu_name');
     $values = $form_state->getValues();
 
     $vsite = $this->vsiteManager->getActiveVsite();
-    $vsite_menu_id = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_id] . $vsite->id();
     $menus = $vsite->getContent('group_menu:menu');
+    $menu_id = $this->store->get('menu_name');
+    $vsite_menu_id = $menus ? $menu_id : (MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_id] . $vsite->id());
     // If first time then create a new menu by replicating shared menus.
     if (!$menus) {
       // Create new menus.
