@@ -27,10 +27,6 @@
             "url": "https://github.com/openscholar/drupal-test-traits"
         },
         {
-            "type": "vcs",
-            "url": "https://github.com/openscholar/groupmenu"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -226,6 +222,7 @@
         "drupal/easy_breadcrumb": "^1.8",
         "drupal/views_ical": "^2.1",
         "drupal/google_analytics": "^2.4",
+        "drupal/groupmenu": "^1.0",
         "drupal/cancel_button": "^1.1",
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
@@ -236,8 +233,7 @@
         "drupal/chosen": "^2.7",
         "harvesthq/chosen": "^1.8",
         "drupal/config_ignore": "^2.1",
-        "drupal/mail_login": "^1.0",
-        "drupal/groupmenu": "^1.0-beta4"
+        "drupal/mail_login": "^1.0"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -380,6 +376,10 @@
             "drupal/config_ignore": {
                 "Override drush cim/cex for filtering": "https://www.drupal.org/files/issues/2019-01-08/2973431-supplementary-drush-commands-17.patch",
                 "Allow adding continer filtering": "https://www.drupal.org/files/issues/2019-01-09/2973431-ignore-collections-18.patch"
+            },
+            "drupal/groupmenu": {
+                "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch",
+                "Fix error in non vsite pages": "patches/groupmenu.12152.fix-error-in-non-vsite-pages.patch"
             }
         },
         "patches-ignore": {
