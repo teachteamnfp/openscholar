@@ -57,3 +57,12 @@ cp.settings.global_settings:
   requirements:
     _group_permission: 'administer cp settings'
     _group_member: 'TRUE'
+
+cp.content.collection:
+  path: '/cp/content'
+  defaults:
+    _controller: '\Drupal\cp\Controller\CpController::overview'
+    _title: 'Site Content'
+  requirements:
+    _group_permission: 'access control panel'
+    _group_member: 'TRUE'
