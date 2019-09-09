@@ -30,14 +30,16 @@ Drupal.behaviors.os_boxes_tabs = { attach: function (ctx) {
   $('.ui-tabs-anchor').on("click", function( event, ui ) {
     var container_id = $(this).parent().attr('aria-controls');
 
-    var container_id_src = $('#' + container_id + ' iframe:not([id^="trumba.spud"])').attr("src");
-
-    // Do not refresh the src attribute for Google Calendar embeds (G Cal)
-    if (/www.google.com\/calendar/.exec(container_id_src) === null) {
-
-      // Trumba calendars have empty HTML codes in its iframe src on page load, so their content cannot be refreshed after clicking on tab.
-      $('#' + container_id + ' iframe:not([id^="trumba.spud"])').attr("src", $('#' + container_id + ' iframe').attr("src"));
-    }
+    // Trumba calendars have empty HTML codes in its iframe src on page load, so their content cannot be refreshed after clicking on tab.
+    var refreshElements = $('#' + container_id + ' iframe:not([id^="trumba.spud"])');
+    refreshElements.each(function(index) {
+      var srcValue = $(this).attr("src");
+      // Do not refresh the src attribute for Google Calendar embeds (G Cal)
+      if (/www.google.com\/calendar/.exec(srcValue) !== null) {
+        return; //this is equivalent of 'continue' for jQuery loop
+      }
+      $(this).attr("src", srcValue);
+    });
   });
 
   function clickHandle(e) {
