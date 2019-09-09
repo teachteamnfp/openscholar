@@ -40,11 +40,10 @@
 }
 
 .media-browser-button {
-  width: 175px;
   height: 20px;
   display: inline-block;
   text-align: center;
-  padding: 5px;
+  padding: 5px 10px;
   font-size: 14px;
   color: #215990;
 }
@@ -219,18 +218,28 @@ div.file-filters {
   background-position: 45px -904px;
 }
 
+.media-browser-pane .media-row span.mb-preview {
+  background: #ffffff;
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+#mb-library-header span.mb-preview {
+  margin-left: 15px;
+}
+
 .mb-preview {
   width: 50px;
   height: 50px;
 }
 
 .mb-title {
-  width: 250px;
+  width: 245px;
   word-wrap: break-word;
 }
 
 .mb-filename {
-  width: 250px;
+  width: 245px;
   word-wrap: break-word;
 }
 
@@ -280,7 +289,7 @@ button[ng-disabled="!pager.canPage(-1)"] {
   background-color: #fff;
   font-weight: bold;
   font-size: 1.1em;
-  color: #4e84c4;
+  color: #215990;
 }
 
 .tw-widget button[ng-click="addMore(vocab.id)"] {
@@ -293,7 +302,7 @@ button[ng-disabled="!pager.canPage(-1)"] {
 
 .mb-actions-edit,
 .mb-actions-delete {
-  color: #4e84c4;
+  color: #215990;
 }
 
 .mb-actions-edit:hover,
@@ -664,6 +673,9 @@ div[file-edit] .control button,
 }
 
 /*Media browser position set to fixed to show media browser in same position inspite of page scrolling.*/
+.ui-dialog * {
+  font-size: 14px;
+}
 
 .ui-dialog.media-wrapper {
   position: fixed;
