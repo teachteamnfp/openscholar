@@ -95,7 +95,7 @@
 }
 
 .media-browser-pane .embed-failure .error-icon {
-  background-image: url('../../../../themes/os_basetheme/images/scholarbase-sprite.png');
+  background-image: url('../../../../../themes/os_base/images/scholarbase-sprite.png');
   background-position: -72px -231px;
   width: 24px;
   height: 24px;
@@ -212,7 +212,7 @@ div.file-filters {
 #mb-library-header .mb-title,
 #mb-library-header .mb-filename,
 #mb-library-header .mb-created {
-  background: url('/profiles/openscholar/themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 75px -903px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 75px -903px;
 }
 
 #mb-library-header .mb-title {
@@ -405,6 +405,8 @@ div[file-edit] .control button,
   top: 40%;
   left: 37%;
   font-size: 1.2em;
+  display: flex;
+  align-items: flex-end;
 }
 
 .media-browser-drop-box #drag-text {
@@ -615,7 +617,7 @@ div[file-edit] .control button,
 }
 
 .help_icon {
-  background: url('../../../../themes/os_basetheme/images/scholarbase-sprite.png') no-repeat 0 -150px;
+  background: url('../../../../../themes/os_base/images/scholarbase-sprite.png') no-repeat 0 -150px;
   width: 20px;
   height: 20px;
   text-indent: -10em;
@@ -703,6 +705,7 @@ div[file-edit] .control button,
     flex-wrap: wrap;
     text-align: left;
   }
+
   .media-actions li {
     border-bottom: 1px solid #ccc;
     border-left: 0 none;
