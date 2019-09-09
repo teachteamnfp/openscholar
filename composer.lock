@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b099222f04b12eb38b6e772da03fb26b",
+    "content-hash": "21f5ec548049c10a258f989c198c7709",
     "packages": [
         {
             "name": "academicpuma/citeproc-php",
@@ -5392,62 +5392,31 @@
         },
         {
             "name": "drupal/groupmenu",
-            "version": "1.0.0-beta2",
+            "version": "v1.0-beta4",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/groupmenu.git",
-                "reference": "8.x-1.0-beta2"
+                "url": "https://github.com/openscholar/groupmenu.git",
+                "reference": "7f3d06d28ebdb83512251b03335db18617c0bc4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/groupmenu-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "2a3e49b3dabf7271e5b04a84c7a95cd6ca1aafbf"
+                "url": "https://api.github.com/repos/openscholar/groupmenu/zipball/7f3d06d28ebdb83512251b03335db18617c0bc4f",
+                "reference": "7f3d06d28ebdb83512251b03335db18617c0bc4f",
+                "shasum": ""
             },
             "require": {
-                "drupal/core": "*",
-                "drupal/group": "*"
-            },
-            "require-dev": {
-                "drupal/gnode": "*"
+                "drupal/group": "^1.0-rc2"
             },
             "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1554443887",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Beta releases are not covered by Drupal security advisories."
-                    }
-                },
-                "patches_applied": {
-                    "Change references to entity_id field in group content": "https://www.drupal.org/files/issues/2019-04-04/groupmenu-change_references_to_entity_id-3010909-9.patch",
-                    "Fix error in non vsite pages": "patches/groupmenu.12152.fix-error-in-non-vsite-pages.patch"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "mike.davis",
-                    "homepage": "https://www.drupal.org/user/2660157"
-                },
-                {
-                    "name": "seanB",
-                    "homepage": "https://www.drupal.org/user/545912"
-                }
+                "GPL-2.0+"
             ],
             "description": "Gives the ability to create and manage menus for groups.",
-            "homepage": "https://www.drupal.org/project/groupmenu",
             "support": {
-                "source": "https://git.drupalcode.org/project/groupmenu"
-            }
+                "source": "https://github.com/openscholar/groupmenu/tree/v1.0-beta4",
+                "issues": "https://github.com/openscholar/groupmenu/issues"
+            },
+            "time": "2019-09-09T06:47:04+00:00"
         },
         {
             "name": "drupal/image_widget_crop",
