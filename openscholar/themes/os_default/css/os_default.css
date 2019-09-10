@@ -146,6 +146,7 @@ body.not-logged-in.page-user {
     content: '';
     background-color: #A51C30;
     z-index: -1;
+	padding-top: 50px;
 }
 .not-logged-in.page-user #columns #tasks {
 	margin-bottom: 2em;
@@ -830,8 +831,13 @@ div.messages {
 	width: 980px;
 }
 .page-site.denied div.messages.error {
+<<<<<<< HEAD
     margin: 50px auto 10px auto;
     width: 80%;
+=======
+	margin: 50px auto 10px auto;
+	width: 80%;
+>>>>>>> SCHOLAR-3.x
 }
 div.status {
 	background-image: none;
