@@ -64,7 +64,7 @@ cp.content.collection:
     _controller: '\Drupal\cp\Controller\CpController::overview'
     _title: 'Site Content'
   requirements:
-    _group_permission: 'access control panel'
+    _group_permission: 'access group_node overview'
     _group_member: 'TRUE'
 
 cp.content.add.collection:

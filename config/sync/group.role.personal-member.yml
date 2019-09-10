@@ -137,6 +137,5 @@ permissions:
   150: 'access private apps'
   151: 'create url aliases'
   152: 'promote nodes'
-  153: 'access control panel'
-  154: 'add content to books'
-  155: 'create new books'
+  153: 'add content to books'
+  154: 'create new books'
