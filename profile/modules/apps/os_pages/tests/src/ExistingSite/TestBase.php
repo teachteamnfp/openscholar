@@ -4,12 +4,12 @@ namespace Drupal\Tests\os_pages\ExistingSite;
 
 use Drupal\node\NodeInterface;
 use Drupal\Tests\book\Functional\BookTestTrait;
-use weitzman\DrupalTestTraits\ExistingSiteBase;
+use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 
 /**
  * Test base for running profile tests.
  */
-abstract class TestBase extends ExistingSiteBase {
+abstract class TestBase extends OsExistingSiteTestBase {
 
   use BookTestTrait;
 

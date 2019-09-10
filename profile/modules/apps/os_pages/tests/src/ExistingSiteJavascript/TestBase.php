@@ -4,12 +4,12 @@ namespace Drupal\Tests\os_pages\ExistingSiteJavascript;
 
 use Drupal\node\NodeInterface;
 use Drupal\Tests\book\Functional\BookTestTrait;
-use weitzman\DrupalTestTraits\ExistingSiteWebDriverTestBase;
+use Drupal\Tests\openscholar\ExistingSiteJavascript\OsExistingSiteJavascriptTestBase;
 
 /**
  * Test base for functional javascript tests.
  */
-abstract class TestBase extends ExistingSiteWebDriverTestBase {
+abstract class TestBase extends OsExistingSiteJavascriptTestBase {
 
   use BookTestTrait;
 
