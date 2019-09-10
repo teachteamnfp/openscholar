@@ -144,6 +144,7 @@ module:
   rng_date_scheduler: 0
   rng_quick: 0
   rng_views: 0
+  robotstxt: 0
   search: 0
   serialization: 0
   shorten: 0

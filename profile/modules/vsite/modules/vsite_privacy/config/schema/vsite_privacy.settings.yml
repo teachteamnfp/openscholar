@@ -4,7 +4,7 @@ vsite_privacy.settings:
   mapping:
     robotstxt_directives:
       type: sequence
-        label: 'Robots txt directives'
-        sequence:
-          type: string
-          label: 'Directive'
+      label: 'Robots txt directives'
+      sequence:
+        type: string
+        label: 'Directive'
