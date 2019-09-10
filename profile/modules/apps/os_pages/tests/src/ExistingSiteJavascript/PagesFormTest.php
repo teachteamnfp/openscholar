@@ -15,7 +15,6 @@ class PagesFormTest extends TestBase {
    *
    * @covers ::os_pages_node_prepare_form
    * @covers ::os_pages_form_node_page_form_alter
-   * @covers ::os_pages_node_page_form_set_book
    *
    * @throws \Drupal\Core\Entity\EntityStorageException
    * @throws \Behat\Mink\Exception\ExpectationException

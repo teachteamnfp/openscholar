@@ -280,40 +280,6 @@ function os_pages_form_node_page_form_alter(&$form, FormStateInterface $form_sta
     ],
   ];
   $form['#entity_builders'][] = 'book_node_builder';
-
-  // Handles another way for creating a sub-page.
-  /** @var int|null $pid */
-  $pid = \Drupal::request()->query->get('pid');
-
-  if (!$pid) {
-    return;
-  }
-
-  $page = Node::load($pid);
-
-  if (!isset($page->book['bid'])) {
-    return;
-  }
-
-  $form_state->setTemporary([
-    'bid' => $page->book['bid'],
-    'pid' => $pid,
-  ]);
-  $form['actions']['submit']['#submit'][] = 'os_pages_node_page_form_set_book';
-}
-
-/**
- * Sets default book data for add node page form.
- */
-function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state) {
-  /** @var array $book_data */
-  $book_data = $form_state->getTemporary();
-  /** @var \Drupal\book\BookManagerInterface $book_manager */
-  $book_manager = \Drupal::service('book.manager');
-  $book_manager->saveBookLink($book_data + [
-    'nid' => $form_state->getValue('nid'),
-    'weight' => 0,
-  ], TRUE);
 }
 
 /**
