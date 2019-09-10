@@ -102,23 +102,6 @@ nav {
       background: none;
     }
   }
-  li.expanded {
-    .expanded {
-      > a {
-        &:after {
-
-          width: 0;
-          margin-left: 7px;
-          vertical-align: middle;
-          border-left: 4px solid;
-          border-top: 4px solid transparent;
-          border-bottom: 4px solid transparent;
-          height: 0;
-          display: inline-block;
-        }
-      }
-    }
-  }
   .dropmenu-child {
     display: none;
   }
