@@ -154,17 +154,10 @@
             }
         },
         {
-            "type": "package",
-            "package": {
-                "name": "harvesthq/chosen",
-                "version": "1.8.7",
-                "type": "drupal-library",
-                "dist": {
-                    "url": "https://github.com/harvesthq/chosen-package/archive/v1.8.7.zip",
-                    "type": "zip"
-                }
-            }
+            "type": "composer",
+            "url": "https://asset-packagist.org"
         }
+
     ],
     "require": {
         "composer/installers": "^1.2",
@@ -244,7 +237,9 @@
         "drupal/term_reference_tree": "1.x-dev",
         "drupal/chosen": "^2.7",
         "drupal/config_ignore": "^2.1",
-        "drupal/mail_login": "^1.0"
+        "drupal/mail_login": "^1.0",
+        "oomphinc/composer-installers-extender": "^1.1",
+        "npm-asset/chosen-js": "^1.8"
     },
     "require-dev": {
         "drupal/features": "^3.7",
@@ -309,7 +304,14 @@
         ]
     },
     "extra": {
+        "installer-types": [
+            "bower-asset",
+            "npm-asset"
+        ],
         "installer-paths": {
+            "web/libraries/chosen": [
+                "npm-asset/chosen-js"
+            ],
             "web/core": ["type:drupal-core"],
             "web/libraries/{$name}": ["type:drupal-library"],
             "web/modules/contrib/{$name}": ["type:drupal-module"],
