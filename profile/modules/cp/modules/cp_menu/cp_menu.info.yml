@@ -7,3 +7,5 @@ dependencies:
   - drupal:cp
   - drupal:group
   - drupal:groupmenu
+  - drupal:vsite
+  - drupal:menu_ui

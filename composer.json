@@ -27,6 +27,10 @@
             "url": "https://github.com/openscholar/drupal-test-traits"
         },
         {
+            "type": "vcs",
+            "url": "https://github.com/openscholar/groupmenu"
+        },
+        {
             "type": "package",
             "package": {
                 "name": "kenwheeler/slick",
@@ -227,7 +231,6 @@
         "drupal/easy_breadcrumb": "^1.8",
         "drupal/views_ical": "^2.1",
         "drupal/google_analytics": "^2.4",
-        "drupal/groupmenu": "^1.0",
         "drupal/cancel_button": "^1.1",
         "egulias/email-validator": "1.2.6",
         "doctrine/lexer": "dev-master",
@@ -239,7 +242,8 @@
         "drupal/config_ignore": "^2.1",
         "drupal/mail_login": "^1.0",
         "oomphinc/composer-installers-extender": "^1.1",
-        "npm-asset/chosen-js": "^1.8"
+        "npm-asset/chosen-js": "^1.8",
+        "drupal/groupmenu": "^1.0-beta4"
     },
     "require-dev": {
         "drupal/features": "^3.7",

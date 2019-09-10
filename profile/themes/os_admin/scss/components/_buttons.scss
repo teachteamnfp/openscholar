@@ -1,5 +1,14 @@
-.button.button--primary,
-.button.button--primary:hover {
+@mixin button {
+  padding: 8px 20px;
+  border: none;
+  border-radius: 2px;
+  background-color: $color-gray2;
+  background-image: -webkit-linear-gradient(top, $color-light-gray4, $color-light-gray5);
+  background-image: none;
+  color: $color-white;
+  text-shadow: none;
+}
+@mixin button-primary {
   border-color: $color-link;
   background-color: $color-link;
   background-image: -webkit-linear-gradient(top, $color-link, $color-link);
@@ -7,14 +16,29 @@
   padding: 8px 25px;
   border-radius: 2px;
 }
+.button.button--primary,
+.button.button--primary:hover {
+  @include button-primary();
+}
 .button,
 .button:hover {
-  padding: 8px 20px;
-  border: none;
-  border-radius: 2px;
-  background-color: $color-gray2;;
-  background-image: -webkit-linear-gradient(top, $color-light-gray4, $color-light-gray5);
-  background-image: none;
-  color: $color-white;
-  text-shadow: none;
+  @include button();
+}
+div.cke_reset_all {
+  .cke_dialog_footer_buttons {
+    a.cke_dialog_ui_button, a.cke_dialog_ui_button:hover {
+    @include button();
+      text-shadow: none;
+      span {
+        text-shadow: none;
+      }
+    }
+    a.cke_dialog_ui_button_ok, a.cke_dialog_ui_button_ok:hover {
+      @include button-primary();
+      text-shadow: none;
+      span {
+        text-shadow: none;
+      }
+    }
+  }
 }
