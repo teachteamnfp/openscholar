@@ -175,9 +175,113 @@ function os_pages_entity_insert(EntityInterface $entity) {
 }
 
 /**
- * Implements hook_form_FORM_ID_alter().
+ * Implements hook_ENTITY_TYPE_prepare_form() for pre-setting the data required for creating sub-pages.
+ *
+ * This is an exact copy of `book_node_prepare_form`. It has wrapped everything
+ * in an access check, which makes it impossible to create sub-pages by vsite
+ * members.
+ *
+ * @see \book_node_prepare_form
+ */
+function os_pages_node_prepare_form(NodeInterface $node, $operation, FormStateInterface $form_state) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  // Let the book module handle everything, if node is not meant to be created
+  // for a vsite.
+  if ($active_vsite && book_type_is_allowed($node->getType())) {
+    /** @var \Drupal\book\BookManagerInterface $book_manager */
+    $book_manager = \Drupal::service('book.manager');
+    if (empty($node->book)) {
+      $node->book = [];
+
+      $query = \Drupal::request()->query;
+      if ($node->isNew() && $query->get('parent') !== NULL && is_numeric($query->get('parent'))) {
+        // Handle "Add child page" links:
+        $parent = $book_manager->loadBookLink($query->get('parent'), TRUE);
+
+        if ($parent && $parent['access']) {
+          $node->book['bid'] = $parent['bid'];
+          $node->book['pid'] = $parent['nid'];
+        }
+      }
+      // Set defaults.
+      $node_ref = !$node->isNew() ? $node->id() : 'new';
+      $node->book += $book_manager->getLinkDefaults($node_ref);
+    }
+    elseif (isset($node->book['bid']) && !isset($node->book['original_bid'])) {
+      $node->book['original_bid'] = $node->book['bid'];
+    }
+
+    // Find the depth limit for the parent select.
+    if (isset($node->book['bid']) && !isset($node->book['parent_depth_limit'])) {
+      $node->book['parent_depth_limit'] = $book_manager->getParentDepthLimit($node->book);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for making sure the vsite users are able to create and manage sub-pages.
+ *
+ * Much of the code is similar to `book_form_node_form_alter`. It has wrapped
+ * everything inside an access check, that makes it impossible to create a
+ * sub-page by vsite members.
+ *
+ * @see \book_form_node_form_alter
  */
 function os_pages_form_node_page_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  // Let the book module handle everything, if node is not meant to be created
+  // for a vsite.
+  if (!$active_vsite) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Session\AccountInterface $current_user */
+  $current_user = \Drupal::currentUser();
+  /** @var \Drupal\book\BookManagerInterface $book_manager */
+  $book_manager = \Drupal::service('book.manager');
+  /** @var \Drupal\node\NodeInterface $node */
+  $node = $form_state->getFormObject()->getEntity();
+  $is_already_in_page_hierarchy = !($node->isNew() && !empty($node->book['pid']));
+
+  $access = ($active_vsite->hasPermission('add content to books', $current_user) && book_type_is_allowed($node->getType()));
+
+  $form = $book_manager->addFormElements($form, $form_state, $node, $current_user, $is_already_in_page_hierarchy);
+  // Override the accesses given inside book module.
+  $form['book']['#access'] = $access;
+  $form['book']['bid']['#access'] = $access;
+
+  $nid = !$node->isNew() ? $node->id() : 'new';
+  $options = $form['book']['bid']['#options'];
+  if (($nid === 'new' || ($nid != $node->book['original_bid'])) &&
+    $active_vsite->hasPermission('create new books', $current_user)) {
+    // The node can become a new book, if it is not one already.
+    $options = [$nid => t('- Create a new book -')] + $options;
+  }
+  $form['book']['bid']['#options'] = $options;
+
+  // The "js-hide" class hides submit button when Javascript is enabled.
+  $form['book']['pick-book'] = [
+    '#type' => 'submit',
+    '#value' => t('Change book (update list of parents)'),
+    '#submit' => ['book_pick_book_nojs_submit'],
+    '#weight' => 20,
+    '#attributes' => [
+      'class' => [
+        'js-hide',
+      ],
+    ],
+  ];
+  $form['#entity_builders'][] = 'book_node_builder';
+
+  // Handles another way for creating a sub-page.
   /** @var int|null $pid */
   $pid = \Drupal::request()->query->get('pid');
 
@@ -210,16 +314,6 @@ function os_pages_node_page_form_set_book(&$form, FormStateInterface $form_state
     'nid' => $form_state->getValue('nid'),
     'weight' => 0,
   ], TRUE);
-}
-
-/**
- * Implements hook_form_alter().
- */
-function os_pages_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $flag = $form_id == 'node_page_form' ? TRUE : $form_id == 'node_page_edit_form' ? TRUE : FALSE;
-  if (!$flag) {
-    $form['book']['#access'] = FALSE;
-  }
 }
 
 /**

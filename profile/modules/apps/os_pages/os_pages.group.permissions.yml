@@ -1,0 +1,6 @@
+create new books:
+  title: 'Create new page'
+  section: 'Permission'
+add content to books:
+  title: 'Add content and child pages to pages and manage their hierarchies.'
+  section: 'Permission'

@@ -138,4 +138,5 @@ permissions:
   151: 'create url aliases'
   152: 'promote nodes'
   153: 'access control panel'
-
+  154: 'add content to books'
+  155: 'create new books'
