@@ -76,7 +76,7 @@ class CpCancelButtonTest extends OsExistingSiteJavascriptTestBase {
     $web_assert = $this->assertSession();
 
     // Visit cp browse path.
-    $this->visitViaVsite('cp/content', $this->group);
+    $this->visitViaVsite('cp/content/browse/node', $this->group);
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
     $edit_link = $page->find('css', '.edit-node a');
