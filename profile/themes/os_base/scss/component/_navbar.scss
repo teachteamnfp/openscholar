@@ -6,6 +6,7 @@ $tablet:          "screen and (min-width: #{$screen-sm-min})";
 $normal:          "screen and (min-width: #{$screen-md-min})";
 $wide:            "screen and (min-width: #{$screen-lg-min})";
 $grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
+@import '../mixins/navchild-padding';
 
 body {
   // Fix horizontal scrolling on iOS devices.
@@ -88,6 +89,9 @@ nav {
     margin: 0;
   }
   ul.dropdown-menu {
+    .caret {
+      transform: rotate(270deg);
+    }
     .dropdown-menu {
       left: 100%;
       top: 0;
@@ -151,6 +155,7 @@ nav {
       }
       .dropdown-menu {
         background: none;
+        padding-left: 0;
         li {
           padding-left: 0;
           a {
@@ -200,17 +205,6 @@ nav {
       padding: 0;
     }
   }
+  /**** adding extra space after each ul ****/
+  @include navchildpadding();
 }
-
-// $sel: '';
-// @for $i from 1 through 10 {
-//     $sel: if($i == 1, ".navbar-collapse .navbar-nav ul.dropdown-menu", selector-nest($sel, "ul")) !global;
-//     #{$sel} {
-//       li {
-//         a {
-//           padding-left: 15px ;
-//         }
-//       }
-
-//     }
-// }
