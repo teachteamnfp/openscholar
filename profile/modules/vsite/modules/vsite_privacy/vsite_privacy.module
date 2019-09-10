@@ -16,3 +16,21 @@ function vsite_privacy_allowed_values() {
   $vsite_privacy_manager = \Drupal::service('vsite.privacy.manager');
   return $vsite_privacy_manager->getOptions();
 }
+
+/**
+ * Implements hook_robotstxt().
+ */
+function vsite_privacy_robotstxt() {
+
+  /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
+  $os_publication_settings = \Drupal::config('vsite_privacy.settings');
+  $robots_settings = $os_publication_settings->get('robotstxt_directives');
+  if (empty($robots_settings)) {
+    return [];
+  }
+  $host = \Drupal::request()->getHost();
+  if (isset($robots_settings[$host])) {
+    return $robots_settings[$host];
+  }
+  return [];
+}
