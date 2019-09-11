@@ -10,7 +10,6 @@ $grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
     border: 0 none;
     border-radius: 0;
     @media #{$mobile} {
-      display: block;
       position: inherit;
       background: none;
       margin: 0;
@@ -32,8 +31,7 @@ $grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
         }
         @media #{$mobile} {
           font-weight: normal;
-          padding: 6px 20px;
-          font-size: 20px;
+          padding: 8px 16px;
         }
       }
     }
