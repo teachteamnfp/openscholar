@@ -57,7 +57,7 @@ class CitationExportLinksTest extends TestBase {
     ]);
     $this->group->addContent($this->ref1, 'group_entity:bibcite_reference');
     $this->group->addContent($this->ref2, 'group_entity:bibcite_reference');
-    
+
   }
 
   /**
