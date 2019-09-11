@@ -8,7 +8,7 @@ use Drupal\Tests\openscholar\ExistingSite\OsExistingSiteTestBase;
 /**
  * Class RobotsTxtTest.
  *
- * @group functional
+ * @group kernel
  * @group vsite
  */
 class RobotsTxtTest extends OsExistingSiteTestBase {
