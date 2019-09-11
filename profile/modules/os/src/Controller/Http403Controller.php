@@ -29,6 +29,11 @@ class Http403Controller extends ControllerBase {
 
     return [
       '#markup' => $message,
+      '#attached' => [
+        'library' => [
+          'os/osLoginRedirectAlter',
+        ],
+      ],
     ];
   }
 

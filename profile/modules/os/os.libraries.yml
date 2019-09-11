@@ -229,3 +229,10 @@ osSelectAllOption:
   version: 1.0
   js:
     js/os-select-all-option.module.js: { }
+
+osLoginDestinationAlter:
+  version: 1.0
+  js:
+    js/os.loginDestinationAlter.js: {}
+  dependencies:
+    - core/drupal
