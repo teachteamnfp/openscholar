@@ -24,7 +24,7 @@ os_publictions.citation_export_multiple:
     _title: 'Citation Export'
   requirements:
     # All user can download publication citation
-    _access: 'TURE'
+    _access: 'TRUE'
   options:
     parameters:
       bibcite_format:

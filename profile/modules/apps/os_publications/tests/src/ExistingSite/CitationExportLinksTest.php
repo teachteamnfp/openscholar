@@ -57,8 +57,7 @@ class CitationExportLinksTest extends TestBase {
     ]);
     $this->group->addContent($this->ref1, 'group_entity:bibcite_reference');
     $this->group->addContent($this->ref2, 'group_entity:bibcite_reference');
-
-    $this->drupalLogin($this->groupAdmin);
+    
   }
 
   /**
@@ -113,6 +112,7 @@ class CitationExportLinksTest extends TestBase {
    * Tests export button on node page.
    */
   public function testCitationExportLinksOnNodePage(): void {
+    $this->drupalLogin($this->groupAdmin);
 
     // Test Citation download is available when formats are enabled.
     $this->visitViaVsite('bibcite/reference/' . $this->ref1->id(), $this->group);
@@ -137,6 +137,7 @@ class CitationExportLinksTest extends TestBase {
    * Tests export button on publication listing page.
    */
   public function testCitationExportLinksOnListingViewPage(): void {
+    $this->drupalLogin($this->groupAdmin);
 
     // Test Citation download is available when formats are enabled.
     $this->visitViaVsite('publications', $this->group);
