@@ -42,6 +42,7 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
    * @covers ::os_preprocess_block
    *
    * @throws \Behat\Mink\Exception\ElementNotFoundException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function testInsideCpSetting(): void {
     $account = $this->createUser();
@@ -58,7 +59,7 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
     // Also check whether the destination of "Admin Login" is working as
     // expected.
     $this->getSession()->getPage()->clickLink('Admin Login');
-    $this->assertStringEndsWith("destination={$this->groupAlias}/node", $this->getSession()->getCurrentUrl());
+    $this->assertStringEndsWith("destination={$this->groupAlias}", $this->getSession()->getCurrentUrl());
   }
 
   /**
