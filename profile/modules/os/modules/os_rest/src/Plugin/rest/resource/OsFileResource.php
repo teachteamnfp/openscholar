@@ -72,7 +72,7 @@ class OsFileResource extends FileUploadResource {
     /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file_raw */
     $file_raw = $request->files->get('file');
 
-    if ($newName = $request->request->get('newName')) {
+    if ($newName = $request->request->get('sanitized')) {
       // Make a new file that's the right name.
       $file_raw = new UploadedFile($file_raw->getPathname(), $newName, $file_raw->getMimeType(), $file_raw->getSize(), $file_raw->getError(), TRUE);
     }
