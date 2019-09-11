@@ -10,8 +10,6 @@ os_publictions.citation_export:
   defaults:
     _controller: '\Drupal\os_publications\Controller\CitationExportController::export'
     _title: 'Citation Export'
-  requirements:
-    _group_permission: 'download citations'
   options:
     parameters:
       bibcite_format:
@@ -21,8 +19,6 @@ os_publictions.citation_export_multiple:
   defaults:
     _controller: '\Drupal\os_publications\Controller\CitationExportController::exportMultiple'
     _title: 'Citation Export'
-  requirements:
-    _group_permission: 'download citations'
   options:
     parameters:
       bibcite_format:
