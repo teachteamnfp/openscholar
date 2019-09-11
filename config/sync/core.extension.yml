@@ -40,7 +40,6 @@ module:
   courier: 0
   cp: 0
   cp_appearance: 0
-  cp_menu: 0
   cp_settings: 0
   cp_taxonomy: 0
   cp_users: 0
@@ -176,6 +175,7 @@ module:
   vsite_privacy: 0
   vsite_site_creation: 0
   workflows: 0
+  cp_menu: 1
   menu_link_content: 1
   pathauto: 1
   views: 10

@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Menu\MenuLinkTreeInterface;
 use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\cp_menu\Services\MenuHelper;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -90,12 +91,7 @@ abstract class CpMenuBlockBase extends BlockBase implements ContainerFactoryPlug
   public function getMenuName(string $default) {
     if ($this->vsite) {
       $this->id = $this->vsite->id();
-      if ($default == 'main') {
-        $menu_id = 'menu-primary-' . $this->id;
-      }
-      elseif ($default == 'footer') {
-        $menu_id = 'menu-secondary-' . $this->id;
-      }
+      $menu_id = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$default] . $this->id;
       $vsite_menu = $this->vsite->getContent('group_menu:menu', ['entity_id_str' => $menu_id]);
       return $vsite_menu ? $menu_id : $default;
     }

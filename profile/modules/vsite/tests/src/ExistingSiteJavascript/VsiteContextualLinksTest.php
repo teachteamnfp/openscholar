@@ -156,7 +156,7 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
     $destination = '/edit?destination=' . $this->group->get('path')->getValue()[0]['alias'];
     $this->visitViaVsite("node/{$blog->id()}" . $destination, $this->group);
     $this->getSession()->getPage()->pressButton('Preview');
-    $this->getSession()->wait(500);
+    $this->assertSession()->waitForElementVisible('css', '#edit-backlink');
     $current_url = $this->getSession()->getCurrentUrl();
     $this->assertContains('preview', $current_url);
     $this->assertContains('full', $current_url);

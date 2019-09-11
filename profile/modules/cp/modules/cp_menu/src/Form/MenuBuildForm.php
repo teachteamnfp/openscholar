@@ -13,6 +13,7 @@ use Drupal\Core\Menu\MenuTreeParameters;
 use Drupal\Core\Render\Element;
 use Drupal\Core\Url;
 use Drupal\cp_menu\MenuHelperInterface;
+use Drupal\cp_menu\Services\MenuHelper;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -372,13 +373,8 @@ class MenuBuildForm extends FormBase {
             if ($key == 'parent' && $value) {
               $old_parent = $this->menuLinkManager->getDefinition($value)['title'];
             }
-            if ($key == 'menu_name' && $value == 'footer') {
-              $updated_values[$key] = 'menu-secondary-' . $vsite->id();
-            }
-            if ($key == 'menu_name' && $value == 'main') {
-              $updated_values[$key] = 'menu-primary-' . $vsite->id();
-            }
             if ($key == 'menu_name') {
+              $updated_values[$key] = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$value] . $vsite->id();
               $menu_name[] = $this->menuLinkManager->getDefinition($element['#item']->link->getPluginId())['menu_name'];
             }
           }
@@ -465,7 +461,7 @@ class MenuBuildForm extends FormBase {
           '#type' => 'link',
           '#url' => Url::fromRoute('cp.build.edit_menu_link', ['link_id' => $link->getPluginId()]),
           '#attributes' => [
-            'class' => ['use-ajax', 'fa', 'fa-edit'],
+            'class' => ['use-ajax', 'far', 'fa-edit'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'edit_menu_link',
@@ -480,7 +476,7 @@ class MenuBuildForm extends FormBase {
             'link_title' => $link->getTitle(),
           ]),
           '#attributes' => [
-            'class' => ['use-ajax', 'fa', 'fa-trash'],
+            'class' => ['use-ajax', 'far', 'fa-trash-alt'],
             'data-dialog-type' => 'modal',
             'data-dialog-options' => json_encode(['width' => '50%']),
             'id' => 'delete_menu_link',
