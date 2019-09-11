@@ -25,6 +25,7 @@ module:
   ckeditor: 0
   ckeditor_bidi: 0
   colorbutton: 0
+  colordialog: 0
   comment: 0
   config: 0
   config_filter: 0
