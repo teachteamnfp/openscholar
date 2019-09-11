@@ -50,6 +50,10 @@ class CpTest extends OsExistingSiteJavascriptTestBase {
     $this->visitViaVsite('cp/content', $this->group);
     // Go to edit path.
     $page = $this->getCurrentPage();
+    $this->getSession()->resizeWindow(1440, 900, 'current');
+    $this->getSession()->executeScript("window.scrollBy(0,1000)");
+    file_put_contents('public://screenshot.jpg', $this->getSession()->getScreenshot());
+    file_put_contents('public://page-name.html', $this->getCurrentPageContent());
     $login_link = $page->findLink('Admin Login');
     $this->assertNotNull($login_link);
     $web_assert->statusCodeEquals(403);
