@@ -18,6 +18,7 @@ use Drupal\cp_menu\Form\Multistep\Manager\StepManager;
 use Drupal\cp_menu\Form\Multistep\Step\StepOne;
 use Drupal\cp_menu\Form\Multistep\Step\StepTwo;
 use Drupal\cp_menu\MenuHelperInterface;
+use Drupal\cp_menu\Services\MenuHelper;
 use Drupal\vsite\Plugin\VsiteContextManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -318,22 +319,16 @@ class MenuLinkAddForm extends FormBase {
     }
 
     $type = $this->store->get('link_type');
-    $menu_id = $this->store->get('menu_name');
     $values = $form_state->getValues();
 
     $vsite = $this->vsiteManager->getActiveVsite();
     $menus = $vsite->getContent('group_menu:menu');
+    $menu_id = $this->store->get('menu_name');
+    $vsite_menu_id = $menus ? $menu_id : (MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_id] . $vsite->id());
     // If first time then create a new menu by replicating shared menus.
     if (!$menus) {
       // Create new menus.
       $this->menuHelper->createVsiteMenus($vsite);
-      // Map menu ids so that new links get saved in newly created menus.
-      if ($menu_id == 'main') {
-        $menu_id = 'menu-primary-' . $vsite->id();
-      }
-      elseif ($menu_id == 'footer') {
-        $menu_id = 'menu-secondary-' . $vsite->id();
-      }
     }
 
     // Decide the data to be saved in the link based on link types.
@@ -365,7 +360,7 @@ class MenuLinkAddForm extends FormBase {
     $this->entityTypeManager->getStorage('menu_link_content')->create([
       'title' => $this->t('@title', ['@title' => $values['title']]),
       'link' => ['uri' => $url, 'options' => $options ?? []],
-      'menu_name' => $menu_id,
+      'menu_name' => $vsite_menu_id,
       'description' => $values['tooltip'] ?? '',
       'expanded' => TRUE,
     ])->save();
@@ -375,7 +370,7 @@ class MenuLinkAddForm extends FormBase {
     $response->addCommand(new RedirectCommand($currentURL->toString()));
 
     // Call the block cache clear method as changes are made.
-    $this->menuHelper->invalidateBlockCache($vsite, $menu_id);
+    $this->menuHelper->invalidateBlockCache($vsite, $vsite_menu_id);
 
     return $response;
   }

@@ -17,7 +17,7 @@ interface MenuHelperInterface {
    *   The vsite in context.
    *
    * @return array
-   *   The menu tree.
+   *   The primary menu tree.
    */
   public function createVsiteMenus(GroupInterface $vsite) : array;
 

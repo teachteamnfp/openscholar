@@ -1,0 +1,128 @@
+<?php
+
+/**
+ * @file
+ * Management of a vsite's menus.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\cp_menu\Services\MenuHelper;
+
+/**
+ * Implements hook_form_BASE_FORM_ID_alter() for node menu create form element.
+ *
+ * Drupal's menu system and groupmenu module handles menu creation for node.
+ * But since, in our case, vsites must share default menu items, therefore, it
+ * makes sure that user is still able to create menu item for node, even when
+ * the vsite does not has its own menus.
+ *
+ * @see \groupmenu_form_node_form_alter
+ * @see \menu_ui_form_node_form_alter
+ * @see \cp_menu_form_alter
+ */
+function cp_menu_form_node_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+  $vsite_context_manager = \Drupal::service('vsite.context_manager');
+  /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+  $active_vsite = $vsite_context_manager->getActiveVsite();
+
+  if (!$active_vsite) {
+    return;
+  }
+
+  /** @var \Drupal\group\Entity\GroupContentInterface[] $vsite_menus */
+  $vsite_menus = $active_vsite->getContent('group_menu:menu');
+
+  // Let the other form alters handle node menu creation, if vsite has its own
+  // menus.
+  if ($vsite_menus) {
+    return;
+  }
+
+  /** @var \Drupal\Core\Session\AccountInterface $current_user */
+  $current_user = \Drupal::currentUser();
+
+  $form['menu']['#access'] = $active_vsite->hasPermission('manage_menu', $current_user);
+  $form['actions']['submit']['#submit'][] = 'cp_menu_form_node_form_submit';
+}
+
+/**
+ * Implements hook_module_implements_alter() for making sure that cp_menu's node form alter runs in the end.
+ */
+function cp_menu_module_implements_alter(&$implementations, $hook) {
+  if ($hook === 'form_alter') {
+    $cp_menu_group = $implementations['cp_menu'];
+    unset($implementations['cp_menu']);
+    $implementations['cp_menu'] = $cp_menu_group;
+  }
+}
+
+/**
+ * Implements hook_form_alter() for making sure cp_menu_form_node_form_alter is invoked after groupmenu_form_node_form_alter.
+ *
+ * @see \cp_menu_module_implements_alter
+ * @see \cp_menu_form_node_form_alter
+ */
+function cp_menu_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Only required because cp_menu_form_node_form_alter needs to be invoked
+  // after `groupmenu_form_node_form_alter`. See
+  // cp_menu_module_implements_alter.
+}
+
+/**
+ * Creates vsite menus if required.
+ *
+ * @see \menu_ui_form_node_form_alter
+ * @see \Drupal\cp_menu\Services\MenuHelper::createVsiteMenus
+ */
+function cp_menu_form_node_form_submit(array &$form, FormStateInterface $form_state) {
+  $menu_values = $form_state->getValue('menu');
+
+  if ((bool) $menu_values['enabled']) {
+    /** @var \Drupal\node\NodeInterface $node */
+    $node = $form_state->getFormObject()->getEntity();
+    /** @var \Drupal\Core\Entity\EntityStorageInterface $menu_link_content_storage */
+    $menu_link_content_storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+    /** @var \Drupal\Core\Menu\MenuLinkManagerInterface $menu_link_manager */
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+
+    list($menu_name, $parent) = explode(':', $menu_values['menu_parent'], 2);
+    $new_menu_link = $menu_link_content_storage->loadByProperties([
+      'link__uri' => "entity:node/{$node->id()}",
+    ]);
+
+    // If a menu link was created inside `menu_ui_form_node_form_alter`, only
+    // then we proceed.
+    if ($new_menu_link) {
+      /** @var \Drupal\menu_link_content\MenuLinkContentInterface $menu_link_content */
+      $menu_link_content = reset($new_menu_link);
+      /** @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $vsite_context_manager */
+      $vsite_context_manager = \Drupal::service('vsite.context_manager');
+      /** @var \Drupal\group\Entity\GroupInterface $active_vsite */
+      $active_vsite = $vsite_context_manager->getActiveVsite();
+      /** @var \Drupal\cp_menu\MenuHelperInterface $menu_helper_service */
+      $menu_helper_service = \Drupal::service('cp_menu.menu_helper');
+
+      $menu_helper_service->createVsiteMenus($active_vsite);
+
+      if ((bool) $parent) {
+        $vsite_menu_name = MenuHelper::DEFAULT_VSITE_MENU_MAPPING[$menu_name] . $active_vsite->id();
+
+        // Load the newly created parent menu, so that the node menu link's
+        // parent could be updated.
+        $parent_menu_link_definition = $menu_link_manager->getDefinition($parent);
+        $vsite_parent_menu = $menu_link_content_storage->loadByProperties([
+          'menu_name' => $vsite_menu_name,
+          'link__uri' => "route:{$parent_menu_link_definition['route_name']}",
+        ]);
+        /** @var \Drupal\menu_link_content\MenuLinkContentInterface $vsite_parent_menu_link_content */
+        $vsite_parent_menu_link_content = reset($vsite_parent_menu);
+
+        $menu_link_content
+          ->set('menu_name', $vsite_menu_name)
+          ->set('parent', $vsite_parent_menu_link_content->getPluginId())
+          ->save();
+      }
+    }
+  }
+}
