@@ -1,15 +1,28 @@
-.ui-dialog {
-  .ui-dialog-titlebar {
+div.ui-dialog, div.cke_reset_all {
+  .ui-dialog-titlebar, .cke_dialog_title {
     background: $color-blue;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     padding: 15px 49px 15px 15px;
   }
-  .ui-dialog-titlebar-close {
+  .ui-dialog-titlebar-close, .cke_dialog_close_button {
     border-color: $color-white;
     color: $color-white;
   }
 }
 .cke_mathjax_doc {
   color: $color-blue !important;
+}
+/**** ui dialog ckeditor ****/
+ div.cke_reset_all {
+  .cke_dialog {
+    .cke_dialog_close_button {
+      top: 10px;
+      height: 24px;
+      width: 24px;
+      border: 3px solid $color-white;
+      border-radius: 5px;
+      background-position: center;
+    }
+  }
 }
