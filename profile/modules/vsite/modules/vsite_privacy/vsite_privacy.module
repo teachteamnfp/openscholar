@@ -5,6 +5,9 @@
  * Hook implementations and stand-alone callbacks.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\group\Entity\Group;
+
 /**
  * Returns a list of allowed privacy options.
  *
@@ -21,16 +24,32 @@ function vsite_privacy_allowed_values() {
  * Implements hook_robotstxt().
  */
 function vsite_privacy_robotstxt() {
+  /** @var \Drupal\vsite_privacy\VsitePrivacyHelper $vsite_privacy_helper */
+  $vsite_privacy_helper = Drupal::service('vsite_privacy.helper');
+  return $vsite_privacy_helper->getRobotstxtDirectives();
+}
 
-  /** @var \Drupal\Core\Config\ImmutableConfig $os_publication_settings */
-  $os_publication_settings = \Drupal::config('vsite_privacy.settings');
-  $robots_settings = $os_publication_settings->get('robotstxt_directives');
-  if (empty($robots_settings)) {
-    return [];
-  }
-  $host = \Drupal::request()->getHost();
-  if (isset($robots_settings[$host])) {
-    return $robots_settings[$host];
-  }
-  return [];
+/**
+ * Implements hook_group_update().
+ */
+function vsite_privacy_group_update(EntityInterface $entity) {
+  vsite_privacy_update_robots($entity);
+}
+
+/**
+ * Implements hook_group_insert().
+ */
+function vsite_privacy_group_insert(EntityInterface $entity) {
+  vsite_privacy_update_robots($entity);
+}
+
+/**
+ * Updates robots.txt settings config.
+ *
+ * @see vsite_privacy_robotstxt()
+ */
+function vsite_privacy_update_robots(Group $group) {
+  /** @var \Drupal\vsite_privacy\VsitePrivacyHelper $vsite_privacy_helper */
+  $vsite_privacy_helper = Drupal::service('vsite_privacy.helper');
+  $vsite_privacy_helper->updateRobotstxtDirectives($group);
 }
