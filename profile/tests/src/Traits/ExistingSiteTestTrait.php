@@ -279,4 +279,30 @@ trait ExistingSiteTestTrait {
     $this->markEntityForCleanup($menuLink);
   }
 
+  /**
+   * Loads node by title.
+   *
+   * If there are multiple nodes by same title then this will return only the
+   * first one. So, make sure the title is unique when you are creating it in a
+   * test.
+   *
+   * @param string $title
+   *   The title.
+   *
+   * @return \Drupal\node\NodeInterface|false
+   *   Returns the node if found, otherwise FALSE.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  protected function loadNodeByTitle(string $title) {
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
+    $entity_type_manager = $this->container->get('entity_type.manager');
+    $nodes = $entity_type_manager
+      ->getStorage('node')
+      ->loadByProperties(['title' => $title]);
+
+    return reset($nodes);
+  }
+
 }

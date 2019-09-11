@@ -26,6 +26,11 @@ use Drupal\vsite\Plugin\VsiteContextManager;
 class MenuHelper implements MenuHelperInterface {
   use StringTranslationTrait;
 
+  public const DEFAULT_VSITE_MENU_MAPPING = [
+    'main' => 'menu-primary-',
+    'footer' => 'menu-secondary-',
+  ];
+
   /**
    * Config factory service.
    *
@@ -280,25 +285,21 @@ class MenuHelper implements MenuHelperInterface {
       if (!$menus) {
         // Create new menus.
         $this->createVsiteMenus($vsite);
-        // Map menu ids so that new links get saved in newly created menus.
-        if ($menuId == 'main') {
-          $menuId = 'menu-primary-' . $vsite->id();
-        }
-        elseif ($menuId == 'footer') {
-          $menuId = 'menu-secondary-' . $vsite->id();
-        }
+
+        $vsiteMenuId = self::DEFAULT_VSITE_MENU_MAPPING[$menuId] . $vsite->id();
+
+        // Create a new menu_link_content entity.
+        MenuLinkContent::create([
+          'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
+          'langcode' => $reference->language()->getId(),
+          'enabled' => TRUE,
+          'title' => trim($values['menu']['title']),
+          'description' => trim($values['menu']['description']),
+          'menu_name' => $vsiteMenuId,
+        ])->save();
+        // Call the block cache clear method as changes are made.
+        $this->invalidateBlockCache($vsite, $vsiteMenuId);
       }
-      // Create a new menu_link_content entity.
-      MenuLinkContent::create([
-        'link' => ['uri' => 'entity:bibcite_reference/' . $reference->id()],
-        'langcode' => $reference->language()->getId(),
-        'enabled' => TRUE,
-        'title' => trim($values['menu']['title']),
-        'description' => trim($values['menu']['description']),
-        'menu_name' => $menuId,
-      ])->save();
-      // Call the block cache clear method as changes are made.
-      $this->invalidateBlockCache($vsite, $menuId);
     }
   }
 
@@ -352,9 +353,19 @@ class MenuHelper implements MenuHelperInterface {
     foreach ($sharedMenuTree as $links) {
       $definition = $links->link->getPluginDefinition();
       $route_name = $definition['route_name'];
+
+      $link_uri = "route:$route_name";
+      // Make sure all necessary info is present for node routes.
+      // This method wouldn't be invoked if there are publication menus,
+      // because, that would be mean vsite menus are already present.
+      // See \os_publications_bibcite_reference_form_submit.
+      if ($route_name === 'entity.node.canonical') {
+        $link_uri = "entity:node/{$definition['route_parameters']['node']}";
+      }
+
       $this->storage->create([
         'title' => $this->t('@title', ['@title' => $definition['title']]),
-        'link' => ['uri' => "route:$route_name"],
+        'link' => ['uri' => $link_uri],
         'menu_name' => $group_menu->id(),
         'weight' => $definition['weight'],
         'expanded' => TRUE,
