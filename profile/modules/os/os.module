@@ -64,8 +64,6 @@ function os_preprocess_html(&$variables) {
 function os_preprocess_block(array &$vars) {
   if (isset($vars['plugin_id']) && $vars['plugin_id'] == 'system_powered_by_block') {
     $vars['content']['#markup'] = '';
-    // TODO: add `vsite:id` cache context.
-    $vars['#cache']['contexts'][] = 'user.roles:anonymous';
 
     if (\Drupal::currentUser()->isAnonymous()) {
       $vars['content']['#markup'] .= Link::createFromRoute(t('Admin Login'), 'user.login')->toString();
