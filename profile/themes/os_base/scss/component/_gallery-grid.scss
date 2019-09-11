@@ -1,0 +1,10 @@
+/**** gallery grid ****/
+.field--name-field-gallery-media {
+  .field--items {
+    columns: 4 210px;
+    column-gap: .1em;
+    .field--item {
+      padding: 4px;
+    }
+  }
+}
