@@ -85,4 +85,31 @@ class PostLogoutRedirectTest extends OsExistingSiteJavascriptTestBase {
     $this->assertStringEndsWith($this->groupAlias, $this->getSession()->getCurrentUrl());
   }
 
+  /**
+   * Tests whether login redirect is correct for private vsite.
+   *
+   * @covers ::os_preprocess_block
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   */
+  public function testPrivateVsiteLoginRedirect(): void {
+    // Setup.
+    $private_vsite = $this->createPrivateGroup();
+    $private_vsite_alias = $private_vsite->get('path')->first()->getValue()['alias'];
+
+    // Tests.
+    $this->visitViaVsite('publications', $private_vsite);
+
+    $login_link_inside_message = $this->getSession()->getPage()->findLink('log in here');
+    $login_link_inside_message->click();
+    $this->assertStringEndsWith("destination={$private_vsite_alias}/publications", $this->getSession()->getCurrentUrl());
+
+    $this->visitViaVsite('publications', $private_vsite);
+
+    $login_link_inside_footer = $this->getSession()->getPage()->findLink('Admin Login');
+    $login_link_inside_footer->click();
+    $this->assertStringEndsWith("destination={$private_vsite_alias}/publications", $this->getSession()->getCurrentUrl());
+  }
+
 }
