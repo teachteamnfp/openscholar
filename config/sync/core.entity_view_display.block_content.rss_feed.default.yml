@@ -9,7 +9,6 @@ dependencies:
     - field.field.block_content.rss_feed.field_widget_title
   module:
     - layout_builder
-    - options
 third_party_settings:
   layout_builder:
     sections: {  }
@@ -18,13 +17,6 @@ targetEntityType: block_content
 bundle: rss_feed
 mode: default
 content:
-  field_content_to_display:
-    weight: 1
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_widget_title:
     weight: 0
     label: hidden
@@ -34,5 +26,6 @@ content:
     type: string
     region: content
 hidden:
+  field_content_to_display: true
   field_is_show_all_content: true
   langcode: true
