@@ -2,7 +2,6 @@
 
 namespace Drupal\Tests\cp_taxonomy\ExistingSiteJavascript;
 
-use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
@@ -70,17 +69,17 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    * Test node taxonomy terms field autocomplete.
    */
   public function testNodeTaxonomyTermsFieldAutocompleteSuccess() {
-    $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 1 group 1 vid1');
-    $this->createGroupTerm($this->group1, 'vocab_group_1', 'Term 2 group 1 vid1');
-    $this->createGroupTerm($this->group2, 'vocab_group_2', 'Term 1 group 2 vid2');
+    $this->createGroupTerm($this->group1, 'vocab_group_1', ['name' => 'Term 1 group 1 vid1']);
+    $this->createGroupTerm($this->group1, 'vocab_group_1', ['name' => 'Term 2 group 1 vid1']);
+    $this->createGroupTerm($this->group2, 'vocab_group_2', ['name' => 'Term 1 group 2 vid2']);
 
     $this->visitViaVsite("node/add/taxonomy_test_1", $this->group1);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $is_exists = $page->hasContent('Tag with Terms');
+    $is_exists = $page->hasContent('vocab_group_1');
     $this->assertTrue($is_exists, 'Tag with Terms field is not visible.');
-    $tags = $page->findField('field_taxonomy_terms[0][target_id]');
+    $tags = $page->findField('field_taxonomy_terms[vocab_group_1][0][target_id]');
     $tags->setValue('Ter');
     $tags->keyDown('m');
     /** @var \Behat\Mink\Element\NodeElement $result */
@@ -97,16 +96,16 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
    */
   public function testMediaTaxonomyTermsFieldAutocompleteSuccess() {
     $this->createGroupVocabulary($this->group1, 'vocab_media_group_1', ['media:*']);
-    $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 1 group 1 vid1');
-    $this->createGroupTerm($this->group1, 'vocab_media_group_1', 'Term 2 group 1 vid1');
+    $this->createGroupTerm($this->group1, 'vocab_media_group_1', ['name' => 'Term 1 group 1 vid1']);
+    $this->createGroupTerm($this->group1, 'vocab_media_group_1', ['name' => 'Term 2 group 1 vid1']);
 
     $this->visitViaVsite("media/add/taxonomy_test_file", $this->group1);
     $web_assert = $this->assertSession();
     $web_assert->statusCodeEquals(200);
     $page = $this->getCurrentPage();
-    $is_exists = $page->hasContent('Tag with Terms');
+    $is_exists = $page->hasContent('vocab_media_group_1');
     $this->assertTrue($is_exists, 'Tag with Terms field is not visible.');
-    $tags = $page->findField('field_taxonomy_terms[0][target_id]');
+    $tags = $page->findField('field_taxonomy_terms[vocab_media_group_1][0][target_id]');
     $tags->setValue('Ter');
     $tags->keyDown('m');
     /** @var \Behat\Mink\Element\NodeElement $result */
@@ -127,19 +126,6 @@ class TaxonomyTermsFieldTest extends CpTaxonomyExistingSiteJavascriptTestBase {
     $page = $this->getCurrentPage();
     $is_exists = $page->hasContent('Tag with Terms');
     $this->assertFalse($is_exists, 'Tag with Terms field is visible.');
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function tearDown() {
-    $this->vsiteContextManager->activateVsite($this->group1);
-    $vocabulary_1 = Vocabulary::load('vocab_group_1');
-    $vocabulary_1->delete();
-    $this->vsiteContextManager->activateVsite($this->group2);
-    $vocabulary_2 = Vocabulary::load('vocab_group_2');
-    $vocabulary_2->delete();
-    parent::tearDown();
   }
 
 }
