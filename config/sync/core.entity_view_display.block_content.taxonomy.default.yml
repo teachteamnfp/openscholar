@@ -27,99 +27,12 @@ targetEntityType: block_content
 bundle: taxonomy
 mode: default
 content:
-  field_taxonomy_behavior:
-    weight: 2
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
   field_taxonomy_bundle:
-    weight: 11
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_taxonomy_display_type:
-    weight: 10
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_taxonomy_offset:
-    weight: 4
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_taxonomy_range:
-    weight: 3
-    label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
-    third_party_settings: {  }
-    type: number_integer
-    region: content
-  field_taxonomy_show_children:
-    weight: 7
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_taxonomy_show_count:
-    weight: 9
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_taxonomy_show_empty_terms:
-    weight: 5
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_taxonomy_show_term_desc:
-    weight: 6
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_taxonomy_tree_depth:
-    weight: 8
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
-    region: content
-  field_taxonomy_vocabulary:
     weight: 1
     label: above
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: list_default
     region: content
   field_widget_title:
     weight: 0
@@ -130,4 +43,14 @@ content:
     type: string
     region: content
 hidden:
+  field_taxonomy_behavior: true
+  field_taxonomy_display_type: true
+  field_taxonomy_offset: true
+  field_taxonomy_range: true
+  field_taxonomy_show_children: true
+  field_taxonomy_show_count: true
+  field_taxonomy_show_empty_terms: true
+  field_taxonomy_show_term_desc: true
+  field_taxonomy_tree_depth: true
+  field_taxonomy_vocabulary: true
   langcode: true

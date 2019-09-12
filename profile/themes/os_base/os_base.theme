@@ -48,3 +48,15 @@ function os_base_preprocess_item_list__os_dropdown(&$variables) {
     $item['value']['#title'] = $icon;
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for block.html.twig.
+ */
+function os_base_preprocess_block(&$variables) {
+
+  // Adding custom attribute class for block.
+  if ($variables['elements']['#base_plugin_id'] == 'block_content') {
+    $blockType = strtr($variables['content']['#block_content']->bundle(), '_', '-');
+    $variables['attributes']['class'][] = 'block--type-' . $blockType;
+  }
+}
