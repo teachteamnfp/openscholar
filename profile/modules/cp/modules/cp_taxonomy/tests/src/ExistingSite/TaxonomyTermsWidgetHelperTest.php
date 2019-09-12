@@ -5,7 +5,6 @@ namespace Drupal\Tests\cp_taxonomy\ExistingSite;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\cp_taxonomy\CpTaxonomyHelper;
 use Drupal\node\Entity\Node;
-use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
 
 /**
  * Class TaxonomyTermsWidgetHelperTest.
@@ -16,8 +15,6 @@ use Drupal\Tests\openscholar\Traits\CpTaxonomyTestTrait;
  * @package Drupal\Tests\cp_taxonomy\ExistingSite
  */
 class TaxonomyTermsWidgetHelperTest extends TestBase {
-
-  use CpTaxonomyTestTrait;
 
   protected $unSavedNode;
 
