@@ -32,7 +32,7 @@ class CpTaxonomyCacheTest extends CpTaxonomyExistingSiteJavascriptTestBase {
       'bibcite_reference:*',
     ];
     $this->createGroupVocabulary($this->group, 'vocab_group_1', $allowed_types);
-    $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', 'Term1');
+    $this->term = $this->createGroupTerm($this->group, 'vocab_group_1', ['name' => 'Term1']);
     $this->vsiteContextManager->activateVsite($this->group);
   }
 

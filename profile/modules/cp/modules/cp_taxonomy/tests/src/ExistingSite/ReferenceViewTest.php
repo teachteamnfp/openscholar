@@ -43,8 +43,8 @@ class ReferenceViewTest extends TestBase {
     $vid = 'reference_test';
     $this->createGroupVocabulary($this->group1, $vid, ['node:taxonomy_test_1']);
     $this->createGroupVocabulary($this->group2, 'other_vocab', ['node:taxonomy_test_1']);
-    $this->createGroupTerm($this->group1, $vid, 'Test term 1');
-    $this->createGroupTerm($this->group2, $vid, 'Test term 2');
+    $this->createGroupTerm($this->group1, $vid, ['name' => 'Test term 1']);
+    $this->createGroupTerm($this->group2, $vid, ['name' => 'Test term 2']);
     $this->vsiteContextManager->activateVsite($this->group1);
     $view = Views::getView('reference_taxonomy_term');
     $view->setDisplay('entity_reference_1');

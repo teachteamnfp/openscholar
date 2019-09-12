@@ -94,9 +94,9 @@ interface CpTaxonomyHelperInterface {
    * @param string $entity_bundle
    *   Entity bundle.
    *
-   * @return string
-   *   Found first settings of vocabularies related to entity type.
+   * @return array
+   *   All types of vocabularies related to entity type.
    */
-  public function getWidgetType(string $entity_bundle): string;
+  public function getWidgetTypes(string $entity_bundle): array;
 
 }
