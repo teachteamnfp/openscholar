@@ -20,6 +20,7 @@ class PrivateVsiteGuardTest extends OsExistingSiteTestBase {
    * @covers ::access
    *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
+   * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function test(): void {
     /** @var \Drupal\Core\Session\AccountProxyInterface $current_user */

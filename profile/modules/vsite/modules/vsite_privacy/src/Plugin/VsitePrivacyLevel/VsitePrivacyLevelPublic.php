@@ -2,9 +2,7 @@
 
 namespace Drupal\vsite_privacy\Plugin\VsitePrivacyLevel;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelInterface;
-use Drupal\Core\Session\AccountInterface;
+use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelPluginBase;
 
 /**
  * Vsite privacy level.
@@ -16,13 +14,4 @@ use Drupal\Core\Session\AccountInterface;
  *   weight = -1000
  * )
  */
-class VsitePrivacyLevelPublic extends PluginBase implements VsitePrivacyLevelInterface {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function checkAccess(AccountInterface $account): bool {
-    return TRUE;
-  }
-
-}
+class VsitePrivacyLevelPublic extends VsitePrivacyLevelPluginBase {}

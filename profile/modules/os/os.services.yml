@@ -10,6 +10,6 @@ services:
       - { name: event_subscriber }
   os.private_vsite_guard:
     class: \Drupal\os\PrivateVsiteGuard
-    arguments: ['@vsite.context_manager']
+    arguments: ['@vsite.context_manager', '@vsite.privacy.manager']
     tags:
       - { name: access_check, applies_to: _os_private_vsite_guard }

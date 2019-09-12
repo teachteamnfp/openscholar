@@ -2,9 +2,8 @@
 
 namespace Drupal\vsite_privacy\Plugin\VsitePrivacyLevel;
 
-use Drupal\Component\Plugin\PluginBase;
-use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\vsite_privacy\Plugin\VsitePrivacyLevelPluginBase;
 
 /**
  * Vsite privacy level.
@@ -16,26 +15,24 @@ use Drupal\Core\Session\AccountInterface;
  *   weight = 1
  * )
  */
-class VsitePrivacyLevelPrivate extends PluginBase implements VsitePrivacyLevelInterface {
+class VsitePrivacyLevelPrivate extends VsitePrivacyLevelPluginBase {
 
   /**
    * {@inheritdoc}
    */
   public function checkAccess(AccountInterface $account): bool {
-    if ($account->id() == 1) {
-      return TRUE;
+    $access = parent::checkAccess($account);
+
+    /** @var \Drupal\group\Entity\GroupInterface|null $active_vsite */
+    $active_vsite = $this->vsiteContextManager->getActiveVsite();
+
+    if (!$active_vsite || $account->isAnonymous()) {
+      return FALSE;
     }
-    $roles = $account->getRoles();
-    // If ($roles = support team or site member) return true
-    // TODO: Revisit when role ids are determined.
-    /* @var \Drupal\vsite\Plugin\VsiteContextManagerInterface $ctxManager */
-    $ctxManager = \Drupal::service('vsite.context_manager');
-    if ($group = $ctxManager->getActiveVsite()) {
-      if ($member = $group->getMember($account)) {
-        return TRUE;
-      }
-    }
-    return FALSE;
+
+    $vsite_membership = $active_vsite->getMember($account);
+
+    return ($access && $vsite_membership);
   }
 
 }
