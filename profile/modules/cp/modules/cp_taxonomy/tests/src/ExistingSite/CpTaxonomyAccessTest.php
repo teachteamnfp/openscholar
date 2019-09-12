@@ -94,8 +94,8 @@ class CpTaxonomyAccessTest extends TestBase {
   public function testCpTermAccess(): void {
     $vid = 'test_vocab';
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
-    $this->createGroupTerm($this->group, $vid, 'Aterm');
-    $this->createGroupTerm($this->group, $vid, 'Bterm');;
+    $this->createGroupTerm($this->group, $vid, ['name' => 'Aterm']);
+    $this->createGroupTerm($this->group, $vid, ['name' => 'Bterm']);;
 
     // Test positive case on term overview page.
     $this->drupalLogin($this->groupAdmin);
