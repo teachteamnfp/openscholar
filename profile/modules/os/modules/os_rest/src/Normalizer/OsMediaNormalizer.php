@@ -98,10 +98,10 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     }
 
     if ($output['type'] == 'document') {
-      $output['description'] = $temp['field_media_file'][0]['description'] ?? $temp['field_media_file'][0]['description'];
+      $output['description'] = $temp['field_media_file'][0]['description'];
     }
     elseif ($output['type'] == 'video') {
-      $output['description'] = $temp['field_media_video_file'][0]['description'] ?? $temp['field_media_video_file'][0]['description'];
+      $output['description'] = $temp['field_media_video_file'][0]['description'];
     }
     $output['thumbnail'] = $temp['thumbnail'][0]['url'];
 
@@ -118,14 +118,13 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['alt', 'title']);
       $entity->_restSubmittedFields[] = 'field_media_image';
     }
-    if (in_array('description', $entity->_restSubmittedFields)) {
-      $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['description']);
-      if ($entity->bundle() == 'document') {
-        $entity->_restSubmittedFields[] = 'field_media_file';
-      }
-      elseif ($entity->bundle() == 'video') {
-        $entity->_restSubmittedFields[] = 'field_media_video_file';
-      }
+
+    $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['description']);
+    if ($entity->bundle() == 'document') {
+      $entity->_restSubmittedFields[] = 'field_media_file';
+    }
+    elseif ($entity->bundle() == 'video') {
+      $entity->_restSubmittedFields[] = 'field_media_video_file';
     }
     $entity->restSubmittedFields = array_diff($entity->_restSubmittedFields, ['fid']);
 
