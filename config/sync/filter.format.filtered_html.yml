@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - editor
-    - os_media
     - os_wysiwyg
 name: 'Filtered HTML'
 format: filtered_html
@@ -13,12 +12,6 @@ filters:
   editor_file_reference:
     id: editor_file_reference
     provider: editor
-    status: true
-    weight: 0
-    settings: {  }
-  filter_align:
-    id: filter_align
-    provider: filter
     status: true
     weight: 0
     settings: {  }
@@ -37,21 +30,21 @@ filters:
   filter_html:
     id: filter_html
     provider: filter
-    status: true
+    status: false
     weight: -10
     settings:
       allowed_html: '<a href hreflang data-url data-mid id name title target> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <u> <s> <p> <img src alt data-entity-type data-entity-uuid data-align data-caption data-mid height width> <table> <caption> <tbody> <thead> <tfoot> <th> <td> <tr> <sup> <sub> <hr> <span> <span style> <p class> <div style> <span class> <div class id title> <pre> <address>'
       filter_html_help: true
       filter_html_nofollow: false
-  media_transform:
-    id: media_transform
-    provider: os_media
-    status: true
-    weight: 100
-    settings: {  }
   os_link_filter:
     id: os_link_filter
     provider: os_wysiwyg
+    status: true
+    weight: 0
+    settings: {  }
+  filter_align:
+    id: filter_align
+    provider: filter
     status: true
     weight: 0
     settings: {  }
