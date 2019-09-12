@@ -30,6 +30,7 @@ class PublicationAuthorsWidget extends OsWidgetsBase implements OsWidgetsInterfa
         $view->removeHandler('default', 'field', 'id_1');
       }
       $view->preExecute();
+      $view->preview();
       $view->execute();
       $build['authors_list'] = $view->buildRenderable('default');
     }

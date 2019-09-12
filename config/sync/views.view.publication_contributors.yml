@@ -52,6 +52,9 @@ display:
           offset: 0
           id: 1
           total_pages: null
+          tags:
+            previous: ‹‹
+            next: ››
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -534,7 +537,7 @@ display:
       display_extenders:
         metatag_display_extender: {  }
       group_by: true
-      use_ajax: false
+      use_ajax: true
     cache_metadata:
       max-age: -1
       contexts:

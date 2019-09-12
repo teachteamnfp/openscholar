@@ -30,6 +30,7 @@ class PublicationYearsWidget extends OsWidgetsBase implements OsWidgetsInterface
         $view->removeHandler('default', 'field', 'id');
       }
       $view->preExecute();
+      $view->preview();
       $view->execute();
       $build['years_list'] = $view->buildRenderable('default');
     }
