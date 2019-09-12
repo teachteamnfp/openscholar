@@ -112,13 +112,13 @@ class CitationExportLinksTest extends TestBase {
    * Tests export button on node page.
    */
   public function testCitationExportLinksOnNodePage(): void {
-    $this->drupalLogin($this->groupAdmin);
 
     // Test Citation download is available when formats are enabled.
     $this->visitViaVsite('bibcite/reference/' . $this->ref1->id(), $this->group);
     $this->assertSession()->elementExists('css', '.citation-download');
 
     // Make changes.
+    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_export_format[bibtex]' => FALSE,
@@ -127,6 +127,8 @@ class CitationExportLinksTest extends TestBase {
       'os_publications_export_format[tagged]' => FALSE,
       'os_publications_export_format[ris]' => FALSE,
     ], 'Save configuration');
+
+    $this->drupalLogout();
 
     // Test Citation download is not available when formats are disabled.
     $this->visitViaVsite('bibcite/reference/' . $this->ref1->id(), $this->group);
@@ -137,13 +139,13 @@ class CitationExportLinksTest extends TestBase {
    * Tests export button on publication listing page.
    */
   public function testCitationExportLinksOnListingViewPage(): void {
-    $this->drupalLogin($this->groupAdmin);
 
     // Test Citation download is available when formats are enabled.
     $this->visitViaVsite('publications', $this->group);
     $this->assertSession()->elementExists('css', '.citation-download');
 
     // Make changes.
+    $this->drupalLogin($this->groupAdmin);
     $this->visitViaVsite('cp/settings/apps-settings/publications', $this->group);
     $this->drupalPostForm(NULL, [
       'os_publications_export_format[bibtex]' => FALSE,
@@ -152,6 +154,8 @@ class CitationExportLinksTest extends TestBase {
       'os_publications_export_format[tagged]' => FALSE,
       'os_publications_export_format[ris]' => FALSE,
     ], 'Save configuration');
+
+    $this->drupalLogout();
 
     // Test Citation download is not available when formats are disabled.
     $this->visitViaVsite('publications', $this->group);
