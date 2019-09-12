@@ -77,11 +77,12 @@ aside {
   }
   .block {
     article {
-      padding: 10px 0 0;
+      padding: 0;
       border: 0;
-      margin: 0;
+      margin-bottom: 20px;
       h2 {
-        margin-bottom: 10px;
+        margin-bottom: 0px;
+        padding-bottom: 0;
       }
     }
   }
