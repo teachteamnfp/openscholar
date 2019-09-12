@@ -96,7 +96,13 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     else {
       $output['filename'] = $file;
     }
-    $output['description'] = !empty($temp['field_description']) ? $temp['field_description'][0]['value'] : '';
+
+    if ($output['type'] == 'document') {
+      $output['description'] = $temp['field_media_file'][0]['description'];
+    }
+    elseif ($output['type'] == 'video') {
+      $output['description'] = $temp['field_media_video_file'][0]['description'];
+    }
     $output['thumbnail'] = $temp['thumbnail'][0]['url'];
 
     return $output;
@@ -112,6 +118,14 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['alt', 'title']);
       $entity->_restSubmittedFields[] = 'field_media_image';
     }
+
+    $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['description']);
+    if ($entity->bundle() == 'document') {
+      $entity->_restSubmittedFields[] = 'field_media_file';
+    }
+    elseif ($entity->bundle() == 'video') {
+      $entity->_restSubmittedFields[] = 'field_media_video_file';
+    }
     $entity->restSubmittedFields = array_diff($entity->_restSubmittedFields, ['fid']);
 
     return $entity;
@@ -123,7 +137,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
   public function denormalizeFieldData(array $data, FieldableEntityInterface $entity, $format, array $context) {
     $original = $this->routeMatch->getParameter('media');
 
-    if (!empty($data['name'])) {
+    if (isset($data['name'])) {
       $input = [
         'name' => [
           'value' => $data['name'],
@@ -135,7 +149,7 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $context['target_instance'] = $fieldList;
       $this->serializer->deserialize(json_encode($input), $class, $format, $context);
     }
-    if (!empty($data['changed'])) {
+    if (isset($data['changed'])) {
       $input = [
         'changed' => [
           'value' => $data['changed'],
@@ -147,31 +161,44 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $context['target_instance'] = $fieldList;
       $this->serializer->deserialize(json_encode($input), $class, $format, $context);
     }
-    if (!empty($data['alt']) || !empty($data['title'])) {
-      $input = $original->get('field_media_image')->get(0)->getValue();
+    if (isset($data['alt']) || isset($data['title'])) {
+      $input = [
+        'field_media_image' => $original->get('field_media_image')->get(0)->getValue(),
+      ];
 
-      if (!empty($data['alt'])) {
-        $input['alt'] = $data['alt'];
+      if (isset($data['alt'])) {
+        $input['field_media_image']['alt'] = $data['alt'];
       }
-      if (!empty($data['title'])) {
-        $input['title'] = $data['title'];
+      if (isset($data['title'])) {
+        $input['field_media_image']['title'] = $data['title'];
       }
 
       $fieldList = $entity->get('field_media_image');
       $class = get_class($fieldList);
       $context['target_instance'] = $fieldList;
-      $this->serializer->deserialize(json_encode([$input]), $class, $format, $context);
+      $this->serializer->deserialize(json_encode($input), $class, $format, $context);
     }
-    if (!empty($data['description'])) {
-      $input = [
-        'field_description' => $data['description'],
-      ];
 
-      $fieldList = $entity->get('name');
-      $fieldList->setValue([]);
+    if (isset($data['description'])) {
+      if ($original->bundle() == 'document') {
+        $input = [
+          'field_media_file' => $original->get('field_media_file')->get(0)->getValue(),
+        ];
+        $input['field_media_file']['description'] = $data['description'];
+        $fieldList = $entity->get('field_media_file');
+      }
+
+      elseif ($original->bundle() == 'video') {
+        $input = [
+          'field_media_video_file' => $original->get('field_media_video_file')->get(0)->getValue(),
+        ];
+        $input['field_media_video_file']['description'] = $data['description'];
+        $fieldList = $entity->get('field_media_video_file');
+      }
+
       $class = get_class($fieldList);
       $context['target_instance'] = $fieldList;
-      $this->serializer->deserialize($input, $class, $format, $context);
+      $this->serializer->deserialize(json_encode($input), $class, $format, $context);
     }
   }
 

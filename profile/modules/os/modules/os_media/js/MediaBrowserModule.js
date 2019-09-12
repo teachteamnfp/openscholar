@@ -221,7 +221,6 @@
 
     var fetching = service.fetch({})
       .then(function (result) {
-        console.log(result);
 
         $scope.files = result;
         $scope.numFiles = $scope.files.length;
@@ -354,8 +353,8 @@
         }
 
         // replace # in filenames cause they will break filename detection
-        var newName = $files[i].name.replace(/[#|\?]/g, '_').replace(/__/g, '_').replace(/_\./g, '.');
-        var hadHashtag = newName != $files[i].name;
+        var newName = $files[i].name.replace(/[#|\?]/g, '_').replace(/__/g, '_').replace(/_\./g, '.').replace(/[(|)]/g, "").replace(/ /g, '_').toLowerCase();
+        var hadHashtag = (newName !== $files[i].name);
         $files[i].sanitized = newName;
 
         var url = urlGenerator.generate(settings.fetchSetting('paths.api') + '/media/filename/' + $files[i].sanitized + '?_format=json', true);
