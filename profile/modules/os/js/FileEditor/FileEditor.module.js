@@ -211,7 +211,7 @@
                   scope.deletedRedirect = true;
                   break;
                 default:
-                  scope.errorMessages = result.data.title.replace(/[^\s:]*: /, '');
+                  scope.errorMessages = result.data.replace(/[^\s:]*: /, '');
                   scope.showErrorMessages = true;
               }
             });

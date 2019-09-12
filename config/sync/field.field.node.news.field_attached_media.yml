@@ -6,6 +6,7 @@ dependencies:
     - field.storage.node.field_attached_media
     - media.type.audio
     - media.type.document
+    - media.type.executable
     - media.type.image
     - media.type.video
     - node.type.news
@@ -23,10 +24,11 @@ settings:
   handler: 'default:media'
   handler_settings:
     target_bundles:
+      audio: audio
       document: document
+      executable: executable
       image: image
       video: video
-      audio: audio
     sort:
       field: _none
     auto_create: false
