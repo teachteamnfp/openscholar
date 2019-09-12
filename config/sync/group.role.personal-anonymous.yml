@@ -15,7 +15,6 @@ permissions:
   0: 'view group_node:person entity'
   1: 'view group_entity:bibcite_reference entity'
   2: 'view group_entity:bibcite_reference content'
-  3: 'download citations'
   6: 'view group_node:blog entity'
   7: 'view group_node:class entity'
   8: 'view group_node:events entity'

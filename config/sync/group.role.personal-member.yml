@@ -125,7 +125,6 @@ permissions:
   110: 'delete own group_entity:bibcite_reference content'
   111: 'update own group_entity:bibcite_reference content'
   112: 'view group_entity:bibcite_reference content'
-  113: 'download citations'
   142: 'view group_node:blog entity'
   143: 'create group_node:blog entity'
   144: 'delete own group_node:blog entity'

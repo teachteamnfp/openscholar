@@ -54,8 +54,14 @@ class EntityBundleToVocabularyVid extends VocabularyVid {
    * {@inheritdoc}
    */
   public function query($group_by = FALSE) {
-    $vocabularies = $this->cpTaxonomyHelper->searchAllowedVocabulariesByType($this->argument);
-    $this->argument = implode(',', array_values($vocabularies));
+    $parts = explode('|', $this->argument);
+    if (!empty($parts[1])) {
+      $this->argument = $parts[1];
+    }
+    else {
+      $vocabularies = $this->cpTaxonomyHelper->searchAllowedVocabulariesByType($parts[0]);
+      $this->argument = implode(',', array_values($vocabularies));
+    }
     parent::query($group_by);
   }
 

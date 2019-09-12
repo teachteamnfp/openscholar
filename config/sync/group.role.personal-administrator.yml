@@ -210,7 +210,6 @@ permissions:
   195: 'administer apps'
   196: 'administer group'
   197: manage_menu
-  198: 'download citations'
   199: 'manage vsite content'
   265: 'view group_node:blog entity'
   398: 'administer nodes'

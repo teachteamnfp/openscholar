@@ -61,9 +61,9 @@ class CpTaxonomyVocabResetFormTest extends TestBase {
   public function testCpVocabularyResetForm(): void {
     $vid = 'test_vocab';
     $this->createGroupVocabulary($this->group, $vid, ['node:taxonomy_test_1']);
-    $term1 = $this->createGroupTerm($this->group, $vid, 'Aterm');
-    $term2 = $this->createGroupTerm($this->group, $vid, 'Bterm');
-    $term3 = $this->createGroupTerm($this->group, $vid, 'Cterm');
+    $term1 = $this->createGroupTerm($this->group, $vid, ['name' => 'Aterm']);
+    $term2 = $this->createGroupTerm($this->group, $vid, ['name' => 'Bterm']);
+    $term3 = $this->createGroupTerm($this->group, $vid, ['name' => 'Cterm']);
 
     // Set weights.
     $term1->setWeight(3)->save();

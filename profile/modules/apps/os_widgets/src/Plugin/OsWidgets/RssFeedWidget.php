@@ -33,7 +33,7 @@ class RssFeedWidget extends OsWidgetsBase implements OsWidgetsInterface {
       $argument_types = implode("+", $types);
     }
     $build['rss_feed'] = [
-      '#title' => t('RSS feed link!'),
+      '#title' => t('Subscribe'),
       '#type' => 'link',
       '#url' => Url::fromRoute('view.os_feeds.feed_1', ['arg_0' => $argument_types], ['absolute' => TRUE]),
       '#attributes' => [
