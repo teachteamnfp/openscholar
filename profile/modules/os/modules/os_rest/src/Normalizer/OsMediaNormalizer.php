@@ -103,6 +103,9 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
     elseif ($output['type'] == 'video') {
       $output['description'] = $temp['field_media_video_file'][0]['description'];
     }
+    elseif ($output['type'] == 'image') {
+      $output['description'] = $temp['field_image_caption'][0]['value'];
+    }
     $output['thumbnail'] = $temp['thumbnail'][0]['url'];
 
     return $output;
@@ -118,13 +121,17 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
       $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['alt', 'title']);
       $entity->_restSubmittedFields[] = 'field_media_image';
     }
-
-    $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['description']);
-    if ($entity->bundle() == 'document') {
-      $entity->_restSubmittedFields[] = 'field_media_file';
-    }
-    elseif ($entity->bundle() == 'video') {
-      $entity->_restSubmittedFields[] = 'field_media_video_file';
+    if (in_array('description', $entity->_restSubmittedFields)) {
+      $entity->_restSubmittedFields = array_diff($entity->_restSubmittedFields, ['description']);
+      if ($entity->bundle() == 'document') {
+        $entity->_restSubmittedFields[] = 'field_media_file';
+      }
+      elseif ($entity->bundle() == 'video') {
+        $entity->_restSubmittedFields[] = 'field_media_video_file';
+      }
+      elseif ($entity->bundle() == 'image') {
+        $entity->_restSubmittedFields[] = 'field_image_caption';
+      }
     }
     $entity->restSubmittedFields = array_diff($entity->_restSubmittedFields, ['fid']);
 
@@ -194,6 +201,14 @@ class OsMediaNormalizer extends ContentEntityNormalizer {
         ];
         $input['field_media_video_file']['description'] = $data['description'];
         $fieldList = $entity->get('field_media_video_file');
+      }
+
+      elseif ($original->bundle() == 'image') {
+        $input = [
+          'field_image_caption' => $original->get('field_image_caption')->get(0)->getValue(),
+        ];
+        $input['field_image_caption']['value'] = $data['description'];
+        $fieldList = $entity->get('field_image_caption');
       }
 
       $class = get_class($fieldList);

@@ -3,7 +3,10 @@
 namespace Drupal\os_rest\Plugin\rest\resource;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\rest\ResourceResponse;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 /**
  * Class OsMediaResource.
@@ -11,6 +14,10 @@ use Drupal\rest\ResourceResponse;
  * @package Drupal\os_rest\Plugin\rest\resource
  */
 class OsMediaResource extends OsEntityResource {
+
+  const FILE_FIELDS = [
+    'filename',
+  ];
 
   /**
    * Switch between paths based on argument type.
@@ -84,6 +91,71 @@ class OsMediaResource extends OsEntityResource {
     ]);
     $resource->addCacheableDependency($filename);
     return $resource;
+  }
+
+  /**
+   * Responds to entity PATCH requests.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $original_entity
+   *   The original entity object.
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   *
+   * @return \Drupal\rest\ModifiedResourceResponse
+   *   The HTTP response object.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
+  public function patch(EntityInterface $original_entity, EntityInterface $entity = NULL) {
+    $data = json_decode(\Drupal::request()->getContent(), TRUE);
+    if ($entity == NULL) {
+      throw new BadRequestHttpException('No entity content received.');
+    }
+    $definition = $this->getPluginDefinition();
+    if ($entity->getEntityTypeId() != $definition['entity_type']) {
+      throw new BadRequestHttpException('Invalid entity type');
+    }
+
+    $changed_fields = [];
+    $fileEntityOrig = [];
+    foreach ($entity->_restSubmittedFields as $key => $field_name) {
+      // Check for.
+      if (in_array($field_name, self::FILE_FIELDS)) {
+        if ($entity->bundle() == 'image') {
+          $field = 'field_media_image';
+        }
+        elseif ($entity->bundle() == 'document') {
+          $field = 'field_media_file';
+        }
+        elseif ($entity->bundle() == 'video') {
+          $field = 'field_media_video_file';
+        }
+        $fileId = $original_entity->get($field)->get(0)->get('target_id')->getValue();
+        $fileEntityOrig = \Drupal::entityTypeManager()->getStorage('file')->load($fileId);
+        $changed_fields[] = $field_name;
+        $fileEntityOrig->set($field_name, $data[$field_name]);
+        unset($entity->_restSubmittedFields[$key]);
+      }
+    }
+
+    if ($fileEntityOrig) {
+      // Validate the received data before saving.
+      $this->validate($fileEntityOrig, $changed_fields);
+      try {
+        $fileEntityOrig->save();
+        $this->logger->notice('Updated entity %type with ID %id.', [
+          '%type' => $fileEntityOrig->getEntityTypeId(),
+          '%id' => $fileEntityOrig->id(),
+        ]);
+        // Call the parent method to update remaining fields if any.
+        return parent::patch($original_entity, $entity);
+      }
+      catch (EntityStorageException $e) {
+        throw new HttpException(500, 'Internal Server Error', $e);
+      }
+    }
+    return parent::patch($original_entity, $entity);
   }
 
   /**
