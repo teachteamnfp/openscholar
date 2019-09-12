@@ -10,6 +10,9 @@ div.ui-dialog, div.cke_reset_all {
     color: $color-white;
   }
 }
+.cke_mathjax_doc {
+  color: $color-blue !important;
+}
 /**** ui dialog ckeditor ****/
  div.cke_reset_all {
   .cke_dialog {

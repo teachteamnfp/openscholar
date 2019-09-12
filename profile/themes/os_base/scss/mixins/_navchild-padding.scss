@@ -1,0 +1,12 @@
+@mixin navchildpadding() {
+  @for $i from 3 through 10 {
+    $sel: if($i == 3, ".navbar-collapse .navbar-nav ul.dropdown-menu", selector-nest($sel, "ul")) !global;
+    #{$sel} {
+      li {
+        a {
+          padding-left: 10px * $i;
+        }
+      }
+    }
+  }
+}
