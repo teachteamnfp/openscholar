@@ -153,9 +153,10 @@ class VsiteContextualLinksTest extends OsExistingSiteJavascriptTestBase {
     $this->addGroupAdmin($group_admin, $this->group);
     $this->drupalLogin($group_admin);
 
-    $destination = '/edit?destination=' . $this->group->get('path')->getValue()[0]['alias'];
-    $this->visitViaVsite("node/{$blog->id()}" . $destination, $this->group);
+    $destination = '?destination=' . $this->group->get('path')->getValue()[0]['alias'];
+    $this->visitViaVsite("node/{$blog->id()}/edit" . $destination, $this->group);
     $this->getSession()->getPage()->pressButton('Preview');
+    $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->waitForElementVisible('css', '#edit-backlink');
     $current_url = $this->getSession()->getCurrentUrl();
     $this->assertContains('preview', $current_url);

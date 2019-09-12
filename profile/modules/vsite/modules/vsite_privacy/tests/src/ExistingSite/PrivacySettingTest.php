@@ -104,4 +104,40 @@ class PrivacySettingTest extends OsExistingSiteTestBase {
     $this->assertSession()->statusCodeEquals(403);
   }
 
+  /**
+   * Test public site not contains noindex metatag.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testPublicSiteMetatagRobotsNotVisible() {
+    $public_group = $this->createGroup([
+      'type' => 'personal',
+      'field_privacy_level' => [
+        'value' => 'public',
+      ],
+    ]);
+    $this->visitViaVsite('', $public_group);
+    $this->assertSession()->responseNotContains('noindex');
+  }
+
+  /**
+   * Test unindexed site contains noindex metatag.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function testUnindexedSiteMetatagRobotsVisible() {
+    $web_assert = $this->assertSession();
+    $unindexed_group = $this->createGroup([
+      'type' => 'personal',
+      'field_privacy_level' => [
+        'value' => 'unindexed',
+      ],
+    ]);
+    $this->vsiteContextManager->activateVsite($unindexed_group);
+    $this->visitViaVsite('', $unindexed_group);
+    $web_assert->statusCodeEquals(200);
+    // TODO: seems group is not activated.
+    // $this->assertSession()->responseContains('noindex');
+  }
+
 }

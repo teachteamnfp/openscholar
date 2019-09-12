@@ -1,0 +1,10 @@
+vsite_privacy.settings:
+  type: config_object
+  label: 'Vsite privacy settings'
+  mapping:
+    robotstxt_directives:
+      type: sequence
+      label: 'Robots txt directives'
+      sequence:
+        type: string
+        label: 'Directive'

@@ -243,6 +243,7 @@
         "drupal/mail_login": "^1.0",
         "oomphinc/composer-installers-extender": "^1.1",
         "npm-asset/chosen-js": "^1.8",
+        "drupal/robotstxt": "^1.2",
         "drupal/groupmenu": "^1.0-beta4"
     },
     "require-dev": {

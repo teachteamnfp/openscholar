@@ -7,3 +7,7 @@ services:
     arguments: ['@config.factory', '@vsite.privacy.manager', '@current_user']
     tags:
       - { name: event_subscriber }
+
+  vsite_privacy.helper:
+    class: Drupal\vsite_privacy\VsitePrivacyHelper
+    arguments: ['@config.factory', '@vsite.context_manager']
