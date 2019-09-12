@@ -1,0 +1,16 @@
+/**** gallery grid ****/
+.field--name-field-gallery-media {
+  .field--items {
+    column-gap: .1em;
+    columns: 2 auto;
+    @media #{$tablet} {
+      columns: 3 175px;
+    }
+    @media #{$normal} {
+      columns: 4 210px;
+    }
+    .field--item {
+      padding: 4px;
+    }
+  }
+}

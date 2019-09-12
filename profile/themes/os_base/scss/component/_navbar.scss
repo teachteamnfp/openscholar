@@ -6,6 +6,7 @@ $tablet:          "screen and (min-width: #{$screen-sm-min})";
 $normal:          "screen and (min-width: #{$screen-md-min})";
 $wide:            "screen and (min-width: #{$screen-lg-min})";
 $grid-breakpoint: "screen and (min-width: #{$grid-float-breakpoint})";
+@import '../mixins/navchild-padding';
 
 body {
   // Fix horizontal scrolling on iOS devices.
@@ -87,12 +88,32 @@ nav {
   .row {
     margin: 0;
   }
+  ul.dropdown-menu {
+    .caret {
+      transform: rotate(270deg);
+    }
+    .dropdown-menu {
+      left: 100%;
+      top: 0;
+    }
+  }
+  .open {
+    a {
+      background: none;
+    }
+  }
+  .dropmenu-child {
+    display: none;
+  }
 }
 @media #{$mobile} {
   .navbar-collapse {
     ul.navbar-nav {
       margin-top: 0;
       margin-bottom: 0;
+      .caret {
+        display: none;
+      }
       > li {
         > a {
           font-size: 20px;
@@ -103,11 +124,13 @@ nav {
             margin-top: 1px;
           }
         }
-        &.open {
-          .dropdown-menu {
-            > li {
-              > a {
-                padding: 8px 16px 8px 20px;
+        li {
+          &.open {
+            .dropdown-menu {
+              > li {
+                > a {
+                  padding: 8px 16px;
+                }
               }
             }
           }
@@ -115,16 +138,56 @@ nav {
       }
       .dropdown-menu {
         background: none;
+        padding-left: 0;
         li {
           padding-left: 0;
           a {
             line-height: 20px;
             border: 0 none;
-            font-size: 20px;
-            padding-left: 30px;
+          }
+        }
+        &.mopen {
+          display: block;
+        }
+      }
+      li {
+        &.dropdown {
+          .dropmenu-child {
+            display: block;
+            position: absolute;
+            top: 0;
+            right: 10px;
+            width: 50px;
+            font-family: "Glyphicons Halflings";
+            background: none;
+            padding: 0;
+            text-align: center;
+            height: 100%;
+            padding-top: 6px;
+            &.mopen {
+              &:before {
+                content: "\2212";
+              }
+            }
           }
         }
       }
     }
+    ul.dropdown-menu {
+      .dropdown-menu {
+        left: 0;
+        top: 0;
+      }
+    }
+    .open {
+      a {
+        background: none;
+      }
+    }
+    .container {
+      padding: 0;
+    }
   }
+  /**** adding extra space after each ul ****/
+  @include navchildpadding();
 }
